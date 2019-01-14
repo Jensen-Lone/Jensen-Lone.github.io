@@ -16,7 +16,7 @@
 <meta property="og:description" content="本次操作选取142(master)和141(slavertwo)使用相同的ssh密钥访问140(slaverfour)机器。  一、142机器上操作首先在142机器生成ssh Key放在其默认的目录下“~/.ssh”:1$ ssh-keygen -t rsa -C &quot;root123@gmail.com&quot; 注释:”root123@gmail.com“属于自己创建的密钥的自定义部分然后进入其目录(/r">
 <meta property="og:locale" content="zh-tw">
 <meta property="og:image" content="https://github.com/Jensen-Lone/Jensen-Lone.github.io/blob/master/img/article/1.png">
-<meta property="og:updated_time" content="2019-01-14T08:22:57.162Z">
+<meta property="og:updated_time" content="2019-01-14T08:27:29.489Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="多台机器共用一个ssh密钥来访问Ansible控制机器">
 <meta name="twitter:description" content="本次操作选取142(master)和141(slavertwo)使用相同的ssh密钥访问140(slaverfour)机器。  一、142机器上操作首先在142机器生成ssh Key放在其默认的目录下“~/.ssh”:1$ ssh-keygen -t rsa -C &quot;root123@gmail.com&quot; 注释:”root123@gmail.com“属于自己创建的密钥的自定义部分然后进入其目录(/r">
@@ -95,7 +95,7 @@
       
         <p>本次操作选取142(master)和141(slavertwo)使用相同的ssh密钥访问140(slaverfour)机器。 </p>
 <h2 id="一、142机器上操作"><a href="#一、142机器上操作" class="headerlink" title="一、142机器上操作"></a>一、142机器上操作</h2><p>首先在142机器生成ssh Key放在其默认的目录下“~/.ssh”:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh-keygen -t rsa -C <span class="string">"root123@gmail.com"</span></span><br></pre></td></tr></table></figure></p>
-<p>注释:”<a href="mailto:root123@gmail.com" target="_blank" rel="noopener">root123@gmail.com</a>“属于自己创建的密钥的自定义部分<br><img src="https://github.com/Jensen-Lone/Jensen-Lone.github.io/blob/master/img/article/1.png" alt="so"><br>然后进入其目录(/root/.ssh/)下查看其公钥和密钥的权限:</p>
+<p>注释:”<a href="mailto:root123@gmail.com" target="_blank" rel="noopener">root123@gmail.com</a>“属于自己创建的密钥的自定义部分<br><img src="https://github.com/Jensen-Lone/Jensen-Lone.github.io/blob/master/img/article/1.png" alt="1"><br>然后进入其目录(/root/.ssh/)下查看其公钥和密钥的权限:</p>
 <hr>
 <hr>
 <p>然后将此密钥对拷贝出去，本次操作是在虚拟机上进行，所以拷贝到物理机的共享文件夹中。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cp id_rsa id_rsa.pub /mnt/hgfs/key/</span><br></pre></td></tr></table></figure></p>
@@ -103,7 +103,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jensen-lone.github.io/2019/01/14/article-title/" data-id="cjqw29mqv00003kqqa8bg1gaz" class="article-share-link">Share</a>
+      <a data-url="https://jensen-lone.github.io/2019/01/14/article-title/" data-id="cjqw2fhjt0001v4qqruw4m3ht" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ansible-ssh-key-多台机器-密钥/">ansible ssh-key 多台机器 密钥</a></li></ul>
