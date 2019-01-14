@@ -7,18 +7,18 @@
   
   <title>多台电脑共用一个ssh密钥来访问被Ansible控制机器 | Jensen Lone&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="本次操作选取142（master）和141（slavertwo）使用相同的ssh密钥访问140（slaverfour）机器。  一、142机器上操作首先在142机器生成ssh Key放在其默认的目录下“~/.ssh”：1$ ssh-keygen -t rsa -C &quot;root123@gmail.com&quot; (root123@gmail.com属于自己创建的自定义部分)">
-<meta name="keywords" content="ansible,ssh-key">
+  <meta name="description" content="本次操作选取142(master)和141(slavertwo)使用相同的ssh密钥访问140(slaverfour)机器。  一、142机器上操作首先在142机器生成ssh Key放在其默认的目录下“~/.ssh”:1$ ssh-keygen -t rsa -C &quot;root123@gmail.com&quot; 注释:”root123@gmail.com“属于自己创建的密钥的自定义部分 然后进入其目录(/">
+<meta name="keywords" content="ansible ssh-key 多台机器 密钥">
 <meta property="og:type" content="article">
 <meta property="og:title" content="多台电脑共用一个ssh密钥来访问被Ansible控制机器">
 <meta property="og:url" content="https://jensen-lone.github.io/2019/01/14/article-title/index.html">
 <meta property="og:site_name" content="Jensen Lone&#39;s Blog">
-<meta property="og:description" content="本次操作选取142（master）和141（slavertwo）使用相同的ssh密钥访问140（slaverfour）机器。  一、142机器上操作首先在142机器生成ssh Key放在其默认的目录下“~/.ssh”：1$ ssh-keygen -t rsa -C &quot;root123@gmail.com&quot; (root123@gmail.com属于自己创建的自定义部分)">
+<meta property="og:description" content="本次操作选取142(master)和141(slavertwo)使用相同的ssh密钥访问140(slaverfour)机器。  一、142机器上操作首先在142机器生成ssh Key放在其默认的目录下“~/.ssh”:1$ ssh-keygen -t rsa -C &quot;root123@gmail.com&quot; 注释:”root123@gmail.com“属于自己创建的密钥的自定义部分 然后进入其目录(/">
 <meta property="og:locale" content="default">
-<meta property="og:updated_time" content="2019-01-14T07:23:44.033Z">
+<meta property="og:updated_time" content="2019-01-14T07:29:49.301Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="多台电脑共用一个ssh密钥来访问被Ansible控制机器">
-<meta name="twitter:description" content="本次操作选取142（master）和141（slavertwo）使用相同的ssh密钥访问140（slaverfour）机器。  一、142机器上操作首先在142机器生成ssh Key放在其默认的目录下“~/.ssh”：1$ ssh-keygen -t rsa -C &quot;root123@gmail.com&quot; (root123@gmail.com属于自己创建的自定义部分)">
+<meta name="twitter:description" content="本次操作选取142(master)和141(slavertwo)使用相同的ssh密钥访问140(slaverfour)机器。  一、142机器上操作首先在142机器生成ssh Key放在其默认的目录下“~/.ssh”:1$ ssh-keygen -t rsa -C &quot;root123@gmail.com&quot; 注释:”root123@gmail.com“属于自己创建的密钥的自定义部分 然后进入其目录(/">
   
     <link rel="alternate" href="/atom.xml" title="Jensen Lone&#39;s Blog" type="application/atom+xml">
   
@@ -91,17 +91,21 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>本次操作选取142（master）和141（slavertwo）使用相同的ssh密钥访问140（slaverfour）<br>机器。 </p>
-<h2 id="一、142机器上操作"><a href="#一、142机器上操作" class="headerlink" title="一、142机器上操作"></a>一、142机器上操作</h2><p>首先在142机器生成ssh Key放在其默认的目录下“~/.ssh”：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh-keygen -t rsa -C <span class="string">"root123@gmail.com"</span></span><br></pre></td></tr></table></figure></p>
-<p>(<a href="mailto:root123@gmail.com" target="_blank" rel="noopener">root123@gmail.com</a>属于自己创建的自定义部分) </p>
-
+        <p>本次操作选取142(master)和141(slavertwo)使用相同的ssh密钥访问140(slaverfour)机器。 </p>
+<h2 id="一、142机器上操作"><a href="#一、142机器上操作" class="headerlink" title="一、142机器上操作"></a>一、142机器上操作</h2><p>首先在142机器生成ssh Key放在其默认的目录下“~/.ssh”:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh-keygen -t rsa -C <span class="string">"root123@gmail.com"</span></span><br></pre></td></tr></table></figure></p>
+<h2 id="注释-”root123-gmail-com“属于自己创建的密钥的自定义部分"><a href="#注释-”root123-gmail-com“属于自己创建的密钥的自定义部分" class="headerlink" title="注释:”root123@gmail.com“属于自己创建的密钥的自定义部分"></a>注释:”<a href="mailto:root123@gmail.com" target="_blank" rel="noopener">root123@gmail.com</a>“属于自己创建的密钥的自定义部分</h2><hr>
+<p>然后进入其目录(/root/.ssh/)下查看其公钥和密钥的权限:</p>
+<hr>
+<hr>
+<p>然后将此密钥对拷贝出去，本次操作是在虚拟机上进行，所以拷贝到物理机的共享文件夹中。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cp id_rsa id_rsa.pub /mnt/hgfs/key/</span><br></pre></td></tr></table></figure></p>
+<h2 id="二、141机器操作"><a href="#二、141机器操作" class="headerlink" title="二、141机器操作"></a>二、141机器操作</h2>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jensen-lone.github.io/2019/01/14/article-title/" data-id="cjqw05nlu0000bcqqk7zcwosp" class="article-share-link">Share</a>
+      <a data-url="https://jensen-lone.github.io/2019/01/14/article-title/" data-id="cjqw0daij0000n8qqrl0oa96w" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ansible-ssh-key/">ansible,ssh-key</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ansible-ssh-key-多台机器-密钥/">ansible ssh-key 多台机器 密钥</a></li></ul>
 
     </footer>
   </div>
@@ -131,7 +135,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ansible-ssh-key/">ansible,ssh-key</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ansible-ssh-key-多台机器-密钥/">ansible ssh-key 多台机器 密钥</a></li></ul>
     </div>
   </div>
 
@@ -141,7 +145,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/ansible-ssh-key/" style="font-size: 10px;">ansible,ssh-key</a>
+      <a href="/tags/ansible-ssh-key-多台机器-密钥/" style="font-size: 10px;">ansible ssh-key 多台机器 密钥</a>
     </div>
   </div>
 
