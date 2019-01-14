@@ -15,12 +15,10 @@
 <meta property="og:site_name" content="Jensen Lone&#39;s Blog">
 <meta property="og:description" content="本次操作选取142(master)和141(slavertwo)使用相同的ssh密钥访问140(slaverfour)机器。  一、142机器上操作首先在142机器生成ssh Key放在其默认的目录下“~/.ssh”:1$ ssh-keygen -t rsa -C &quot;root123@gmail.com&quot; 注释:”root123@gmail.com“属于自己创建的密钥的自定义部分然后进入其目录(/r">
 <meta property="og:locale" content="zh-tw">
-<meta property="og:image" content="https://github.com/Jensen-Lone/Jensen-Lone.github.io/blob/master/img/article/2.png">
-<meta property="og:updated_time" content="2019-01-14T08:36:07.698Z">
+<meta property="og:updated_time" content="2019-01-14T08:53:32.726Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="多台机器共用一个ssh密钥来访问Ansible控制机器">
 <meta name="twitter:description" content="本次操作选取142(master)和141(slavertwo)使用相同的ssh密钥访问140(slaverfour)机器。  一、142机器上操作首先在142机器生成ssh Key放在其默认的目录下“~/.ssh”:1$ ssh-keygen -t rsa -C &quot;root123@gmail.com&quot; 注释:”root123@gmail.com“属于自己创建的密钥的自定义部分然后进入其目录(/r">
-<meta name="twitter:image" content="https://github.com/Jensen-Lone/Jensen-Lone.github.io/blob/master/img/article/2.png">
   
     <link rel="alternate" href="/atom.xml" title="Jensen Lone&#39;s Blog" type="application/atom+xml">
   
@@ -95,15 +93,25 @@
       
         <p>本次操作选取142(master)和141(slavertwo)使用相同的ssh密钥访问140(slaverfour)机器。 </p>
 <h2 id="一、142机器上操作"><a href="#一、142机器上操作" class="headerlink" title="一、142机器上操作"></a>一、142机器上操作</h2><p>首先在142机器生成ssh Key放在其默认的目录下“~/.ssh”:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh-keygen -t rsa -C <span class="string">"root123@gmail.com"</span></span><br></pre></td></tr></table></figure></p>
-<p>注释:”<a href="mailto:root123@gmail.com" target="_blank" rel="noopener">root123@gmail.com</a>“属于自己创建的密钥的自定义部分<br><img src="https://github.com/Jensen-Lone/Jensen-Lone.github.io/blob/master/img/article/2.png" alt="1"><br>然后进入其目录(/root/.ssh/)下查看其公钥和密钥的权限:</p>
-<hr>
-<hr>
-<p>然后将此密钥对拷贝出去，本次操作是在虚拟机上进行，所以拷贝到物理机的共享文件夹中。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cp id_rsa id_rsa.pub /mnt/hgfs/key/</span><br></pre></td></tr></table></figure></p>
-<h2 id="二、141机器操作"><a href="#二、141机器操作" class="headerlink" title="二、141机器操作"></a>二、141机器操作</h2>
+<p>注释:”<a href="mailto:root123@gmail.com" target="_blank" rel="noopener">root123@gmail.com</a>“属于自己创建的密钥的自定义部分<br>然后进入其目录(/root/.ssh/)下查看其公钥和密钥的权限:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ ll</span><br><span class="line">$ -rw-------  id_rsa</span><br><span class="line">$ -rw-r--r--  id_rsa.pub</span><br></pre></td></tr></table></figure></p>
+<p>然后将此密钥对拷贝出去,本次操作是在虚拟机上进行，所以拷贝到物理机的共享文件夹中。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cp id_rsa id_rsa.pub /mnt/hgfs/key/</span><br></pre></td></tr></table></figure></p>
+<h2 id="二、141机器操作"><a href="#二、141机器操作" class="headerlink" title="二、141机器操作"></a>二、141机器操作</h2><p>按照其上相同方式生成ssh密钥对:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ssh-keygen -t rsa -C "root123@gmail.com"</span></span><br></pre></td></tr></table></figure></p>
+<p>接下来,用刚才拷贝的142机器的密钥对来覆盖141机器的密钥对。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cp /mnt/hgfs/key/* /root/.ssh/</span><br></pre></td></tr></table></figure></p>
+<p>均确认覆盖重写即可。<br>覆盖成功,再查看该密钥对的权限。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ ll</span><br><span class="line">$ -rw-------  id_rsa</span><br><span class="line">$ -rw-r--r--  id_rsa.pub</span><br></pre></td></tr></table></figure></p>
+<p>注释:此时密钥对的读写权限和权限大小和上面的 142 的机器显示的一样才能保证生效。如上所示,相同一致,无误。 </p>
+<h2 id="三、将一台的公钥传给140"><a href="#三、将一台的公钥传给140" class="headerlink" title="三、将一台的公钥传给140"></a>三、将一台的公钥传给140</h2><p>将142机器的公钥传输给被控制机器140。 </p>
+<pre><code class="bash">$ scp rp id_rsa.pub 192.168.139.140:/root/.ssh/ 
+</code></pre>
+<h2 id="四、140机器操作"><a href="#四、140机器操作" class="headerlink" title="四、140机器操作"></a>四、140机器操作</h2><p>140机器将刚才的密钥，添加到authorized_keys中。</p>
+<pre><code class="bash"><span class="comment"># cat /root/.ssh/id_rsa.pub &gt;&gt; /root/.ssh/authorized_keys</span>
+</code></pre>
+<h2 id="五、测试"><a href="#五、测试" class="headerlink" title="五、测试"></a>五、测试</h2><p>142机器:<br>显示ping pong即可。<br>141机器:<br>显示ping pong即可。</p>
+<p>注:由于141第一次和140建立ssh连接,第一次要输入密钥，以后则不需要输入。<br>到此,测试通过。证明多台机器可以共用一对密钥作为Ansible控制端去访问被控机器。</p>
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jensen-lone.github.io/2019/01/14/article-title/" data-id="cjqw2ql880000mcqqtacamung" class="article-share-link">Share</a>
+      <a data-url="https://jensen-lone.github.io/2019/01/14/article-title/" data-id="cjqw3d1vz0000wkqq9gpc0vvn" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ansible-ssh-key-多台机器-密钥/">ansible ssh-key 多台机器 密钥</a></li></ul>
