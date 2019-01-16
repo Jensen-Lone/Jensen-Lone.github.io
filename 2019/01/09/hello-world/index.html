@@ -5,19 +5,19 @@
   
 
   
-  <title>Hello World | Jensen Lone&#39;s Blog</title>
+  <title>Ceph分布式集群在线搭建 | Jensen Lone&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+  <meta name="description" content="Ceph分布式集群在线搭建 一、ceph简介（摘抄自官方文档翻译）不管你是想为云平台提供Ceph 对象存储或 Ceph 块设备,还是想部署一个 Ceph 文件系统或者把 Ceph 作为他用.所有 Ceph 存储集群的部署都始于部署一个个 Ceph 节点、网络和 Ceph 存储集群。 Ceph 存储集群至少需要一个 Ceph Monitor 和两个 OSD 守护进程。而运行 Ceph 文件系统客户端">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
+<meta property="og:title" content="Ceph分布式集群在线搭建">
 <meta property="og:url" content="https://jensen-lone.github.io/2019/01/09/hello-world/index.html">
 <meta property="og:site_name" content="Jensen Lone&#39;s Blog">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta property="og:description" content="Ceph分布式集群在线搭建 一、ceph简介（摘抄自官方文档翻译）不管你是想为云平台提供Ceph 对象存储或 Ceph 块设备,还是想部署一个 Ceph 文件系统或者把 Ceph 作为他用.所有 Ceph 存储集群的部署都始于部署一个个 Ceph 节点、网络和 Ceph 存储集群。 Ceph 存储集群至少需要一个 Ceph Monitor 和两个 OSD 守护进程。而运行 Ceph 文件系统客户端">
 <meta property="og:locale" content="zh-tw">
-<meta property="og:updated_time" content="2019-01-09T06:32:32.078Z">
+<meta property="og:updated_time" content="2019-01-16T01:24:48.693Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta name="twitter:title" content="Ceph分布式集群在线搭建">
+<meta name="twitter:description" content="Ceph分布式集群在线搭建 一、ceph简介（摘抄自官方文档翻译）不管你是想为云平台提供Ceph 对象存储或 Ceph 块设备,还是想部署一个 Ceph 文件系统或者把 Ceph 作为他用.所有 Ceph 存储集群的部署都始于部署一个个 Ceph 节点、网络和 Ceph 存储集群。 Ceph 存储集群至少需要一个 Ceph Monitor 和两个 OSD 守护进程。而运行 Ceph 文件系统客户端">
   
     <link rel="alternate" href="/atom.xml" title="Jensen Lone&#39;s Blog" type="application/atom+xml">
   
@@ -82,7 +82,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Hello World
+      Ceph分布式集群在线搭建
     </h1>
   
 
@@ -90,20 +90,21 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
+        <p>Ceph分布式集群在线搭建</p>
+<h2 id="一、ceph简介（摘抄自官方文档翻译）"><a href="#一、ceph简介（摘抄自官方文档翻译）" class="headerlink" title="一、ceph简介（摘抄自官方文档翻译）"></a>一、ceph简介（摘抄自官方文档翻译）</h2><p>不管你是想为云平台提供Ceph 对象存储或 Ceph 块设备,还是想部署一个 Ceph 文件系统或者把 Ceph 作为他用.所有 Ceph 存储集群的部署都始于部署一个个 Ceph 节点、网络和 Ceph 存储集群。 Ceph 存储集群至少需要一个 Ceph Monitor 和两个 OSD 守护进程。而运行 Ceph 文件系统客户端时,则必须要有元数据服务器(Metadata Server)。<br>Ceph OSDs:Ceph OSD 守护进程(Ceph OSD)的功能是存储数据,处理数据的复制、恢复、回填、再均衡，并通过检查其他OSD 守护进程的心跳来向 Ceph Monitors 提供一些监控信息。当 Ceph 存储集群设定为有2个副本时，至少需要2个 OSD 守护进程，集群才能达到 active+clean 状态（ Ceph 默认有3个副本，但你可以调整副本数 ）。<br>Monitors: Ceph Monitor维护着展示集群状态的各种图表，包括监视器图、 OSD 图、归置组（ PG ）图、和 CRUSH 图。 Ceph 保存着发生在Monitors 、 OSD 和 PG上的每一次状态变更的历史信息（称为 epoch ）。<br>MDSs: Ceph 元数据服务器（ MDS ）为 Ceph 文件系统存储元数据（也就是说，Ceph 块设备和 Ceph 对象存储不使用MDS ）。元数据服务器使得 POSIX 文件系统的用户们，可以在不对 Ceph 存储集群造成负担的前提下，执行诸如 ls、find 等基本命令。<br>Ceph 把客户端数据保存为存储池内的对象。通过使用 CRUSH 算法， Ceph 可以计算出哪个归置组（PG）应该持有指定的对象(Object)，然后进一步计算出哪个 OSD 守护进程持有该归置组。 CRUSH 算法使得 Ceph 存储集群能够动态地伸缩、再均衡和修复。</p>
+<h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
 <p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
 <h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
 <p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
 <h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
 <p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
 <h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+<p>More info: <a href="https://blog.csdn.net/liuyanwuyu/article/details/82825251" target="_blank" rel="noopener">Deployment</a></p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://jensen-lone.github.io/2019/01/09/hello-world/" data-id="cjqw4cae20001ssqqzoym5ifq" class="article-share-link">Share</a>
+      <a data-url="https://jensen-lone.github.io/2019/01/09/hello-world/" data-id="cjqyi9vjj0000jcqqqv7dkcmb" class="article-share-link">Share</a>
       
       
     </footer>
@@ -174,7 +175,7 @@
           </li>
         
           <li>
-            <a href="/2019/01/09/hello-world/">Hello World</a>
+            <a href="/2019/01/09/hello-world/">Ceph分布式集群在线搭建</a>
           </li>
         
       </ul>
