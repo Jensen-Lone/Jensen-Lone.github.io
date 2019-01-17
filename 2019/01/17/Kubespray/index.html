@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html>
+  <!-- Html Head Tag-->
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Jensen Lone">
+  <!-- Open Graph Data -->
+  <meta property="og:title" content="Jensen Lone&#39;s Blog">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="Jensen Lone&#39;s Blog">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://jensen-lone.github.io">
+  
+    <link rel="alternate" href="/atom.xml" title="Jensen Lone&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Site Title -->
+  <title>Jensen Lone's Blog</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  
+  <link rel="stylesheet" href="/css/style.light.css">
+
+  <!-- Google Analytics -->
+  
+
+</head>
+
+  <body>
+    <!-- Page Header -->
+
+
+<header class="site-header header-background" style="background-image: url(/img/MJ.jpg)">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="page-title with-background-image">
+          <p class="title">Untitled Post</p>
+          <p class="subtitle"></p>
+        </div>
+        <div class="site-menu with-background-image">
+          <ul>
+            
+              <li>
+                <a href="/">
+                  
+                  Home
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/archives">
+                  
+                  Archives
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://github.com/jensen-lone">
+                  
+                  Github
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="mailto:369236981@qq.com">
+                  
+                  Email
+                  
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article>
+  <div class="container typo">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-info text-muted">
+          
+            <!-- Author -->
+            <span class="author info">By Jensen Lone</span>
+          
+          <!-- Date -->
+          <span class="date-time info">On
+            <span class="date">2019-01-17</span>
+            <span class="time">11:22:04</span>
+          </span>
+          
+        </div>
+        <!-- Tags -->
+        
+        <!-- Post Main Content -->
+        <div class="post-content">
+          <h1 id="Kubernetes的HA高可用容器化部署-使用Kubespray-以及使用PVC模式挂载Ceph集群存储"><a href="#Kubernetes的HA高可用容器化部署-使用Kubespray-以及使用PVC模式挂载Ceph集群存储" class="headerlink" title="Kubernetes的HA高可用容器化部署(使用Kubespray) 以及使用PVC模式挂载Ceph集群存储"></a>Kubernetes的HA高可用容器化部署(使用Kubespray) 以及使用PVC模式挂载Ceph集群存储</h1><h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><p><img src="https://img-blog.csdn.net/20180924164108167?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdXlhbnd1eXU=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="在这里插入图片描述"></p>
+<h2 id="一、简介"><a href="#一、简介" class="headerlink" title="一、简介"></a>一、简介</h2><p>Kubespray，以前是Kargo，是Kubernetes社区保护伞下的一个项目。它是一组工具，旨在轻松部署生产就绪的Kubernetes集群。<br>本次部署示例是以分支v2.4.0为基础，修改而来。v2.4.0可以如下clone：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># git clone https://github.com/kubernetes-incubator/kubespray.git</span><br></pre></td></tr></table></figure></p>
+<p><strong>或是直接使用<a href="https://download.csdn.net/download/liuyanwuyu/10684920" target="_blank" rel="noopener">附件一（kubespray-2.4.0.tar.gz）</a>，来进行操作，本次部署示例是以该修改后的附件一为基础来部署Kubernetes，简洁快速。</strong></p>
+<h2 id="二、部署结构设计"><a href="#二、部署结构设计" class="headerlink" title="二、部署结构设计"></a>二、部署结构设计</h2><p>本次部署选取VMware五台虚机进行测试（四台部署k8s，一台repository作为yum源、python源和docker仓库）。<br>系统均为centos7.4-minimal（CentOS-7-x86_64-Minimal-1708）。CPU均为4核，内存均为8GB，硬盘俩块均为100GB，网卡俩块（这个为后续挂载ceph存储使用）。<br>分布式集群选择使用三台机器作为master节点，一台机器做为node节点使用。<br><img src="https://img-blog.csdn.net/20180924164239267?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdXlhbnd1eXU=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="在这里插入图片描述"><br>Kubernetes各个组件的版本说明如下：<br><img src="https://img-blog.csdn.net/20180924164342366?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdXlhbnd1eXU=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="在这里插入图片描述"></p>
+<h2 id="三、基础环境配置（每台机器均执行以下操作）"><a href="#三、基础环境配置（每台机器均执行以下操作）" class="headerlink" title="三、基础环境配置（每台机器均执行以下操作）"></a>三、基础环境配置（每台机器均执行以下操作）</h2><h3 id="3-1关闭防火墙和selinux以及交换分区"><a href="#3-1关闭防火墙和selinux以及交换分区" class="headerlink" title="3.1关闭防火墙和selinux以及交换分区"></a>3.1关闭防火墙和selinux以及交换分区</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># systemctl disable firewalld &amp;&amp; systemctl stop firewalld  &amp;&amp; </span><br><span class="line">systemctl status firewalld </span><br><span class="line"># sed -i &apos;/^SELINUX=.*/c SELINUX=disabled&apos; /etc/selinux/config &amp;&amp; </span><br><span class="line">sed -i &apos;s/^SELINUXTYPE=.*/SELINUXTYPE=disabled/g&apos; /etc/selinux/config </span><br><span class="line"># setenforce 0</span><br></pre></td></tr></table></figure>
+<p>Reboot后生效。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># swapoff –a</span><br><span class="line"># vi /etc/fstab</span><br></pre></td></tr></table></figure></p>
+<p>注释掉格式是swap的那行，如下图所示：<br><img src="https://img-blog.csdn.net/20180924165014606?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdXlhbnd1eXU=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="在这里插入图片描述"></p>
+<h3 id="3-2-yum源修改以及pip源修改"><a href="#3-2-yum源修改以及pip源修改" class="headerlink" title="3.2 yum源修改以及pip源修改"></a>3.2 yum源修改以及pip源修改</h3><p>（假如你没有yum源和pip源，此步骤略过）<br>1)    修改yum源配置（修改成repository的源）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># mkdir /root/repo &amp;&amp; mv /etc/yum.repos.d/* /root/repo</span><br><span class="line"># cp /root/repo/CentOS-Media.repo /etc/yum.repos.d/</span><br><span class="line"># vi /etc/yum.repos.d/CentOS-Media.repo</span><br></pre></td></tr></table></figure></p>
+<p>修改内容如下图（<a href="ftp://20.46.87.183/yum-custom/）：" target="_blank" rel="noopener">ftp://20.46.87.183/yum-custom/）：</a><br><img src="https://img-blog.csdn.net/20180924170110659?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdXlhbnd1eXU=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="在这里插入图片描述"><br>然后clean一下，以及makecache<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># yum clean all &amp;&amp; yum makecache</span><br></pre></td></tr></table></figure></p>
+<p>2)    修改pip源配置（修改成repository的源）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># mkdir /root/.pip &amp;&amp; vi /root/.pip/pip.conf</span><br></pre></td></tr></table></figure></p>
+<p>添加以下内容：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[global]</span><br><span class="line">index-url=http://20.46.87.183/pypi/packages/simple</span><br><span class="line">[install]</span><br><span class="line">trusted-host = 20.46.87.183</span><br></pre></td></tr></table></figure></p>
+<h3 id="3-3安装基本的软件"><a href="#3-3安装基本的软件" class="headerlink" title="3.3安装基本的软件"></a>3.3安装基本的软件</h3><p>以下yum包和python都是在repository节点的源里。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># yum install –y  git net-tools ntp vim ansible gcc python-pip </span><br><span class="line">python34 python34-pip </span><br><span class="line">docker-engine docker-engine-selinux</span><br><span class="line"># pip install netaddr &amp;&amp; pip install --upgrade jinja2</span><br></pre></td></tr></table></figure></p>
+<p>假如没有这些包，除了ansible和docker，别的直接在线安装很方便容易。<br>下面介绍ansible和docker在线安装：<br>新增Docker的Yum仓库：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># vim /etc/yum.repos.d/docker.repo</span><br></pre></td></tr></table></figure></p>
+<p>添加以下内容<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[dockerrepo]</span><br><span class="line">name=Docker Repository</span><br><span class="line">baseurl=https://yum.dockerproject.org/repo/main/centos/$releasever/</span><br><span class="line">enabled=1</span><br><span class="line">gpgcheck=1</span><br><span class="line">gpgkey=https://yum.dockerproject.org/gpg</span><br></pre></td></tr></table></figure></p>
+<p>然后安装ansible和docker:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># yum clean all &amp;&amp; yum makecache</span><br><span class="line"># yum install -y epel-release</span><br><span class="line"># yum install -y  ansible  docker-engine docker-engine-selinux</span><br></pre></td></tr></table></figure></p>
+<p>使用阿里的docker镜像服务:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># mkdir -p /etc/docker</span><br><span class="line"># vim /etc/docker/daemon.json</span><br></pre></td></tr></table></figure></p>
+<p>添加以下内容<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;registry-mirrors&quot;: [&quot;https://7g5a4z30.mirror.aliyuncs.com&quot;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="3-4修改Docker服务配置"><a href="#3-4修改Docker服务配置" class="headerlink" title="3.4修改Docker服务配置"></a>3.4修改Docker服务配置</h3><p>添加信任repository节点的Registry服务，添加了repository节点的docker私有仓库。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># vim /usr/lib/systemd/system/docker.service</span><br></pre></td></tr></table></figure></p>
+<p>修改如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ExecStart=/usr/bin/dockerd --insecure-registry 20.46.87.183:5000</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># systemctl daemon-reload &amp;&amp; systemctl enable docker &amp;&amp; systemctl start docker &amp;&amp; systemctl status docker</span><br><span class="line"># curl -X GET http://20.46.87.183:5000/v2/_catalog</span><br></pre></td></tr></table></figure>
+<p>正常如下返回数据即可：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;repositories&quot;:[………]&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="3-5添加ntp时钟服务器"><a href="#3-5添加ntp时钟服务器" class="headerlink" title="3.5添加ntp时钟服务器"></a>3.5添加ntp时钟服务器</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># vim /etc/ntp.conf</span><br></pre></td></tr></table></figure>
+<p>如下图所示，<br><img src="https://img-blog.csdn.net/20180924171502697?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdXlhbnd1eXU=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="在这里插入图片描述"><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># systemctl enable ntpd.service &amp;&amp; systemctl start ntpd.service &amp;&amp; systemctl status ntpd.service</span><br><span class="line"># ntpq -p</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://img-blog.csdn.net/20180924171549589?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdXlhbnd1eXU=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="在这里插入图片描述"></p>
+<h3 id="3-6加载br-netfilter"><a href="#3-6加载br-netfilter" class="headerlink" title="3.6加载br_netfilter"></a>3.6加载br_netfilter</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># modprobe br_netfilter</span><br><span class="line"># ls /proc/sys/net/bridge</span><br></pre></td></tr></table></figure>
+<p><img src="https://img-blog.csdn.net/20180924171756507?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdXlhbnd1eXU=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="在这里插入图片描述"><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># cat &gt;&gt; /etc/sysctl.conf &lt;&lt;EOF</span><br><span class="line">net.bridge.bridge-nf-call-ip6tables = 1</span><br><span class="line">net.bridge.bridge-nf-call-iptables = 1</span><br><span class="line">net.bridge.bridge-nf-call-arptables = 1</span><br><span class="line">EOF</span><br><span class="line"># sysctl –p</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://img-blog.csdn.net/20180924171837845?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdXlhbnd1eXU=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="在这里插入图片描述"><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># sysctl -w net.ipv4.ip_forward=1</span><br></pre></td></tr></table></figure></p>
+<h3 id="3-7-Hosts文件设置"><a href="#3-7-Hosts文件设置" class="headerlink" title="3.7 Hosts文件设置"></a>3.7 Hosts文件设置</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"># cat &gt;&gt; /etc/hosts &lt;&lt;EOF</span><br><span class="line">192.168.224.130 k8s-master01</span><br><span class="line">192.168.224.131 k8s-master02</span><br><span class="line">192.168.224.132 k8s-master03</span><br><span class="line">192.168.224.133 k8s-node01</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure>
+<h3 id="3-8-Hostname设置，以及建立ssh互信"><a href="#3-8-Hostname设置，以及建立ssh互信" class="headerlink" title="3.8 Hostname设置，以及建立ssh互信"></a>3.8 Hostname设置，以及建立ssh互信</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># hostnamectl set-hostname k8s-master01</span><br><span class="line"># hostnamectl set-hostname k8s-master02</span><br><span class="line"># hostnamectl set-hostname k8s-master03</span><br><span class="line"># hostnamectl set-hostname k8s-node01</span><br></pre></td></tr></table></figure>
+<p>下面只要在k8s-master01节点执行即可：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"># ssh-keygen</span><br><span class="line"># ssh-copy-id -i ~/.ssh/id_rsa.pub root@k8s-master01</span><br><span class="line"># ssh-copy-id -i ~/.ssh/id_rsa.pub root@k8s-master02</span><br><span class="line"># ssh-copy-id -i ~/.ssh/id_rsa.pub root@k8s-master03</span><br><span class="line"># ssh-copy-id -i ~/.ssh/id_rsa.pub root@k8s-node01</span><br></pre></td></tr></table></figure></p>
+<h2 id="四、部署Kubernetes"><a href="#四、部署Kubernetes" class="headerlink" title="四、部署Kubernetes"></a>四、部署Kubernetes</h2><p>首先将附件一（kubespray-2.4.0.tar.gz）传到k8s-master01节点的root目录下，然后解压：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># tar –zxvf kubespray-2.4.0.tar.gz</span><br><span class="line"># cd kubespray-2.4.0</span><br></pre></td></tr></table></figure></p>
+<h3 id="4-1修改仓库等剧本文件"><a href="#4-1修改仓库等剧本文件" class="headerlink" title="4.1修改仓库等剧本文件"></a>4.1修改仓库等剧本文件</h3><p>这里制作好了k8s的镜像<a href="https://download.csdn.net/download/liuyanwuyu/10684927" target="_blank" rel="noopener">kubespray24-k8s-container.tar</a>，解压到仓库即可，下载链接只有七天，逾期不候。具体怎么解压，怎么安装仓库，这里不再叙述，可以参考<a href="https://blog.csdn.net/liuyanwuyu/article/details/80821677" target="_blank" rel="noopener">《Openstack的HA高可用容器化部署（使用kolla-ansible部署）+内置ceph集群存储》</a>一文里面有描述。<br>修改原有的仓库地址为自己要用的仓库地址，其中有以下四处需要改动，将文件中原有的仓库地址（192.168.159.128:4000）修改为repository节点仓库地址（20.46.87.183:5000）:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># vim roles/download/defaults/main.yml</span><br><span class="line"># vim roles/kubernetes-apps/ansible/defaults/main.yml</span><br><span class="line"># vim roles/docker/templates/docker.service.j2</span><br><span class="line"># vim roles/kubernetes/node/defaults/main.yml</span><br></pre></td></tr></table></figure></p>
+<p>或是直接使用批量修改命令如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># sed -i &apos;s/192.168.159.128:4000/20.46.87.183:5000/g&apos; `grep 192.168.159.128:4000 -rl roles/download/defaults/main.yml`</span><br><span class="line"># sed -i &apos;s/192.168.159.128:4000/20.46.87.183:5000/g&apos; `grep 192.168.159.128:4000 -rl roles/kubernetes-apps/ansible/defaults/main.yml `</span><br><span class="line"># sed -i &apos;s/192.168.159.128:4000/20.46.87.183:5000/g&apos; `grep 192.168.159.128:4000 -rl roles/docker/templates/docker.service.j2`</span><br><span class="line"># sed -i &apos;s/192.168.159.128:4000/20.46.87.183:5000/g&apos; `grep 192.168.159.128:4000 -rl roles/kubernetes/node/defaults/main.yml`</span><br></pre></td></tr></table></figure></p>
+<p>除此之外，该修改的剧本Kubespray，做了一下修改，去除不需要重复进行的下载和校验，有的是因为国内外网络差异，有的是因为剧本运行错误原因，本剧本都做了修改和注释，以下都是修改后的，直接拿来用即可。<br>1）注释掉了docker的校验和安装，因为国内网络不稳下载不下来，只要保证已经安装的docker版本符合开头提示的要求即可。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># vim roles/docker/tasks/main.yml</span><br></pre></td></tr></table></figure></p>
+<p>2）而且将内存校验和ip校验注释掉，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># vim roles/kubernetes/preinstall/tasks/verify-settings.yml</span><br></pre></td></tr></table></figure></p>
+<p>3）并且将配置epel源任务注释掉（剧本中第16个任务）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># vim roles/kubernetes/preinstall/tasks/main.yml</span><br></pre></td></tr></table></figure></p>
+<p>4）暴露kubernetes-dashboard服务，这里使用NodePort来暴露，其中的nodePort必须在30000-32767之间，本修改的选用的是30001，当然你可以根据自己的需求修改。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># vim roles/kubernetes-apps/ansible/templates/dashboard.yml.j2</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://img-blog.csdn.net/20180924172629758?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdXlhbnd1eXU=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="在这里插入图片描述"><br>5）此修改的剧本，开启的Helm的部署，后面会提到如何使用。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># vim inventory/group_vars/k8s-cluster.yml</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://img-blog.csdn.net/20180924172703608?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdXlhbnd1eXU=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="在这里插入图片描述"></p>
+<p>6) 此修改的剧本，注释掉了helm的Install/upgrade的任务。因为已经运行了helm的镜像容器，不影响。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># vim roles/kubernetes-apps/helm/tasks/main.yml</span><br><span class="line"># vim extra_playbooks/roles/kubernetes-apps/helm/tasks/main.yml</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://img-blog.csdn.net/20180924172741881?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdXlhbnd1eXU=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="在这里插入图片描述"></p>
+<h3 id="4-2生成主机清单"><a href="#4-2生成主机清单" class="headerlink" title="4.2生成主机清单"></a>4.2生成主机清单</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># IP=(192.168.224.130 192.168.224.131 192.168.224.132 192.168.224.133)</span><br><span class="line"># CONFIG_FILE=./inventory/inventory.cfg python3 ./contrib/inventory_builder/inventory.py $&#123;IP[*]&#125;</span><br></pre></td></tr></table></figure>
+<p>注：inventory.cfg文件就是kubespray的主机配置文件。kube-master就是kubernetes的master节点，kube-node就是node节点，etcd就是将数据库安装在哪个节点上，一般情况都是安装在master节点上，默认生成的[all]下的主机没有ansible_user=root，按照下图添加进去，剧本中对etcd的主机数目作了校验，不能是偶数。<br>然后修改主机清单：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># vim inventory/inventory.cfg</span><br></pre></td></tr></table></figure>
+<p>如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">[all]</span><br><span class="line">k8s-master01    ansible_host=192.168.224.130 ansible_user=root ip=192.168.224.130</span><br><span class="line">k8s-master02    ansible_host=192.168.224.131 ansible_user=root ip=192.168.224.131</span><br><span class="line">k8s-master03    ansible_host=192.168.224.132 ansible_user=root ip=192.168.224.132</span><br><span class="line">k8s-node01      ansible_host=192.168.224.133 ansible_user=root ip=192.168.224.133</span><br><span class="line"></span><br><span class="line">[kube-master]</span><br><span class="line">k8s-master01</span><br><span class="line">k8s-master02</span><br><span class="line">k8s-master03</span><br><span class="line"></span><br><span class="line">[kube-node]</span><br><span class="line">k8s-node01</span><br><span class="line"></span><br><span class="line">[etcd]</span><br><span class="line">k8s-master01</span><br><span class="line">k8s-master02</span><br><span class="line">k8s-master03	 </span><br><span class="line"></span><br><span class="line">[k8s-cluster:children]</span><br><span class="line">kube-node</span><br><span class="line">kube-master</span><br></pre></td></tr></table></figure>
+<h3 id="4-3部署"><a href="#4-3部署" class="headerlink" title="4.3部署"></a>4.3部署</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># ansible -i inventory/inventory.cfg all -m ping</span><br><span class="line"># ansible-playbook -i inventory/inventory.cfg cluster.yml -b -v --private-key=~/.ssh/id_rsa</span><br></pre></td></tr></table></figure>
+<p>如下结果，说明安装成功：<br><img src="https://img-blog.csdn.net/20180924202617255?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdXlhbnd1eXU=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="在这里插入图片描述"></p>
+<h3 id="4-4登陆Kubernetes页面"><a href="#4-4登陆Kubernetes页面" class="headerlink" title="4.4登陆Kubernetes页面"></a>4.4登陆Kubernetes页面</h3><p>使用火狐浏览器输入：<br><a href="https://192.168.224.130:30001/" target="_blank" rel="noopener">https://192.168.224.130:30001/</a><br>本示例选取三台master的一台IP作为登陆地址<br><img src="https://img-blog.csdn.net/2018092420281014?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdXlhbnd1eXU=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="在这里插入图片描述"><br>这里提示需要令牌，下面获取令牌：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># kubectl get secret -n kube-system</span><br></pre></td></tr></table></figure>
+<p><img src="https://img-blog.csdn.net/20180924202905958?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdXlhbnd1eXU=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="在这里插入图片描述"><br>选取name为clusterrole-aggregation-controller-token-<strong>***</strong>样式的serect。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># kubectl describe secret -n kube-system clusterrole-aggregation-controller-token-77zx5</span><br></pre></td></tr></table></figure>
+<p><img src="https://img-blog.csdn.net/20180924203021773?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdXlhbnd1eXU=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="在这里插入图片描述"><br>将上面显示token拷贝出来粘贴到令牌输入位置即可。<br><img src="https://img-blog.csdn.net/20180924203120735?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdXlhbnd1eXU=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="在这里插入图片描述"></p>
+<h2 id="五、启用helm的server端"><a href="#五、启用helm的server端" class="headerlink" title="五、启用helm的server端"></a>五、启用helm的server端</h2><p>部署完Kubernetes查看各模块运行健康检查：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># kubectl get cs</span><br></pre></td></tr></table></figure></p>
+<p>如下图所示，正常：<br><img src="https://img-blog.csdn.net/20180924203237925?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdXlhbnd1eXU=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="在这里插入图片描述"><br>初始化helm，结合tiller（helm server）容器镜像使用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># helm init --service-account tiller --tiller-image 20.46.87.183:5000/kubespray24/tiller:v2.7.2 --skip-refresh</span><br></pre></td></tr></table></figure>
+<p><strong>注：20.46.87.183:5000/kubespray24/tiller:v2.7.2取自repository的私有docker仓库，可以改成相对应的仓库地址及其版本号。</strong><br>如下图所示，正常：<br><img src="https://img-blog.csdn.net/20180924203353673?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdXlhbnd1eXU=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="在这里插入图片描述"><br>等待一会查看容器运行情况：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># kubectl get pod -n kube-system -l app=helm</span><br></pre></td></tr></table></figure></p>
+<p>如下图所示，正常：<br><img src="https://img-blog.csdn.net/20180924203443429?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdXlhbnd1eXU=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="在这里插入图片描述"><br>查看helm的版本：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># helm version</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://img-blog.csdn.net/20180924203514861?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdXlhbnd1eXU=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="在这里插入图片描述"><br>如上图所示，查到helm的client和server的版本号，且都clean。</p>
+<h2 id="六、使用PVC模式挂载Ceph分布式集群存储"><a href="#六、使用PVC模式挂载Ceph分布式集群存储" class="headerlink" title="六、使用PVC模式挂载Ceph分布式集群存储"></a>六、使用PVC模式挂载Ceph分布式集群存储</h2><p>本次操作示例之前已经安装好了ceph分布式集群，参见<a href="https://blog.csdn.net/liuyanwuyu/article/details/82825251" target="_blank" rel="noopener">ceph分布式集群在线搭建</a>。在此基础上，将该集群挂载到Kubernetes上，然后运行测试pod。</p>
+<h3 id="6-1创建一个rbd的ceph-pool"><a href="#6-1创建一个rbd的ceph-pool" class="headerlink" title="6.1创建一个rbd的ceph pool"></a>6.1创建一个rbd的ceph pool</h3><p>这里测试只创建128MB的pool：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># rbd create ceph-image -s 128</span><br></pre></td></tr></table></figure></p>
+<p>查看创建的pool的信息：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># rbd info rbd/ceph-image</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://img-blog.csdn.net/20180924203743181?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdXlhbnd1eXU=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="在这里插入图片描述"><br>去除除了layering的其他属性，因为其他属性影响PVC模式挂载CEPH。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># rbd feature disable ceph-image exclusive-lock, object-map, fast-diff, deep-flatten</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://img-blog.csdn.net/2018092420391212?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdXlhbnd1eXU=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="在这里插入图片描述"><br>注释：若是容器化部署的ceph集群加上如下俩个命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># rbd map ceph-image</span><br><span class="line"># mkfs.ext4 /dev/rbd0</span><br></pre></td></tr></table></figure>
+<h3 id="6-2创建ceph-secret"><a href="#6-2创建ceph-secret" class="headerlink" title="6.2创建ceph-secret"></a>6.2创建ceph-secret</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># mkdir k8s-ceph &amp;&amp; cd k8s-ceph/</span><br></pre></td></tr></table></figure>
+<p>获取客户端的key：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># ceph auth get-key client.admin | base64</span><br></pre></td></tr></table></figure></p>
+<p><img src="https://img-blog.csdn.net/20180924204014260?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdXlhbnd1eXU=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="在这里插入图片描述"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># vim ceph-secret.yaml</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># ceph-secret.yaml</span><br><span class="line"></span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: Secret</span><br><span class="line">metadata:</span><br><span class="line">  name: ceph-secret</span><br><span class="line">data:</span><br><span class="line">  key: QVFDTjdXTmJ5dWU3T0JBQURST1VOS280Nk5HVFVON2lXV2VJT1E9PQo=</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># kubectl create -f ceph-secret.yaml</span><br><span class="line"># kubectl get secret</span><br></pre></td></tr></table></figure>
+<p>如下图所示，正常：<br><img src="https://img-blog.csdn.net/20180924204131396?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdXlhbnd1eXU=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="在这里插入图片描述"></p>
+<h3 id="6-3创建ceph-pv"><a href="#6-3创建ceph-pv" class="headerlink" title="6.3创建ceph-pv"></a>6.3创建ceph-pv</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># vim ceph-pv.yaml</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"># ceph-pv.yaml</span><br><span class="line"></span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: PersistentVolume</span><br><span class="line">metadata:</span><br><span class="line">  name: ceph-pv</span><br><span class="line">spec:</span><br><span class="line">  capacity:</span><br><span class="line">    storage: 1Gi</span><br><span class="line">  accessModes:</span><br><span class="line">    - ReadWriteOnce</span><br><span class="line">  rbd:</span><br><span class="line">    monitors:</span><br><span class="line">      - 192.168.224.130:6789</span><br><span class="line">	  - 192.168.224.131:6789</span><br><span class="line">	  - 192.168.224.132:6789</span><br><span class="line">    pool: rbd</span><br><span class="line">    image: ceph-image</span><br><span class="line">    keyring: /opt/ceph-cluster/ceph.client.admin.keyring</span><br><span class="line">    user: admin</span><br><span class="line">    secretRef:</span><br><span class="line">      name: ceph-secret</span><br><span class="line">    fsType: ext4</span><br><span class="line">    readOnly: false</span><br><span class="line">  persistentVolumeReclaimPolicy: Recycle</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># kubectl create -f ceph-pv.yaml</span><br><span class="line"># kubectl get pv</span><br></pre></td></tr></table></figure>
+<p>如下图所示，正常：<br><img src="https://img-blog.csdn.net/20180924204249925?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdXlhbnd1eXU=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="在这里插入图片描述"></p>
+<h3 id="6-4创建ceph-pvc"><a href="#6-4创建ceph-pvc" class="headerlink" title="6.4创建ceph-pvc"></a>6.4创建ceph-pvc</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># vim ceph-pvc.yaml</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"># ceph-pvc.yaml</span><br><span class="line"></span><br><span class="line">kind: PersistentVolumeClaim</span><br><span class="line">apiVersion: v1</span><br><span class="line">metadata:</span><br><span class="line">  name: ceph-claim</span><br><span class="line">spec:</span><br><span class="line">  accessModes:</span><br><span class="line">    - ReadWriteOnce</span><br><span class="line">  resources:</span><br><span class="line">    requests:</span><br><span class="line">      storage: 1Gi</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># kubectl create -f ceph-pvc.yaml</span><br><span class="line"># kubectl get pvc</span><br></pre></td></tr></table></figure>
+<p>如下图所示，正常：<br><img src="https://img-blog.csdn.net/20180924204417877?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdXlhbnd1eXU=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="在这里插入图片描述"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># kubectl get pv,pvc</span><br></pre></td></tr></table></figure>
+<p><img src="https://img-blog.csdn.net/20180924204451989?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdXlhbnd1eXU=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="在这里插入图片描述"><br>上图所示，PV和PVC状态都是Bound绑定状态，说明无误。</p>
+<h3 id="6-5创建测试ceph-pod"><a href="#6-5创建测试ceph-pod" class="headerlink" title="6.5创建测试ceph-pod"></a>6.5创建测试ceph-pod</h3><p>PV和PVC状态都是Bound绑定状态，无误，下面运行一个测试pod。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># vim ceph-pod.yaml</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"># ceph-pod.yaml</span><br><span class="line"></span><br><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  name: ceph-pod1</span><br><span class="line">spec:</span><br><span class="line">  containers:</span><br><span class="line">  - name: ceph-busybox1</span><br><span class="line">    image: 20.46.87.183:5000/kubespray24/busybox:latest</span><br><span class="line">    command: [&quot;sleep&quot;, &quot;600000&quot;]</span><br><span class="line">    volumeMounts:</span><br><span class="line">    - name: ceph-vol1</span><br><span class="line">      mountPath: /usr/share/busybox</span><br><span class="line">      readOnly: false</span><br><span class="line">  volumes:</span><br><span class="line">  - name: ceph-vol1</span><br><span class="line">    persistentVolumeClaim:</span><br><span class="line">      claimName: ceph-claim</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># kubectl create -f ceph-pod.yaml</span><br><span class="line"># kubectl get pv,pvc,pods</span><br></pre></td></tr></table></figure>
+<p><img src="https://img-blog.csdn.net/20180924204619966?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdXlhbnd1eXU=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="在这里插入图片描述"><br>如上ceph-pod正常running，说明Kubernetes挂载ceph存储，并且运行pod成功无误。<br>可以再运行一个pod测试。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># vim ceph-pod2.yaml</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  name: ceph-pod2</span><br><span class="line">spec:</span><br><span class="line">  containers:</span><br><span class="line">  - name: ceph-tomcat1</span><br><span class="line">    image: 20.46.87.183:5000/kubespray24/tomcat:latest</span><br><span class="line">    command: [&quot;sleep&quot;, &quot;600000&quot;]</span><br><span class="line">    volumeMounts:</span><br><span class="line">    - name: ceph-vol2</span><br><span class="line">      mountPath: /usr/share/tomcat</span><br><span class="line">      readOnly: false</span><br><span class="line">  volumes:</span><br><span class="line">  - name: ceph-vol2</span><br><span class="line">    persistentVolumeClaim:</span><br><span class="line">      claimName: ceph-claim</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># kubectl create -f ceph-pod2.yaml</span><br></pre></td></tr></table></figure>
+<p>最后查看运行状态，正常running即可。</p>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+    <!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p class="copyright text-muted">
+          Theme By <a target="_blank" href="https://github.com/levblanc">Levblanc.</a>
+          Inspired By <a target="_blank" href="https://github.com/klugjo/hexo-theme-clean-blog">Clean Blog.</a>
+        </p><p class="copyright text-muted">
+          Powered By <a target="_blank" href="https://hexo.io/">Hexo.</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <!-- After Footer Scripts -->
+<script src="/js/highlight.pack.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
+    codeBlocks.forEach(function(block, index) {
+      hljs.highlightBlock(block);
+    });
+  });
+</script>
+
+  </body>
+</html>
+
