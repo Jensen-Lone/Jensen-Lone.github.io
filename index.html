@@ -1,319 +1,204 @@
 <!DOCTYPE html>
 <html>
-<head><meta name="generator" content="Hexo 3.8.0">
-  <meta charset="utf-8">
-  
-
-  
-  <title>Jensen Lone&#39;s Blog</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <!-- Html Head Tag-->
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Jensen Lone">
+  <!-- Open Graph Data -->
+  <meta property="og:title" content="Jensen Lone&#39;s Blog">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="Jensen Lone&#39;s Blog">
   <meta property="og:type" content="website">
-<meta property="og:title" content="Jensen Lone&#39;s Blog">
-<meta property="og:url" content="https://jensen-lone.github.io/index.html">
-<meta property="og:site_name" content="Jensen Lone&#39;s Blog">
-<meta property="og:locale" content="zh-tw">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Jensen Lone&#39;s Blog">
+  <meta property="og:image" content="https://jensen-lone.github.io">
   
     <link rel="alternate" href="/atom.xml" title="Jensen Lone&#39;s Blog" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
   
+
+  <!-- Site Title -->
+  <title>Jensen Lone's Blog</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Custom CSS -->
   
-    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" href="/css/style.light.css">
+
+  <!-- Google Analytics -->
   
-  <link rel="stylesheet" href="/css/style.css">
+
 </head>
-</html>
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Jensen Lone&#39;s Blog</a>
-      </h1>
-      
-        <h2 id="subtitle-wrap">
-          <a href="/" id="subtitle">Science and technology are the primary productive forces.</a>
-        </h2>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://jensen-lone.github.io"></form>
+
+  <body>
+    <!-- Page Header -->
+
+
+<header class="site-header header-background" style="background-image: url(/img/default-banner-dark.jpg)">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="page-title with-background-image">
+          <p class="title">Jensen Lone&#39;s Blog</p>
+          <p class="subtitle">Science and technology are the primary productive forces.</p>
+        </div>
+        <div class="site-menu with-background-image">
+          <ul>
+            
+              <li>
+                <a href="/">
+                  
+                  Home
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/archives">
+                  
+                  Archives
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://github.com/<your-github-username>">
+                  
+                  Github
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="mailto:<your-email-address>">
+                  
+                  Email
+                  
+                </a>
+              </li>
+            
+          </ul>
+        </div>
       </div>
     </div>
   </div>
 </header>
-      <div class="outer">
-        <section id="main">
-  
-    <article id="post-ceph" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/01/16/ceph/" class="article-date">
-  <time datetime="2019-01-16T02:22:33.000Z" itemprop="datePublished">2019-01-16</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/16/ceph/">Ceph分布式集群在线搭建</a>
-    </h1>
-  
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
+<!-- Home Page Post List -->
+<div class="container">
+  <div class="row">
+    <div class="col-lg-10 col-md-10 col-md-offset-1">
       
-        <p>Ceph分布式集群在线搭建</p>
-<h2 id="一、ceph简介（摘抄自官方文档翻译）"><a href="#一、ceph简介（摘抄自官方文档翻译）" class="headerlink" title="一、ceph简介（摘抄自官方文档翻译）"></a>一、ceph简介（摘抄自官方文档翻译）</h2><p>不管你是想为云平台提供Ceph 对象存储或 Ceph 块设备,还是想部署一个 Ceph 文件系统或者把 Ceph 作为他用.所有 Ceph 存储集群的部署都始于部署一个个 Ceph 节点、网络和 Ceph 存储集群。 Ceph 存储集群至少需要一个 Ceph Monitor 和两个 OSD 守护进程。而运行 Ceph 文件系统客户端时,则必须要有元数据服务器(Metadata Server)。<br>Ceph OSDs:Ceph OSD 守护进程(Ceph OSD)的功能是存储数据,处理数据的复制、恢复、回填、再均衡，并通过检查其他OSD 守护进程的心跳来向 Ceph Monitors 提供一些监控信息。当 Ceph 存储集群设定为有2个副本时，至少需要2个 OSD 守护进程，集群才能达到 active+clean 状态（ Ceph 默认有3个副本，但你可以调整副本数 ）。<br>Monitors: Ceph Monitor维护着展示集群状态的各种图表，包括监视器图、 OSD 图、归置组（ PG ）图、和 CRUSH 图。 Ceph 保存着发生在Monitors 、 OSD 和 PG上的每一次状态变更的历史信息（称为 epoch ）。<br>MDSs: Ceph 元数据服务器（ MDS ）为 Ceph 文件系统存储元数据（也就是说，Ceph 块设备和 Ceph 对象存储不使用MDS ）。元数据服务器使得 POSIX 文件系统的用户们，可以在不对 Ceph 存储集群造成负担的前提下，执行诸如 ls、find 等基本命令。<br>Ceph 把客户端数据保存为存储池内的对象。通过使用 CRUSH 算法， Ceph 可以计算出哪个归置组（PG）应该持有指定的对象(Object)，然后进一步计算出哪个 OSD 守护进程持有该归置组。 CRUSH 算法使得 Ceph 存储集群能够动态地伸缩、再均衡和修复。</p>
-<h2 id="二、部署结构设计"><a href="#二、部署结构设计" class="headerlink" title="二、部署结构设计"></a>二、部署结构设计</h2><p>本次部署选取VMware四台虚机进行测试。系统均为centos7.4-minimal（CentOS-7-x86_64-Minimal-1708）。CPU均为4核，内存均为8GB。分布式集群选择使用三台机器作为monitor，一台机器只做osd使用。每台机器均为俩块硬盘，俩个网卡，ens33走公共网络，ens37走集群存储网络</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">hostname       /dev/sda    /dev/sdb         ens33              ens37  </span><br><span class="line">k8s-master01    100GB        100GB     192.168.224.130     192.168.1.34</span><br><span class="line">k8s-master02    100GB        100GB     192.168.224.131     192.168.1.35</span><br><span class="line">k8s-master03    100GB        100GB     192.168.224.132     192.168.1.36</span><br><span class="line">k8s-node01      100GB        100GB     192.168.224.133     192.168.1.37</span><br></pre></td></tr></table></figure>
-<h2 id="三、集群搭建"><a href="#三、集群搭建" class="headerlink" title="三、集群搭建"></a>三、集群搭建</h2><h3 id="3-1更新以及安装基本软件-四台机器均执行"><a href="#3-1更新以及安装基本软件-四台机器均执行" class="headerlink" title="3.1更新以及安装基本软件(四台机器均执行)"></a>3.1更新以及安装基本软件(四台机器均执行)</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ yum update -y</span><br><span class="line">$ yum install ntp net-tools vim ntp –y</span><br></pre></td></tr></table></figure>
-<h3 id="3-2关闭防火墙-disable掉selinux-四台机器均执行"><a href="#3-2关闭防火墙-disable掉selinux-四台机器均执行" class="headerlink" title="3.2关闭防火墙,disable掉selinux(四台机器均执行)"></a>3.2关闭防火墙,disable掉selinux(四台机器均执行)</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ setenforce 0 </span><br><span class="line">$ sed -i s’/SELINUX.*=.*enforcing/SELINUX=disabled’/g /etc/selinux/config</span><br></pre></td></tr></table></figure>
-<h3 id="3-3配置ntp时钟同步-四台机器均执行"><a href="#3-3配置ntp时钟同步-四台机器均执行" class="headerlink" title="3.3配置ntp时钟同步(四台机器均执行)"></a>3.3配置ntp时钟同步(四台机器均执行)</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ vim /etc/ntp.conf</span><br></pre></td></tr></table></figure>
-<p>编辑上述文件，添加自己的时钟服务器，或是安装配置。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ systemctl <span class="built_in">enable</span> ntpd.service &amp;&amp; systemctl start ntpd.service &amp;&amp; systemctl status ntpd.service</span><br><span class="line">$ ntpq -p</span><br></pre></td></tr></table></figure></p>
-<p>ntpq -p之后可以看到同步的时钟服务器。</p>
-<h3 id="3-4添加ceph安装源（四台机器均执行）"><a href="#3-4添加ceph安装源（四台机器均执行）" class="headerlink" title="3.4添加ceph安装源（四台机器均执行）"></a>3.4添加ceph安装源（四台机器均执行）</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ yum install -y epel-release</span><br><span class="line">$ vim /etc/yum.repos.d/ceph.repo</span><br></pre></td></tr></table></figure>
-<p>写入以下ceph的yum源配置内容:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">[ceph]</span><br><span class="line">name=Ceph packages <span class="keyword">for</span> <span class="variable">$basearch</span></span><br><span class="line">baseurl=https://download.ceph.com/rpm-jewel/el7/<span class="variable">$basearch</span></span><br><span class="line">enabled=1</span><br><span class="line">priority=2</span><br><span class="line">gpgcheck=1</span><br><span class="line"><span class="built_in">type</span>=rpm-md</span><br><span class="line">gpgkey=https://download.ceph.com/keys/release.asc </span><br><span class="line"></span><br><span class="line">[ceph-noarch]</span><br><span class="line">name=Ceph noarch packages</span><br><span class="line">baseurl=https://download.ceph.com/rpm-jewel/el7/noarch</span><br><span class="line">enabled=1</span><br><span class="line">priority=2</span><br><span class="line">gpgcheck=1</span><br><span class="line"><span class="built_in">type</span>=rpm-md</span><br><span class="line">gpgkey=https://download.ceph.com/keys/release.asc </span><br><span class="line"></span><br><span class="line">[ceph-source]</span><br><span class="line">name=Ceph <span class="built_in">source</span> packages</span><br><span class="line">baseurl=https://download.ceph.com/rpm-jewel/el7/SRPMS</span><br><span class="line">enabled=0</span><br><span class="line">priority=2</span><br><span class="line">gpgcheck=1</span><br><span class="line"><span class="built_in">type</span>=rpm-md</span><br><span class="line">gpgkey=https://download.ceph.com/keys/release.asc</span><br></pre></td></tr></table></figure>
-<h3 id="3-5-设置hostname以及建立ssh互信"><a href="#3-5-设置hostname以及建立ssh互信" class="headerlink" title="3.5 设置hostname以及建立ssh互信"></a>3.5 设置hostname以及建立ssh互信</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ hostnamectl <span class="built_in">set</span>-hostname k8s-master01</span><br><span class="line">$ hostnamectl <span class="built_in">set</span>-hostname k8s-master02</span><br><span class="line">$ hostnamectl <span class="built_in">set</span>-hostname k8s-master03</span><br><span class="line">$ hostnamectl <span class="built_in">set</span>-hostname k8s-node01</span><br></pre></td></tr></table></figure>
-<p>修改每台机器的hosts文件:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ cat &gt;&gt; /etc/hosts &lt;&lt;EOF \</span><br><span class="line">192.168.224.130 k8s-master01 \</span><br><span class="line">192.168.224.131 k8s-master02 \</span><br><span class="line">192.168.224.132 k8s-master03 \</span><br><span class="line">192.168.224.133 k8s-node01 \</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure></p>
-<p>以k8s-master01为基础，建立互信（在k8s-master01上执行如下操作）<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ ssh-keygen</span><br><span class="line">$ ssh-copy-id -i ~/.ssh/id_rsa.pub root@k8s-master01</span><br><span class="line">$ ssh-copy-id -i ~/.ssh/id_rsa.pub root@k8s-master02</span><br><span class="line">$ ssh-copy-id -i ~/.ssh/id_rsa.pub root@k8s-master03</span><br><span class="line">$ ssh-copy-id -i ~/.ssh/id_rsa.pub root@k8s-node01</span><br></pre></td></tr></table></figure></p>
-<h3 id="3-6安装ceph-deploy（仅在k8s-master01机器执行）"><a href="#3-6安装ceph-deploy（仅在k8s-master01机器执行）" class="headerlink" title="3.6安装ceph-deploy（仅在k8s-master01机器执行）"></a>3.6安装ceph-deploy（仅在k8s-master01机器执行）</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ yum install ceph-deploy –y</span><br><span class="line">$ mkdir /opt/ceph-cluster  &amp;&amp; <span class="built_in">cd</span> /opt/ceph-cluster</span><br></pre></td></tr></table></figure>
-<p>下面将k8s-master01、k8s-master02、k8s-master03部署成monitor分布式集群。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ceph-deploy new k8s-master01 k8s-master02 k8s-master03</span><br></pre></td></tr></table></figure>
-<p>修改ceph.conf文件:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ <span class="built_in">echo</span> <span class="string">"osd crush chooseleaf type = 0"</span> &gt;&gt; ceph.conf  &amp;&amp; </span><br><span class="line"><span class="built_in">echo</span> <span class="string">"osd pool default size = 2"</span> &gt;&gt; ceph.conf  &amp;&amp; </span><br><span class="line"><span class="built_in">echo</span> <span class="string">"osd pool default min_size = 2"</span> &gt;&gt; ceph.conf  &amp;&amp;  </span><br><span class="line"><span class="built_in">echo</span> <span class="string">"osd journal size = 100"</span> &gt;&gt; ceph.conf</span><br></pre></td></tr></table></figure>
-<p>以上中ceph的副本数设置默认为2，实际生产中可以根据需求修改。</p>
-<h3 id="3-7配置ceph存储集群走单独网络（k8s-master01上执行）"><a href="#3-7配置ceph存储集群走单独网络（k8s-master01上执行）" class="headerlink" title="3.7配置ceph存储集群走单独网络（k8s-master01上执行）"></a>3.7配置ceph存储集群走单独网络（k8s-master01上执行）</h3><p>本示例使用俩个网络运营 Ceph 存储集群：一个公共网（前端）和一个集群网（后端）<br>运营两个独立网络的考量主要有：<br>性能： OSD 为客户端处理数据复制，复制多份时 OSD 间的网络负载势必会影响到客户端和 Ceph 集群的通讯，包括延时增加、产生性能问题；恢复和重均衡也会显著增加公共网延时。关于 Ceph 如何复制参见伸缩性和高可用性；关于心跳流量参见监视器与 OSD 的交互。<br>安全： 大多数人都是良民，很少的一撮人喜欢折腾拒绝服务攻击（ DoS ）。当 OSD 间的流量失控时，归置组再也不能达到 active + clean 状态，这样用户就不能读写数据了。挫败此类攻击的一种好方法是维护一个完全独立的集群网，使之不能直连互联网；另外，请考虑用消息签名防止欺骗攻击。<br>具体可以参考官方文档：<br><a href="http://docs.ceph.org.cn/rados/configuration/network-config-ref/" target="_blank" rel="noopener">http://docs.ceph.org.cn/rados/configuration/network-config-ref/</a><br>配置如下：<br>在ceph.conf文件添加如下内容:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line">public network = 192.168.224.100/24</span><br><span class="line">cluster network = 192.168.1.0/24</span><br><span class="line"></span><br><span class="line">[mon]</span><br><span class="line"></span><br><span class="line">[mon.ceph1]</span><br><span class="line">host = k8s-master01</span><br><span class="line">mon addr = 192.168.224.130:6789</span><br><span class="line"></span><br><span class="line">[mon.ceph2]</span><br><span class="line">host = k8s-master02</span><br><span class="line">mon addr = 192.168.224.131:6789</span><br><span class="line"></span><br><span class="line">[mon.ceph3]</span><br><span class="line">host = k8s-master03</span><br><span class="line">mon addr = 192.168.224.133:6789</span><br><span class="line"></span><br><span class="line">[osd]</span><br><span class="line">osd journal size = 500</span><br><span class="line"><span class="comment"># osd crush update on start = false</span></span><br><span class="line"></span><br><span class="line">[osd.0]</span><br><span class="line">host = k8s-master01 </span><br><span class="line">public addr = 192.168.224.130</span><br><span class="line">cluster addr = 192.168.1.34</span><br><span class="line"></span><br><span class="line">[osd.1]</span><br><span class="line">host = k8s-master02</span><br><span class="line">public addr = 192.168.224.131</span><br><span class="line">cluster addr = 192.168.1.35</span><br><span class="line"></span><br><span class="line">[osd.2]</span><br><span class="line">host = k8s-master03</span><br><span class="line">public addr = 192.168.224.132</span><br><span class="line">cluster addr = 192.168.1.36</span><br><span class="line"></span><br><span class="line">[osd.3]</span><br><span class="line">host = k8s-node01</span><br><span class="line">public addr = 192.168.224.133</span><br><span class="line">cluster addr = 192.168.1.37</span><br></pre></td></tr></table></figure>
-<h3 id="3-8安装ceph"><a href="#3-8安装ceph" class="headerlink" title="3.8安装ceph"></a>3.8安装ceph</h3><p>然后在各个节点（本例四台机器）安装ceph，执行下部操作：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ yum install -y ceph ceph-radosgw</span><br></pre></td></tr></table></figure>
-<p>然后在k8s-master01执行以下操作：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ceph-deploy mon create-initial</span><br></pre></td></tr></table></figure>
-<p>将ceph.conf配置文件推送到各个节点</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ ceph-deploy --overwrite-conf config push k8s-master01  &amp;&amp; </span><br><span class="line">ceph-deploy --overwrite-conf config push k8s-master02  &amp;&amp; </span><br><span class="line">ceph-deploy --overwrite-conf config push k8s-master03  &amp;&amp; </span><br><span class="line">ceph-deploy --overwrite-conf config push k8s-node01</span><br></pre></td></tr></table></figure>
-<h3 id="3-9配置osd"><a href="#3-9配置osd" class="headerlink" title="3.9配置osd"></a>3.9配置osd</h3><p>Osd的建立有俩种方式，一种使用lvm卷，一种就是空白硬盘模式。</p>
-<h4 id="3-9-1使用空白硬盘建立osd"><a href="#3-9-1使用空白硬盘建立osd" class="headerlink" title="3.9.1使用空白硬盘建立osd"></a>3.9.1使用空白硬盘建立osd</h4><p>四台机器均使用了第二块硬盘/dev/sdb,这里使用sdb作为osd存储,假如还有别的多余的硬盘,步骤相似。</p>
-<p>1)硬盘格式,然后在k8s-master01执行以下操作:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ ceph-deploy disk zap k8s-master01:/dev/sdb </span><br><span class="line">$ ceph-deploy disk zap k8s-master02:/dev/sdb </span><br><span class="line">$ ceph-deploy disk zap k8s-master03:/dev/sdb</span><br><span class="line">$ ceph-deploy disk zap k8s-node01:/dev/sdb</span><br></pre></td></tr></table></figure>
-<p>2)Osd准备,然后在k8s-master01执行以下操作:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ ceph-deploy osd prepare k8s-master01:/dev/sdb</span><br><span class="line">$ ceph-deploy osd prepare k8s-master02:/dev/sdb </span><br><span class="line">$ ceph-deploy osd prepare k8s-master03:/dev/sdb </span><br><span class="line">$ ceph-deploy osd prepare k8s-node01:/dev/sdb</span><br></pre></td></tr></table></figure>
-<p>3)Osd激活，然后在k8s-master01执行以下操作:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ ceph-deploy osd activate k8s-master01:/dev/sdb</span><br><span class="line">$ ceph-deploy osd activate k8s-master02:/dev/sdb</span><br><span class="line">$ ceph-deploy osd activate k8s-master03:/dev/sdb</span><br><span class="line">$ ceph-deploy osd activate k8s-node01:/dev/sdb</span><br></pre></td></tr></table></figure>
-<p>最后一步激活可能会报错,不影响,这是上一步骤准备osd的时候已经激活了,重复会提示错误,不影响。</p>
-<h4 id="3-9-2使用lvm建立osd"><a href="#3-9-2使用lvm建立osd" class="headerlink" title="3.9.2使用lvm建立osd"></a>3.9.2使用lvm建立osd</h4><p>1)本示例选取一台机器,从当前硬盘划分10G出来作为ceph卷备用:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ dd <span class="keyword">if</span>=/dev/zero of=ceph-volumes.img bs=1M count=10240  oflag=direct</span><br><span class="line">$ sgdisk -g -clear ceph-volumes.img</span><br></pre></td></tr></table></figure></p>
-<p>创建ceph卷:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sudo vgcreate ceph-volumes $(sudo losetup --show -f ceph-volumes.img)</span><br></pre></td></tr></table></figure>
-<p>划分出来的10G,大概有6G-7G可以作为分成俩个ceph使用,这里一个ceph0,一个ceph1,</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ sudo lvcreate -L3G -nceph0 ceph-volumes</span><br><span class="line">$ sudo lvcreate -L3G -nceph1 ceph-volumes</span><br><span class="line">$ sudo mkfs.xfs -f /dev/ceph-volumes/ceph0</span><br><span class="line">$ sudo mkfs.xfs -f /dev/ceph-volumes/ceph1</span><br></pre></td></tr></table></figure>
-<p>创建俩个目录,作为挂载osd备用:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir -p /srv/ceph/&#123;osd0,osd1,mon0,mds0&#125;</span><br></pre></td></tr></table></figure>
-<p>将俩个ceph卷挂载到目录下:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo mount /dev/ceph-volumes/ceph0 /srv/ceph/osd0</span><br><span class="line">$ sudo mount /dev/ceph-volumes/ceph1 /srv/ceph/osd1</span><br></pre></td></tr></table></figure>
-<p>以上就是一台机器上使用lvm卷单独创建俩个osd的示例，本实例中有四台机器k8s-master01、k8s-master02、k8s-master03、k8s-node01，每台机器均执行以上操作,即每台有俩个osd。</p>
-<p>2)为挂载OSD先准备,然后在k8s-master01执行以下操作:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ ceph-deploy osd prepare k8s-master01:/srv/ceph/osd0 </span><br><span class="line">$ ceph-deploy osd prepare k8s-master01:/srv/ceph/osd1 </span><br><span class="line">$ ceph-deploy osd prepare k8s-master02:/srv/ceph/osd0 </span><br><span class="line">$ ceph-deploy osd prepare k8s-master02:/srv/ceph/osd1 </span><br><span class="line">$ ceph-deploy osd prepare k8s-master03:/srv/ceph/osd0 </span><br><span class="line">$ ceph-deploy osd prepare k8s-master03:/srv/ceph/osd1 </span><br><span class="line">$ ceph-deploy osd prepare k8s-node01:/srv/ceph/osd0   </span><br><span class="line">$ ceph-deploy osd prepare k8s-node01:/srv/ceph/osd1</span><br></pre></td></tr></table></figure>
-<p>3)赋予osd目录ceph权限<br>四台机器k8s-master01、k8s-master02、k8s-master03、k8s-node01均执行以下操作:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ chown -R ceph:ceph /srv/ceph/osd0</span><br><span class="line">$ chown -R ceph:ceph /srv/ceph/osd1</span><br></pre></td></tr></table></figure>
-<p>4)激活两个OSD,然后在k8s-master01执行以下操作:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">$ ceph-deploy osd activate k8s-master01:/srv/ceph/osd0</span><br><span class="line">$ ceph-deploy osd activate k8s-master01:/srv/ceph/osd1  </span><br><span class="line">$ ceph-deploy osd activate k8s-master02:/srv/ceph/osd0</span><br><span class="line">$ ceph-deploy osd activate k8s-master02:/srv/ceph/osd1</span><br><span class="line">$ ceph-deploy osd activate k8s-master03:/srv/ceph/osd0</span><br><span class="line">$ ceph-deploy osd activate k8s-master03:/srv/ceph/osd1</span><br><span class="line">$ ceph-deploy osd activate k8s-node01:/srv/ceph/osd0</span><br><span class="line">$ ceph-deploy osd activate k8s-node01:/srv/ceph/osd1</span><br></pre></td></tr></table></figure>
-<h3 id="3-10查看ceph集群各情况以及ceph的命令"><a href="#3-10查看ceph集群各情况以及ceph的命令" class="headerlink" title="3.10查看ceph集群各情况以及ceph的命令"></a>3.10查看ceph集群各情况以及ceph的命令</h3><h4 id="3-10-1查看ceph集群的osd树"><a href="#3-10-1查看ceph集群的osd树" class="headerlink" title="3.10.1查看ceph集群的osd树"></a>3.10.1查看ceph集群的osd树</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ceph osd tree</span><br></pre></td></tr></table></figure>
-<h4 id="3-10-2查看ceph状态"><a href="#3-10-2查看ceph状态" class="headerlink" title="3.10.2查看ceph状态"></a>3.10.2查看ceph状态</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$  ceph -s</span><br></pre></td></tr></table></figure>
-<h4 id="3-10-3查看ceph集群的pool有哪些"><a href="#3-10-3查看ceph集群的pool有哪些" class="headerlink" title="3.10.3查看ceph集群的pool有哪些"></a>3.10.3查看ceph集群的pool有哪些</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ ceph osd lspools</span><br><span class="line">or</span><br><span class="line">$ ceph osd pool ls</span><br></pre></td></tr></table></figure>
-<h4 id="3-10-4创建rbd"><a href="#3-10-4创建rbd" class="headerlink" title="3.10.4创建rbd"></a>3.10.4创建rbd</h4><p>有些ceph创建之初没有rbd默认pool,这时候需要创建,假如已经有了,就不用创建了,这里给了默认大小1G:</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ceph osd pool create rbd 1024</span><br></pre></td></tr></table></figure>
-<p>只有创建了这个默认的rbd池，rbd命令才好使用。</p>
-<h4 id="3-10-5查看某一个pool里面有哪些实例"><a href="#3-10-5查看某一个pool里面有哪些实例" class="headerlink" title="3.10.5查看某一个pool里面有哪些实例"></a>3.10.5查看某一个pool里面有哪些实例</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ rbd ls poolname</span><br></pre></td></tr></table></figure>
-<h4 id="3-10-6查看pool池子里面的某一个实例的具体信息"><a href="#3-10-6查看pool池子里面的某一个实例的具体信息" class="headerlink" title="3.10.6查看pool池子里面的某一个实例的具体信息"></a>3.10.6查看pool池子里面的某一个实例的具体信息</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ rbd info &lt;poolname&gt;/&lt;name&gt;</span><br></pre></td></tr></table></figure>
-<h4 id="3-10-7查看某pool池子中的具体某个实例的map信息"><a href="#3-10-7查看某pool池子中的具体某个实例的map信息" class="headerlink" title="3.10.7查看某pool池子中的具体某个实例的map信息"></a>3.10.7查看某pool池子中的具体某个实例的map信息</h4><p>这里主要查看其副本信息,有几个副本,副本在哪几个osd上,哪个osd是正在使用的。</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$  ceph osd map &lt;poolname&gt; &lt;name&gt;</span><br></pre></td></tr></table></figure>
-<h4 id="3-10-8-ceph修改副本数大小"><a href="#3-10-8-ceph修改副本数大小" class="headerlink" title="3.10.8 ceph修改副本数大小"></a>3.10.8 ceph修改副本数大小</h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ eph osd pool <span class="built_in">set</span> &lt;poolname&gt; size &lt;num&gt;</span><br><span class="line">$ ceph osd pool <span class="built_in">set</span> &lt;poolname&gt; min_size &lt;num&gt;</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://blog.csdn.net/liuyanwuyu/article/details/82825251" target="_blank" rel="noopener">原文详细</a></p>
+        <div class="post-item-wrapper">
+  <a href="/2019/01/16/ceph/" class="post-title">
+      Ceph分布式集群在线搭建
+  </a>
+  <div class="post-excerpt">
+    <!-- Post Date and Categories -->
+    <div class="date-and-category">
+      <div class="date">2019-01-16</div>
+      <div class="categories">
+        
+          Uncategorized
+        
+      </div>
+    </div>
+    <!-- Post Excerpt -->
+    <div class="excerpt typo">No Post Excerpt</div>
+    <!-- Post Tags -->
+    <div class="tags">
+      
+        
+
+<a class="tag" href="/tags/ceph，分布式，在线/">ceph，分布式，在线</a>
+
 
       
     </div>
-    <footer class="article-footer">
-      <a data-url="https://jensen-lone.github.io/2019/01/16/ceph/" data-id="cjr00k73s00038gqq8sy3zw74" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ceph，分布式，在线/">ceph，分布式，在线</a></li></ul>
-
-    </footer>
   </div>
-  
-</article>
+</div>
 
-
-  
-    <article id="post-ansible" class="article article-type-post" itemscope="" itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2019/01/14/ansible/" class="article-date">
-  <time datetime="2019-01-14T07:21:33.000Z" itemprop="datePublished">2019-01-14</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
+      
+        <div class="post-item-wrapper">
+  <a href="/2019/01/14/ansible/" class="post-title">
+      多台机器共用一个ssh密钥来访问Ansible控制机器
+  </a>
+  <div class="post-excerpt">
+    <!-- Post Date and Categories -->
+    <div class="date-and-category">
+      <div class="date">2019-01-14</div>
+      <div class="categories">
         
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2019/01/14/ansible/">多台机器共用一个ssh密钥来访问Ansible控制机器</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
+          Uncategorized
+        
+      </div>
+    </div>
+    <!-- Post Excerpt -->
+    <div class="excerpt typo">No Post Excerpt</div>
+    <!-- Post Tags -->
+    <div class="tags">
       
-        <p>本次操作选取142(master)和141(slavertwo)使用相同的ssh密钥访问140(slaverfour)机器。 </p>
-<h2 id="一、142机器上操作"><a href="#一、142机器上操作" class="headerlink" title="一、142机器上操作"></a>一、142机器上操作</h2><p>首先在142机器生成ssh Key放在其默认的目录下“~/.ssh”:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ssh-keygen -t rsa -C <span class="string">"root123@gmail.com"</span></span><br></pre></td></tr></table></figure></p>
-<p>注释:”<a href="mailto:root123@gmail.com" target="_blank" rel="noopener">root123@gmail.com</a>“属于自己创建的密钥的自定义部分<br>然后进入其目录(/root/.ssh/)下查看其公钥和密钥的权限:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ ll</span><br><span class="line">$ -rw-------  id_rsa</span><br><span class="line">$ -rw-r--r--  id_rsa.pub</span><br></pre></td></tr></table></figure></p>
-<p>然后将此密钥对拷贝出去,本次操作是在虚拟机上进行，所以拷贝到物理机的共享文件夹中。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cp id_rsa id_rsa.pub /mnt/hgfs/key/</span><br></pre></td></tr></table></figure></p>
-<h2 id="二、141机器操作"><a href="#二、141机器操作" class="headerlink" title="二、141机器操作"></a>二、141机器操作</h2><p>按照其上相同方式生成ssh密钥对:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ssh-keygen -t rsa -C "root123@gmail.com"</span></span><br></pre></td></tr></table></figure></p>
-<p>接下来,用刚才拷贝的142机器的密钥对来覆盖141机器的密钥对。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ cp /mnt/hgfs/key/* /root/.ssh/</span><br></pre></td></tr></table></figure></p>
-<p>均确认覆盖重写即可。<br>覆盖成功,再查看该密钥对的权限。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ ll</span><br><span class="line">$ -rw-------  id_rsa</span><br><span class="line">$ -rw-r--r--  id_rsa.pub</span><br></pre></td></tr></table></figure></p>
-<p>注释:此时密钥对的读写权限和权限大小和上面的 142 的机器显示的一样才能保证生效。如上所示,相同一致,无误。 </p>
-<h2 id="三、将一台的公钥传给140"><a href="#三、将一台的公钥传给140" class="headerlink" title="三、将一台的公钥传给140"></a>三、将一台的公钥传给140</h2><p>将142机器的公钥传输给被控制机器140。 </p>
-<pre><code class="bash">$ scp rp id_rsa.pub 192.168.139.140:/root/.ssh/ 
-</code></pre>
-<h2 id="四、140机器操作"><a href="#四、140机器操作" class="headerlink" title="四、140机器操作"></a>四、140机器操作</h2><p>140机器将刚才的密钥，添加到authorized_keys中。</p>
-<pre><code class="bash"><span class="comment"># cat /root/.ssh/id_rsa.pub &gt;&gt; /root/.ssh/authorized_keys</span>
-</code></pre>
-<h2 id="五、测试"><a href="#五、测试" class="headerlink" title="五、测试"></a>五、测试</h2><p>142机器:<br>显示ping pong即可。<br>141机器:<br>显示ping pong即可。</p>
-<p>注:由于141第一次和140建立ssh连接,第一次要输入密钥，以后则不需要输入。<br>到此,测试通过。证明多台机器可以共用一对密钥作为Ansible控制端去访问被控机器。</p>
+        
+
+<a class="tag" href="/tags/ansible-ssh-key-多台机器-密钥/">ansible ssh-key 多台机器 密钥</a>
+
 
       
     </div>
-    <footer class="article-footer">
-      <a data-url="https://jensen-lone.github.io/2019/01/14/ansible/" data-id="cjr00k72x00008gqqqovomefs" class="article-share-link">Share</a>
+  </div>
+</div>
+
       
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ansible-ssh-key-多台机器-密钥/">ansible ssh-key 多台机器 密钥</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-
-
-</section>
-        
-          <aside id="sidebar">
-  
-    
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/ansible-ssh-key-多台机器-密钥/">ansible ssh-key 多台机器 密钥</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/ceph，分布式，在线/">ceph，分布式，在线</a></li></ul>
     </div>
   </div>
+</div>
 
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/ansible-ssh-key-多台机器-密钥/" style="font-size: 10px;">ansible ssh-key 多台机器 密钥</a> <a href="/tags/ceph，分布式，在线/" style="font-size: 10px;">ceph，分布式，在线</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Archives</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/01/">一月 2019</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2019/01/16/ceph/">Ceph分布式集群在线搭建</a>
-          </li>
-        
-          <li>
-            <a href="/2019/01/14/ansible/">多台机器共用一个ssh密钥来访问Ansible控制机器</a>
-          </li>
-        
+<!-- Pagination -->
+<div class="container">
+  <div class="row">
+    <div class="col-lg-10 col-md-10 col-md-offset-1">
+      <ul class="pagination">
+          
+          
       </ul>
     </div>
   </div>
+</div>
 
-  
-</aside>
-        
+
+
+    <!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p class="copyright text-muted">
+          Theme By <a target="_blank" href="https://github.com/levblanc">Levblanc.</a>
+          Inspired By <a target="_blank" href="https://github.com/klugjo/hexo-theme-clean-blog">Clean Blog.</a>
+        </p><p class="copyright text-muted">
+          Powered By <a target="_blank" href="https://hexo.io/">Hexo.</a>
+        </p>
       </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2019 Jensen Lone<br>
-      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
     </div>
   </div>
 </footer>
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
-    
-
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
 
 
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+    <!-- After Footer Scripts -->
+<script src="/js/highlight.pack.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
+    codeBlocks.forEach(function(block, index) {
+      hljs.highlightBlock(block);
+    });
+  });
+</script>
 
-
-<script src="/js/script.js"></script>
-
-
-
-  </div>
-</body>
+  </body>
 </html>
+
