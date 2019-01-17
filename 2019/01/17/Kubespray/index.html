@@ -100,7 +100,7 @@
           <!-- Date -->
           <span class="date-time info">On
             <span class="date">2019-01-17</span>
-            <span class="time">13:54:05</span>
+            <span class="time">14:03:22</span>
           </span>
           
         </div>
@@ -116,7 +116,7 @@
         
         <!-- Post Main Content -->
         <div class="post-content">
-          <h1 id="Kubernetes的HA高可用容器化部署-使用Kubespray-以及使用PVC模式挂载Ceph集群存储"><a href="#Kubernetes的HA高可用容器化部署-使用Kubespray-以及使用PVC模式挂载Ceph集群存储" class="headerlink" title="Kubernetes的HA高可用容器化部署(使用Kubespray) 以及使用PVC模式挂载Ceph集群存储"></a>Kubernetes的HA高可用容器化部署(使用Kubespray) 以及使用PVC模式挂载Ceph集群存储</h1><h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><p><img src="https://img-blog.csdn.net/20180924164108167?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdXlhbnd1eXU=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="在这里插入图片描述"></p>
+          <h1 id="Kubernetes的HA高可用容器化部署-使用Kubespray-以及使用PVC模式挂载Ceph集群存储"><a href="#Kubernetes的HA高可用容器化部署-使用Kubespray-以及使用PVC模式挂载Ceph集群存储" class="headerlink" title="Kubernetes的HA高可用容器化部署(使用Kubespray) 以及使用PVC模式挂载Ceph集群存储"></a>Kubernetes的HA高可用容器化部署(使用Kubespray) 以及使用PVC模式挂载Ceph集群存储</h1><h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><p>[TOC]</p>
 <h2 id="一、简介"><a href="#一、简介" class="headerlink" title="一、简介"></a>一、简介</h2><p>Kubespray，以前是Kargo，是Kubernetes社区保护伞下的一个项目。它是一组工具，旨在轻松部署生产就绪的Kubernetes集群。<br>本次部署示例是以分支v2.4.0为基础，修改而来。v2.4.0可以如下clone：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># git clone https://github.com/kubernetes-incubator/kubespray.git</span><br></pre></td></tr></table></figure></p>
 <p><strong>或是直接使用<a href="https://download.csdn.net/download/liuyanwuyu/10684920" target="_blank" rel="noopener">附件一（kubespray-2.4.0.tar.gz）</a>，来进行操作，本次部署示例是以该修改后的附件一为基础来部署Kubernetes，简洁快速。</strong></p>
 <h2 id="二、部署结构设计"><a href="#二、部署结构设计" class="headerlink" title="二、部署结构设计"></a>二、部署结构设计</h2><p>本次部署选取VMware五台虚机进行测试（四台部署k8s，一台repository作为yum源、python源和docker仓库）。<br>系统均为centos7.4-minimal（CentOS-7-x86_64-Minimal-1708）。CPU均为4核，内存均为8GB，硬盘俩块均为100GB，网卡俩块（这个为后续挂载ceph存储使用）。<br>分布式集群选择使用三台机器作为master节点，一台机器做为node节点使用。<br><img src="https://img-blog.csdn.net/20180924164239267?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdXlhbnd1eXU=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="在这里插入图片描述"><br>Kubernetes各个组件的版本说明如下：<br><img src="https://img-blog.csdn.net/20180924164342366?watermark/2/text/aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpdXlhbnd1eXU=/font/5a6L5L2T/fontsize/400/fill/I0JBQkFCMA==/dissolve/70" alt="在这里插入图片描述"></p>
