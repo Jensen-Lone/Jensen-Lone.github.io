@@ -100,7 +100,7 @@
           <!-- Date -->
           <span class="date-time info">On
             <span class="date">2019-01-21</span>
-            <span class="time">17:05:00</span>
+            <span class="time">17:07:40</span>
           </span>
           
         </div>
@@ -261,6 +261,7 @@
 </tr>
 </tbody>
 </table>
+<hr>
 <p>注:<br>1)controller01、controller02、controller03三个组成control角色高可用(配置三台control自动会配置成HA)同时,部署ceph分布式集群,由三台controller和三台computer共同组成storage集群存储。</p>
 <p>2)源配置source主机,配有yum源、python源以及docker私有仓库。</p>
 <p>3)网卡做bond设置,模式(mode)取4,链路聚合(LACP)。本示例中俩个万兆网卡绑定做bond0, 俩个千兆网卡绑定做bond1。bond0走openstack管理和ceph存储,bond1走虚机对外访问公开网络。</p>
