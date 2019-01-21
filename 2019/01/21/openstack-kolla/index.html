@@ -8,7 +8,7 @@
   <meta name="description" content="">
   <meta name="author" content="Jensen Lone">
   <!-- Open Graph Data -->
-  <meta property="og:title" content="Openstack高可用部署 --- 使用kolla-ansible项目">
+  <meta property="og:title" content="Openstack高可用部署(使用Kolla-ansible)">
   <meta property="og:description" content="">
   <meta property="og:site_name" content="Jensen Lone&#39;s Blog">
   <meta property="og:type" content="article">
@@ -43,7 +43,7 @@
     <div class="row">
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
         <div class="page-title with-background-image">
-          <p class="title">Openstack高可用部署 --- 使用kolla-ansible项目</p>
+          <p class="title">Openstack高可用部署(使用Kolla-ansible)</p>
           <p class="subtitle"></p>
         </div>
         <div class="site-menu with-background-image">
@@ -100,7 +100,7 @@
           <!-- Date -->
           <span class="date-time info">On
             <span class="date">2019-01-21</span>
-            <span class="time">17:07:40</span>
+            <span class="time">17:08:59</span>
           </span>
           
         </div>
@@ -116,7 +116,7 @@
         
         <!-- Post Main Content -->
         <div class="post-content">
-          <h1 id="Openstack高可用部署-—-使用kolla-ansible项目"><a href="#Openstack高可用部署-—-使用kolla-ansible项目" class="headerlink" title="Openstack高可用部署 — 使用kolla-ansible项目"></a>Openstack高可用部署 — 使用kolla-ansible项目</h1><h2 id="部署前需求"><a href="#部署前需求" class="headerlink" title="部署前需求"></a>部署前需求</h2><p>(1)    网段申请:俩个不同的网段，例如20.46.10.0/24和20.46.20.0/24。<br>(2)    每台服务器四个网卡。俩个千兆,俩个万兆。<br>(3)    交换机对俩俩端口做链路聚合(LACP)设置,不要被动模式,要做强制链路聚合转换。<br>(4)    每台服务器的系统盘(/sda)要求,不需要home分区,除了交换分区,boot分区,剩余的全部给root目录.<br>(5)    计算节点的作为的ceph的osd的盘,不需要挂载在系统,直接格式化。</p>
+          <h1 id="Openstack高可用部署-使用Kolla-ansible"><a href="#Openstack高可用部署-使用Kolla-ansible" class="headerlink" title="Openstack高可用部署(使用Kolla-ansible)"></a>Openstack高可用部署(使用Kolla-ansible)</h1><h2 id="部署前需求"><a href="#部署前需求" class="headerlink" title="部署前需求"></a>部署前需求</h2><p>(1)    网段申请:俩个不同的网段，例如20.46.10.0/24和20.46.20.0/24。<br>(2)    每台服务器四个网卡。俩个千兆,俩个万兆。<br>(3)    交换机对俩俩端口做链路聚合(LACP)设置,不要被动模式,要做强制链路聚合转换。<br>(4)    每台服务器的系统盘(/sda)要求,不需要home分区,除了交换分区,boot分区,剩余的全部给root目录.<br>(5)    计算节点的作为的ceph的osd的盘,不需要挂载在系统,直接格式化。</p>
 <h2 id="一、简介"><a href="#一、简介" class="headerlink" title="一、简介"></a>一、简介</h2><p>Docker容器化再加上Ansible自动化运维工具的部署方式，构成了Kolla-Ansible项目。Kolla-Ansible的官方文档介绍了如何在在线的情况下，如何使用该项目部署Openstack。<br>本文详细介绍如何使用Kolla-Ansible项目，在离线的情况下，在物理机服务器上操作部署Openstack（Pike或是Queens）多节点（Multinodes）的步骤。将Kolla-Ansible转化为离线部署，主要就是yum源，python源以及docker仓库的搭建配置，有了这些离线基础，才具备离线安装部署Openstack的条件。<br>本文中设计的yum安装，python安装涉及的源均为自己搭建好的离线源，docker的registry本地私有仓库。其中yum源,python源以及docker仓库的搭建,此处不详细叙述。</p>
 <h2 id="二、部署结构设计"><a href="#二、部署结构设计" class="headerlink" title="二、部署结构设计"></a>二、部署结构设计</h2><p>本文部署示例采用七台机器部署高可用(HA)的Openstack环境，分别是: monitor，controller01，controller02，controller03，computer01，computer02， computer03另外一台机器提供离线yum、python源以及docker私有仓库，主机名是source。</p>
 <hr>
