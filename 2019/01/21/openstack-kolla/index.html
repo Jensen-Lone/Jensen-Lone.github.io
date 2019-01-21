@@ -8,7 +8,7 @@
   <meta name="description" content="">
   <meta name="author" content="Jensen Lone">
   <!-- Open Graph Data -->
-  <meta property="og:title" content="Openstack高可用离线部署 --- 使用kolla-ansible项目">
+  <meta property="og:title" content="Openstack高可用部署 --- 使用kolla-ansible项目">
   <meta property="og:description" content="">
   <meta property="og:site_name" content="Jensen Lone&#39;s Blog">
   <meta property="og:type" content="article">
@@ -43,7 +43,7 @@
     <div class="row">
       <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
         <div class="page-title with-background-image">
-          <p class="title">Openstack高可用离线部署 --- 使用kolla-ansible项目</p>
+          <p class="title">Openstack高可用部署 --- 使用kolla-ansible项目</p>
           <p class="subtitle"></p>
         </div>
         <div class="site-menu with-background-image">
@@ -100,7 +100,7 @@
           <!-- Date -->
           <span class="date-time info">On
             <span class="date">2019-01-21</span>
-            <span class="time">15:19:14</span>
+            <span class="time">15:30:06</span>
           </span>
           
         </div>
@@ -116,7 +116,7 @@
         
         <!-- Post Main Content -->
         <div class="post-content">
-          <h1 id="Openstack高可用离线部署-—-使用kolla-ansible项目"><a href="#Openstack高可用离线部署-—-使用kolla-ansible项目" class="headerlink" title="Openstack高可用离线部署 — 使用kolla-ansible项目"></a>Openstack高可用离线部署 — 使用kolla-ansible项目</h1><h2 id="部署前需求"><a href="#部署前需求" class="headerlink" title="部署前需求"></a>部署前需求</h2><p>(1)    网段申请:俩个不同的网段，例如20.46.10.0/24和20.46.20.0/24。<br>(2)    每台服务器四个网卡。俩个千兆,俩个万兆。<br>(3)    交换机对俩俩端口做链路聚合(LACP)设置,不要被动模式,要做强制链路聚合转换。<br>(4)    每台服务器的系统盘(/sda)要求,不需要home分区,除了交换分区,boot分区,剩余的全部给root目录.<br>(5)    计算节点的作为的ceph的osd的盘,不需要挂载在系统,直接格式化。</p>
+          <h1 id="Openstack高可用部署-—-使用kolla-ansible项目"><a href="#Openstack高可用部署-—-使用kolla-ansible项目" class="headerlink" title="Openstack高可用部署 — 使用kolla-ansible项目"></a>Openstack高可用部署 — 使用kolla-ansible项目</h1><h2 id="部署前需求"><a href="#部署前需求" class="headerlink" title="部署前需求"></a>部署前需求</h2><p>(1)    网段申请:俩个不同的网段，例如20.46.10.0/24和20.46.20.0/24。<br>(2)    每台服务器四个网卡。俩个千兆,俩个万兆。<br>(3)    交换机对俩俩端口做链路聚合(LACP)设置,不要被动模式,要做强制链路聚合转换。<br>(4)    每台服务器的系统盘(/sda)要求,不需要home分区,除了交换分区,boot分区,剩余的全部给root目录.<br>(5)    计算节点的作为的ceph的osd的盘,不需要挂载在系统,直接格式化。</p>
 <h2 id="一、简介"><a href="#一、简介" class="headerlink" title="一、简介"></a>一、简介</h2><p>Docker容器化再加上Ansible自动化运维工具的部署方式，构成了Kolla-Ansible项目。Kolla-Ansible的官方文档介绍了如何在在线的情况下，如何使用该项目部署Openstack。<br>本文详细介绍如何使用Kolla-Ansible项目，在离线的情况下，在物理机服务器上操作部署Openstack（Pike或是Queens）多节点（Multinodes）的步骤。将Kolla-Ansible转化为离线部署，主要就是yum源，python源以及docker仓库的搭建配置，有了这些离线基础，才具备离线安装部署Openstack的条件。<br>本文中设计的yum安装，python安装涉及的源均为自己搭建好的离线源，docker的registry本地私有仓库。其中yum源,python源以及docker仓库的搭建,此处不详细叙述。</p>
 <h2 id="二、部署结构设计"><a href="#二、部署结构设计" class="headerlink" title="二、部署结构设计"></a>二、部署结构设计</h2><p>本文部署示例采用七台机器部署高可用(HA)的Openstack环境，分别是: monitor，controller01，controller02，controller03，computer01，computer02， computer03另外一台机器提供离线yum、python源以及docker私有仓库，主机名是source。</p>
 <table>
@@ -216,14 +216,17 @@
 <h3 id="3-2bond1、eth2和eth3的配置文件如下"><a href="#3-2bond1、eth2和eth3的配置文件如下" class="headerlink" title="3.2bond1、eth2和eth3的配置文件如下:"></a>3.2bond1、eth2和eth3的配置文件如下:</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># ifcfg-bond1</span><br><span class="line">DEVICE=bond1</span><br><span class="line">NAME=bond1</span><br><span class="line">TYPE=bond</span><br><span class="line">ONBOOT=yes</span><br><span class="line">BOOTPROTO=none</span><br><span class="line">BONDING_OPTS=&quot;miimon=100 mode=4&quot;</span><br><span class="line">BONDING_MASTER=yes</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># ifcfg-eth2</span><br><span class="line">TYPE=Ethernet</span><br><span class="line">BOOTPROTO=none</span><br><span class="line">DEVICE=eth2</span><br><span class="line">MASTER=bond1</span><br><span class="line">SLAVE=yes</span><br><span class="line">ONBOOT=yes</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># ifcfg-eth3</span><br><span class="line">TYPE=Ethernet</span><br><span class="line">BOOTPROTO=none</span><br><span class="line">DEVICE=eth3</span><br><span class="line">MASTER=bond1</span><br><span class="line">SLAVE=yes</span><br><span class="line">ONBOOT=yes</span><br></pre></td></tr></table></figure>
-<p>配置修改完之后,重启网卡:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ service network restart</span><br></pre></td></tr></table></figure></p>
-<p>查看绑定结果<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cat /proc/net/bonding/bond0</span><br><span class="line">$ cat /proc/net/bonding/bond1</span><br></pre></td></tr></table></figure></p>
+<p>配置修改完之后,重启网卡:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ service network restart</span><br></pre></td></tr></table></figure>
+<p>查看绑定结果</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ cat /proc/net/bonding/bond0</span><br><span class="line">$ cat /proc/net/bonding/bond1</span><br></pre></td></tr></table></figure>
 <p>查看到的结果中,eth0、eth1和bond0的mac地址一致,eth2、eth3和bond1的mac地址一致,即可。</p>
 <h2 id="四、基础环境准备"><a href="#四、基础环境准备" class="headerlink" title="四、基础环境准备"></a>四、基础环境准备</h2><p>三台controller和三台computer以及monitor均执行。</p>
 <h3 id="4-1升级系统"><a href="#4-1升级系统" class="headerlink" title="4.1升级系统"></a>4.1升级系统</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ yum update -y</span><br></pre></td></tr></table></figure>
 <h3 id="4-2安装必须的软件"><a href="#4-2安装必须的软件" class="headerlink" title="4.2安装必须的软件"></a>4.2安装必须的软件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ yum install git net-tools ntp vim wget ansible gcc openssl-devel python-devel python-pip libffi-devel libselinux-python python-openstackclient python-neutronclient -y</span><br></pre></td></tr></table></figure>
 <h3 id="4-3添加ntp时钟服务器"><a href="#4-3添加ntp时钟服务器" class="headerlink" title="4.3添加ntp时钟服务器"></a>4.3添加ntp时钟服务器</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ vi /etc/ntp.conf</span><br></pre></td></tr></table></figure>
-<p>添加ntp时钟主备服务器，“10.109.192.4 10.109.192.42”是我们自己的时钟主备服务器(大家在安装部署中可以使用自己的时钟服务器)目的是保持各个服务器之间的时间一致,不然会导致openstack的服务异常。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">server 10.109.192.4   prefer</span><br><span class="line">server 10.109.192.42</span><br></pre></td></tr></table></figure></p>
+<p>添加ntp时钟主备服务器，“10.109.192.4 10.109.192.42”是我们自己的时钟主备服务器(大家在安装部署中可以使用自己的时钟服务器)目的是保持各个服务器之间的时间一致,不然会导致openstack的服务异常。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">server 10.109.192.4   prefer</span><br><span class="line">server 10.109.192.42</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ systemctl enable ntpd.service &amp;&amp; systemctl start ntpd.service &amp;&amp; systemctl status ntpd.service</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ntpq -p</span><br></pre></td></tr></table></figure>
 <p>可以查看到同步的时间主机.</p>
@@ -231,7 +234,8 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ systemctl stop libvirtd.service &amp;&amp; systemctl disable libvirtd.service &amp;&amp; systemctl status libvirtd.service</span><br></pre></td></tr></table></figure>
 <h3 id="4-5关闭防火墙"><a href="#4-5关闭防火墙" class="headerlink" title="4.5关闭防火墙"></a>4.5关闭防火墙</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># systemctl stop firewalld &amp;&amp; systemctl disable firewalld &amp;&amp; systemctl status firewalld</span><br></pre></td></tr></table></figure>
 <h3 id="4-6-disable-掉selinux"><a href="#4-6-disable-掉selinux" class="headerlink" title="4.6 disable 掉selinux"></a>4.6 disable 掉selinux</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ sed -i &apos;/^SELINUX=.*/c SELINUX=disabled&apos; /etc/selinux/config</span><br></pre></td></tr></table></figure>
-<p>或是直接修改:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ vim /etc/selinux/config</span><br></pre></td></tr></table></figure></p>
+<p>或是直接修改:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ vim /etc/selinux/config</span><br></pre></td></tr></table></figure>
 <p>设置SELINUX=disabled,reboot之后生效。</p>
 <h2 id="五、安装配置Docker"><a href="#五、安装配置Docker" class="headerlink" title="五、安装配置Docker"></a>五、安装配置Docker</h2><h3 id="5-1安装Docker软件包"><a href="#5-1安装Docker软件包" class="headerlink" title="5.1安装Docker软件包"></a>5.1安装Docker软件包</h3><p>新增Docker的Yum仓库:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ vim /etc/yum.repos.d/docker.repo</span><br></pre></td></tr></table></figure>
@@ -242,7 +246,7 @@
 <p>安装docker:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ yum install -y epel-release</span><br><span class="line">$ yum install -y docker-engine docker-engine-selinux</span><br><span class="line">$ pip install urllib3 shade docker</span><br></pre></td></tr></table></figure>
 <p>使用阿里的docker镜像服务:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># mkdir -p /etc/docker</span><br><span class="line"># vim /etc/docker/daemon.json</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ mkdir -p /etc/docker</span><br><span class="line">$ vim /etc/docker/daemon.json</span><br></pre></td></tr></table></figure>
 <p>添加以下内容:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;registry-mirrors&quot;: [&quot;https://7g5a4z30.mirror.aliyuncs.com&quot;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="5-2重启Docker服务"><a href="#5-2重启Docker服务" class="headerlink" title="5.2重启Docker服务"></a>5.2重启Docker服务</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ systemctl daemon-reload &amp;&amp; systemctl enable docker &amp;&amp; systemctl restart docker &amp;&amp; systemctl status docker</span><br></pre></td></tr></table></figure>
@@ -250,12 +254,12 @@
 <p>结果正常输出,可下载hello-world镜像即可。</p>
 <h3 id="5-4修改Docker服务配置"><a href="#5-4修改Docker服务配置" class="headerlink" title="5.4修改Docker服务配置"></a>5.4修改Docker服务配置</h3><p>添加信任source节点的Registry服务</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ vim /usr/lib/systemd/system/docker.service</span><br></pre></td></tr></table></figure>
-<p>修改添加如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ExecStart=/usr/bin/dockerd --insecure-registry 192.168.136.138:4000</span><br></pre></td></tr></table></figure></p>
+<p>修改添加如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ExecStart=/usr/bin/dockerd --insecure-registry 192.168.136.138:4000</span><br></pre></td></tr></table></figure>
 <p>重启Docker服务:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ systemctl daemon-reload &amp;&amp; systemctl restart docker &amp;&amp; systemctl status docker</span><br></pre></td></tr></table></figure>
 <h3 id="5-5测试Registry服务是否正常"><a href="#5-5测试Registry服务是否正常" class="headerlink" title="5.5测试Registry服务是否正常"></a>5.5测试Registry服务是否正常</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -X GET http:// 192.168.136.138:4000/v2/_catalog</span><br></pre></td></tr></table></figure>
-<p>注:192.168.136.138:4000,是source主机的docker私有仓库地址和端口号。</p>
-<p>正常如下返回数据即可:</p>
+<p>注:192.168.136.138:4000,是source主机的docker私有仓库地址和端口号。<br>正常如下返回数据即可:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;repositories&quot;:[&quot;kolla/centos-source-aodh-api&quot;,&quot;kolla/centos-source-aodh-base&quot;,&quot;kolla/centos-source-aodh-evaluator&quot;,&quot;kolla/centos-source-aodh-expirer&quot;,………]&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="5-6-source的私有docker仓库搭建以及kolla镜像导入"><a href="#5-6-source的私有docker仓库搭建以及kolla镜像导入" class="headerlink" title="5.6 source的私有docker仓库搭建以及kolla镜像导入"></a>5.6 source的私有docker仓库搭建以及kolla镜像导入</h3><p>这里单独说一下source主机的私有仓库的kolla镜像的导入。<br>官方文档给出的centos-source-registry-pike.tar.gz该kolla镜像包去<a href="http://tarballs.openstack.org/kolla/images/上面wget上获取。但是该网站18年3月底已经不提供获取，只有去http://hub.docker.com/u/kolla上pull，但是镜像很多，一个个pull比较麻烦，现在给出制作好的centos-source-registry-pike.tar.gz包，按照官方文档，解压到挂载目录/opt/registry/即可。" target="_blank" rel="noopener">http://tarballs.openstack.org/kolla/images/上面wget上获取。但是该网站18年3月底已经不提供获取，只有去http://hub.docker.com/u/kolla上pull，但是镜像很多，一个个pull比较麻烦，现在给出制作好的centos-source-registry-pike.tar.gz包，按照官方文档，解压到挂载目录/opt/registry/即可。</a><br>解压OpenStack Pike的Docker镜像:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ tar zxvf centos-source-registry-pike.tar.gz -C /opt/registry/</span><br></pre></td></tr></table></figure>
@@ -263,8 +267,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ curl -X GET http:// 192.168.136.138:4000/v2/_catalog</span><br></pre></td></tr></table></figure>
 <p>正常如下返回数据即可:</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;repositories&quot;:[&quot;kolla/centos-source-aodh-api&quot;,&quot;kolla/centos-source-aodh-base&quot;,&quot;kolla/centos-source-aodh-evaluator&quot;,&quot;kolla/centos-source-aodh-expirer&quot;,………]&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="六、Ceph标签、设置Hostname以及授信于monitor"><a href="#六、Ceph标签、设置Hostname以及授信于monitor" class="headerlink" title="六、Ceph标签、设置Hostname以及授信于monitor"></a>六、Ceph标签、设置Hostname以及授信于monitor</h2><h3 id="6-1为计算主机的空白硬盘打ceph标签"><a href="#6-1为计算主机的空白硬盘打ceph标签" class="headerlink" title="6.1为计算主机的空白硬盘打ceph标签"></a>6.1为计算主机的空白硬盘打ceph标签</h3><p>在三台计算主机（computer01、computer02、computer03,均执行。</p>
-<p>物理机服务器上可能存在第二块或是第三四五六块等等硬盘（未格式化，未挂载，没有使用的空白硬盘）均执行相同操作。接下来，打上Ceph标签。</p>
+<h2 id="六、Ceph标签、设置Hostname以及授信于monitor"><a href="#六、Ceph标签、设置Hostname以及授信于monitor" class="headerlink" title="六、Ceph标签、设置Hostname以及授信于monitor"></a>六、Ceph标签、设置Hostname以及授信于monitor</h2><h3 id="6-1为计算主机的空白硬盘打ceph标签"><a href="#6-1为计算主机的空白硬盘打ceph标签" class="headerlink" title="6.1为计算主机的空白硬盘打ceph标签"></a>6.1为计算主机的空白硬盘打ceph标签</h3><p>在三台计算主机（computer01、computer02、computer03,均执行。<br>物理机服务器上可能存在第二块或是第三四五六块等等硬盘（未格式化，未挂载，没有使用的空白硬盘）均执行相同操作。接下来，打上Ceph标签。</p>
 <p>首先输入以下命令，查看有哪些硬盘：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ fdisk -l</span><br></pre></td></tr></table></figure>
 <p>如上看到了“/dev/sdb”此块硬盘,现在为此块硬盘打上ceph标签。</p>
