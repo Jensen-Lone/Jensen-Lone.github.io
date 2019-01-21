@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html>
+  <!-- Html Head Tag-->
+  <head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="">
+  <meta name="author" content="Jensen Lone">
+  <!-- Open Graph Data -->
+  <meta property="og:title" content="Openstack高可用离线部署、升级以及故障恢复 ——使用kolla-ansible项目">
+  <meta property="og:description" content="">
+  <meta property="og:site_name" content="Jensen Lone&#39;s Blog">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://jensen-lone.github.io">
+  
+    <link rel="alternate" href="/atom.xml" title="Jensen Lone&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/images/favicon.ico">
+  
+
+  <!-- Site Title -->
+  <title>Jensen Lone's Blog</title>
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  
+  <link rel="stylesheet" href="/css/style.light.css">
+
+  <!-- Google Analytics -->
+  
+
+</head>
+
+  <body>
+    <!-- Page Header -->
+
+
+<header class="site-header header-background" style="background-image: url(/img/MJ.jpg)">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="page-title with-background-image">
+          <p class="title">Openstack高可用离线部署、升级以及故障恢复 ——使用kolla-ansible项目</p>
+          <p class="subtitle"></p>
+        </div>
+        <div class="site-menu with-background-image">
+          <ul>
+            
+              <li>
+                <a href="/">
+                  
+                  Home
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="/archives">
+                  
+                  Archives
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="https://github.com/jensen-lone">
+                  
+                  Github
+                  
+                </a>
+              </li>
+            
+              <li>
+                <a href="mailto:369236981@qq.com">
+                  
+                  Email
+                  
+                </a>
+              </li>
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<article>
+  <div class="container typo">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="post-info text-muted">
+          
+            <!-- Author -->
+            <span class="author info">By Jensen Lone</span>
+          
+          <!-- Date -->
+          <span class="date-time info">On
+            <span class="date">2019-01-21</span>
+            <span class="time">14:31:01</span>
+          </span>
+          
+        </div>
+        <!-- Tags -->
+        
+          <div class="post-tags text-muted">
+            Tags: 
+
+<a class="tag" href="/tags/Openstack-kolla-Ansible-HA-Ceph/">#Openstack kolla Ansible HA Ceph</a>
+
+
+          </div>
+        
+        <!-- Post Main Content -->
+        <div class="post-content">
+          <h1 id="Openstack高可用离线部署、升级以及故障恢复-——使用kolla-ansible项目"><a href="#Openstack高可用离线部署、升级以及故障恢复-——使用kolla-ansible项目" class="headerlink" title="Openstack高可用离线部署、升级以及故障恢复 ——使用kolla-ansible项目"></a>Openstack高可用离线部署、升级以及故障恢复 ——使用kolla-ansible项目</h1><h2 id="部署前需求"><a href="#部署前需求" class="headerlink" title="部署前需求"></a>部署前需求</h2><h3 id="网段申请-俩个不同的网段，例如20-46-10-0-24和20-46-20-0-24。"><a href="#网段申请-俩个不同的网段，例如20-46-10-0-24和20-46-20-0-24。" class="headerlink" title="网段申请:俩个不同的网段，例如20.46.10.0/24和20.46.20.0/24。"></a>网段申请:俩个不同的网段，例如20.46.10.0/24和20.46.20.0/24。</h3><h3 id="每台服务器四个网卡。俩个千兆-俩个万兆。"><a href="#每台服务器四个网卡。俩个千兆-俩个万兆。" class="headerlink" title="每台服务器四个网卡。俩个千兆,俩个万兆。"></a>每台服务器四个网卡。俩个千兆,俩个万兆。</h3><h3 id="交换机对俩俩端口做链路聚合-LACP-设置-不要被动模式-要做强制链路聚合转换。"><a href="#交换机对俩俩端口做链路聚合-LACP-设置-不要被动模式-要做强制链路聚合转换。" class="headerlink" title="交换机对俩俩端口做链路聚合(LACP)设置,不要被动模式,要做强制链路聚合转换。"></a>交换机对俩俩端口做链路聚合(LACP)设置,不要被动模式,要做强制链路聚合转换。</h3><h3 id="每台服务器的系统盘-sda-要求-不需要home分区-除了交换分区-boot分区-剩余的全部给root目录"><a href="#每台服务器的系统盘-sda-要求-不需要home分区-除了交换分区-boot分区-剩余的全部给root目录" class="headerlink" title="每台服务器的系统盘(/sda)要求,不需要home分区,除了交换分区,boot分区,剩余的全部给root目录."></a>每台服务器的系统盘(/sda)要求,不需要home分区,除了交换分区,boot分区,剩余的全部给root目录.</h3><h3 id="计算节点的作为的ceph的osd的盘-不需要挂载在系统-直接格式化。"><a href="#计算节点的作为的ceph的osd的盘-不需要挂载在系统-直接格式化。" class="headerlink" title="计算节点的作为的ceph的osd的盘,不需要挂载在系统,直接格式化。"></a>计算节点的作为的ceph的osd的盘,不需要挂载在系统,直接格式化。</h3><h2 id="一、简介"><a href="#一、简介" class="headerlink" title="一、简介"></a>一、简介</h2><p>Docker容器化再加上Ansible自动化运维工具的部署方式，构成了Kolla-Ansible项目。Kolla-Ansible的官方文档介绍了如何在在线的情况下，如何使用该项目部署Openstack。<br>本文详细介绍如何使用Kolla-Ansible项目，在离线的情况下，在物理机服务器上操作部署Openstack（Pike或是Queens）多节点（Multinodes）的步骤。将Kolla-Ansible转化为离线部署，主要就是yum源，python源以及docker仓库的搭建配置，有了这些离线基础，才具备离线安装部署Openstack的条件。<br>本文中设计的yum安装，python安装涉及的源均为自己搭建好的离线源，docker的registry本地私有仓库。其中yum源,python源以及docker仓库的搭建,此处不详细叙述。</p>
+<h2 id="二、部署结构设计"><a href="#二、部署结构设计" class="headerlink" title="二、部署结构设计"></a>二、部署结构设计</h2><p>本文部署示例采用七台机器部署高可用(HA)的Openstack环境，分别是: monitor，controller01，controller02，controller03，computer01，computer02， computer03另外一台机器提供离线yum、python源以及docker私有仓库，主机名是source。</p>
+<table>
+<thead>
+<tr>
+<th>Hostname</th>
+<th style="text-align:center">CPU(核)</th>
+<th style="text-align:center">内存</th>
+<th style="text-align:center">(/sda)</th>
+<th style="text-align:center">(/sdb)</th>
+<th style="text-align:center">网卡bond0</th>
+<th style="text-align:right">网卡bond1</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>controller01</td>
+<td style="text-align:center">8</td>
+<td style="text-align:center">8 GB</td>
+<td style="text-align:center">100G</td>
+<td style="text-align:center">——</td>
+<td style="text-align:center">20.46.10.23</td>
+<td style="text-align:right">—无IP—</td>
+</tr>
+<tr>
+<td>controller02</td>
+<td style="text-align:center">8</td>
+<td style="text-align:center">8 GB</td>
+<td style="text-align:center">100G</td>
+<td style="text-align:center">——</td>
+<td style="text-align:center">20.46.10.24</td>
+<td style="text-align:right">—无IP—</td>
+</tr>
+<tr>
+<td>controller03</td>
+<td style="text-align:center">8</td>
+<td style="text-align:center">8 GB</td>
+<td style="text-align:center">100G</td>
+<td style="text-align:center">——</td>
+<td style="text-align:center">20.46.10.25</td>
+<td style="text-align:right">—无IP—</td>
+</tr>
+<tr>
+<td>computer01</td>
+<td style="text-align:center">8</td>
+<td style="text-align:center">8 GB</td>
+<td style="text-align:center">100G</td>
+<td style="text-align:center">100G</td>
+<td style="text-align:center">20.46.10.26</td>
+<td style="text-align:right">—无IP—</td>
+</tr>
+<tr>
+<td>computer02</td>
+<td style="text-align:center">8</td>
+<td style="text-align:center">8 GB</td>
+<td style="text-align:center">100G</td>
+<td style="text-align:center">100G</td>
+<td style="text-align:center">20.46.10.27</td>
+<td style="text-align:right">—无IP—</td>
+</tr>
+<tr>
+<td>computer03</td>
+<td style="text-align:center">8</td>
+<td style="text-align:center">8 GB</td>
+<td style="text-align:center">100G</td>
+<td style="text-align:center">100G</td>
+<td style="text-align:center">20.46.10.28</td>
+<td style="text-align:right">—无IP—</td>
+</tr>
+<tr>
+<td>monitor</td>
+<td style="text-align:center">8</td>
+<td style="text-align:center">8 GB</td>
+<td style="text-align:center">100G</td>
+<td style="text-align:center">——</td>
+<td style="text-align:center">20.46.10.22</td>
+<td style="text-align:right">—无IP—</td>
+</tr>
+<tr>
+<td>source</td>
+<td style="text-align:center">8</td>
+<td style="text-align:center">8 GB</td>
+<td style="text-align:center">100G</td>
+<td style="text-align:center">——</td>
+<td style="text-align:center">20.46.87.183</td>
+<td style="text-align:right">无此网卡</td>
+</tr>
+</tbody>
+</table>
+<p>注:<br>1)controller01、controller02、controller03三个组成control角色高可用(配置三台control自动会配置成HA)同时,部署ceph分布式集群,由三台controller和三台computer共同组成storage集群存储。</p>
+<p>2)源配置source主机,配有yum源、python源以及docker私有仓库。</p>
+<p>3)网卡做bond设置,模式(mode)取4,链路聚合(LACP)。本示例中俩个万兆网卡绑定做bond0, 俩个千兆网卡绑定做bond1。bond0走openstack管理和ceph存储,bond1走虚机对外访问公开网络。</p>
+<h2 id="三、双网卡绑定Bond设置"><a href="#三、双网卡绑定Bond设置" class="headerlink" title="三、双网卡绑定Bond设置"></a>三、双网卡绑定Bond设置</h2><p>三台controller和三台computer以及monitor均执行。双网卡绑定，模式取4，链路聚合模式（LACP），俩个万兆的网卡（eth0和eth1）做bond0（有IP），俩个前兆的网卡（eth2和eth3）做bond1（无IP）。</p>
+<p>1）bond0、eth0和eth1的配置文件如下：</p>
+<p>ifcfg-bond0                                                       ifcfg-eth0                      ifcfg-eth1</p>
+<p>2）bond1、eth2和eth3的配置文件如下：</p>
+<p>ifcfg-bond1                                                               ifcfg-eth2                      ifcfg-eth3</p>
+<p>配置修改完之后，重启网卡：</p>
+<h1 id="service-network-restart"><a href="#service-network-restart" class="headerlink" title="service network restart"></a>service network restart</h1><p>查看绑定结果</p>
+<h1 id="cat-proc-net-bonding-bond0"><a href="#cat-proc-net-bonding-bond0" class="headerlink" title="cat /proc/net/bonding/bond0"></a>cat /proc/net/bonding/bond0</h1><h1 id="cat-proc-net-bonding-bond1"><a href="#cat-proc-net-bonding-bond1" class="headerlink" title="cat /proc/net/bonding/bond1"></a>cat /proc/net/bonding/bond1</h1><p>查看到的结果中，eth0、eth1和bond0的mac地址一致，eth2、eth3和bond1的mac地址一致，即可。</p>
+<h2 id="四、基础环境准备"><a href="#四、基础环境准备" class="headerlink" title="四、基础环境准备"></a>四、基础环境准备</h2><p>三台controller和三台computer以及monitor均执行。</p>
+<p>4.1升级系统</p>
+<h1 id="yum-update-y"><a href="#yum-update-y" class="headerlink" title="yum update -y"></a>yum update -y</h1><p>4.2安装必须的软件</p>
+<h1 id="yum-install-git-net-tools-ntp-vim-wget-ansible-gcc-openssl-devel-python-devel-python-pip-libffi-devel-libselinux-python-python-openstackclient-python-neutronclient-y"><a href="#yum-install-git-net-tools-ntp-vim-wget-ansible-gcc-openssl-devel-python-devel-python-pip-libffi-devel-libselinux-python-python-openstackclient-python-neutronclient-y" class="headerlink" title="yum install git net-tools ntp vim wget ansible gcc openssl-devel python-devel python-pip libffi-devel libselinux-python python-openstackclient python-neutronclient -y"></a>yum install git net-tools ntp vim wget ansible gcc openssl-devel python-devel python-pip libffi-devel libselinux-python python-openstackclient python-neutronclient -y</h1><p>4.3添加ntp时钟服务器</p>
+<h1 id="vi-etc-ntp-conf"><a href="#vi-etc-ntp-conf" class="headerlink" title="vi /etc/ntp.conf"></a>vi /etc/ntp.conf</h1><p>如下图所示，</p>
+<p>添加ntp时钟主备服务器，“10.109.192.4 10.109.192.42”是我们自己的时钟主备服务器，大家在安装部署中可以使用自己的时钟服务器，目的是保持各个服务器之间的时间一致，不然会导致openstack的服务异常。</p>
+<p>server 10.109.192.4   prefer</p>
+<p>server 10.109.192.42</p>
+<h1 id="systemctl-enable-ntpd-service-amp-amp-systemctl-start-ntpd-service-amp-amp-systemctl-status-ntpd-service"><a href="#systemctl-enable-ntpd-service-amp-amp-systemctl-start-ntpd-service-amp-amp-systemctl-status-ntpd-service" class="headerlink" title="systemctl enable ntpd.service &amp;&amp; systemctl start ntpd.service &amp;&amp; systemctl status ntpd.service"></a>systemctl enable ntpd.service &amp;&amp; systemctl start ntpd.service &amp;&amp; systemctl status ntpd.service</h1><h1 id="ntpq-p"><a href="#ntpq-p" class="headerlink" title="ntpq -p"></a>ntpq -p</h1><p>可以查看到同步的时间主机：</p>
+<p>4.4关闭libvirtd服务<br>创建的虚机没有libvirtd服务，但是物理机服务器会有，这个必须要关闭。</p>
+<h1 id="systemctl-stop-libvirtd-service-amp-amp-systemctl-disable-libvirtd-service-amp-amp-systemctl-status-libvirtd-service"><a href="#systemctl-stop-libvirtd-service-amp-amp-systemctl-disable-libvirtd-service-amp-amp-systemctl-status-libvirtd-service" class="headerlink" title="systemctl stop libvirtd.service &amp;&amp; systemctl disable libvirtd.service &amp;&amp; systemctl status libvirtd.service"></a>systemctl stop libvirtd.service &amp;&amp; systemctl disable libvirtd.service &amp;&amp; systemctl status libvirtd.service</h1><p>4.5关闭防火墙</p>
+<h1 id="systemctl-stop-firewalld-amp-amp-systemctl-disable-firewalld-amp-amp-systemctl-status-firewalld"><a href="#systemctl-stop-firewalld-amp-amp-systemctl-disable-firewalld-amp-amp-systemctl-status-firewalld" class="headerlink" title="systemctl stop firewalld &amp;&amp; systemctl disable firewalld &amp;&amp; systemctl status firewalld"></a>systemctl stop firewalld &amp;&amp; systemctl disable firewalld &amp;&amp; systemctl status firewalld</h1><p>4.6 disable 掉selinux</p>
+<h1 id="sed-i-‘-SELINUX-c-SELINUX-disabled’-etc-selinux-config"><a href="#sed-i-‘-SELINUX-c-SELINUX-disabled’-etc-selinux-config" class="headerlink" title="sed -i ‘/^SELINUX=.*/c SELINUX=disabled’ /etc/selinux/config"></a>sed -i ‘/^SELINUX=.*/c SELINUX=disabled’ /etc/selinux/config</h1><p>或是直接修改：</p>
+<h1 id="vim-etc-selinux-config"><a href="#vim-etc-selinux-config" class="headerlink" title="vim /etc/selinux/config"></a>vim /etc/selinux/config</h1><p>设置SELINUX=disabled ，如下图所示：</p>
+<p>reboot之后生效。</p>
+<h2 id="五、安装配置Docker"><a href="#五、安装配置Docker" class="headerlink" title="五、安装配置Docker"></a>五、安装配置Docker</h2><p>5.1安装Docker软件包<br>新增Docker的Yum仓库：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># vim /etc/yum.repos.d/docker.repo</span><br></pre></td></tr></table></figure></p>
+<p>添加以下内容<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[dockerrepo]</span><br><span class="line">name=Docker Repository</span><br><span class="line">baseurl=https://yum.dockerproject.org/repo/main/centos/$releasever/</span><br><span class="line">enabled=1</span><br><span class="line">gpgcheck=1</span><br><span class="line">gpgkey=https://yum.dockerproject.org/gpg</span><br></pre></td></tr></table></figure></p>
+<p>然后清除yum，做缓存：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># yum clean all &amp;&amp; yum makecache</span><br></pre></td></tr></table></figure></p>
+<p>安装docker：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># yum install -y epel-release</span><br><span class="line"># yum install -y docker-engine docker-engine-selinux</span><br><span class="line"># pip install urllib3 shade docker</span><br></pre></td></tr></table></figure></p>
+<p>使用阿里的docker镜像服务:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># mkdir -p /etc/docker</span><br><span class="line"># vim /etc/docker/daemon.json</span><br></pre></td></tr></table></figure></p>
+<p>添加以下内容:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  &quot;registry-mirrors&quot;: [&quot;https://7g5a4z30.mirror.aliyuncs.com&quot;]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>5.2重启Docker服务<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># systemctl daemon-reload &amp;&amp; systemctl enable docker &amp;&amp; systemctl restart docker &amp;&amp; systemctl status docker</span><br></pre></td></tr></table></figure></p>
+<p>4.3检查镜像服务是否正常<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#  docker run --rm hello-world</span><br></pre></td></tr></table></figure></p>
+<p>结果正常输出，可下载hello-world镜像即可。</p>
+<p>4.4修改Docker服务配置<br>添加信任source节点的Registry服务<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># vim /usr/lib/systemd/system/docker.service</span><br></pre></td></tr></table></figure></p>
+<p>修改如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ExecStart=/usr/bin/dockerd --insecure-registry 192.168.136.138:4000</span><br></pre></td></tr></table></figure></p>
+<p>重启Docker服务：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># systemctl daemon-reload &amp;&amp; systemctl restart docker &amp;&amp; systemctl status docker</span><br></pre></td></tr></table></figure></p>
+<p>4.5测试Registry服务是否正常<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># curl -X GET http:// 192.168.136.138:4000/v2/_catalog</span><br></pre></td></tr></table></figure></p>
+<p>注：192.168.136.138:4000，是source主机的docker私有仓库地址和端口号。</p>
+<p>正常如下返回数据即可：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;repositories&quot;:[&quot;kolla/centos-source-aodh-api&quot;,&quot;kolla/centos-source-aodh-base&quot;,&quot;kolla/centos-source-aodh-evaluator&quot;,&quot;kolla/centos-source-aodh-expirer&quot;,………]&#125;</span><br></pre></td></tr></table></figure></p>
+<p>4.6 source的私有docker仓库搭建以及kolla镜像导入<br>这里单独说一下source主机的私有仓库的kolla镜像的导入。<br>官方文档给出的centos-source-registry-pike.tar.gz该kolla镜像包去<a href="http://tarballs.openstack.org/kolla/images/上面wget上获取。但是该网站18年3月底已经不提供获取，只有去http://hub.docker.com/u/kolla上pull，但是镜像很多，一个个pull比较麻烦，现在给出制作好的centos-source-registry-pike.tar.gz包，按照官方文档，解压到挂载目录/opt/registry/即可。" target="_blank" rel="noopener">http://tarballs.openstack.org/kolla/images/上面wget上获取。但是该网站18年3月底已经不提供获取，只有去http://hub.docker.com/u/kolla上pull，但是镜像很多，一个个pull比较麻烦，现在给出制作好的centos-source-registry-pike.tar.gz包，按照官方文档，解压到挂载目录/opt/registry/即可。</a><br>解压OpenStack Pike的Docker镜像：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># tar zxvf centos-source-registry-pike.tar.gz -C /opt/registry/</span><br></pre></td></tr></table></figure></p>
+<p>然后测试registry服务数据<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># curl -X GET http:// 192.168.136.138:4000/v2/_catalog</span><br></pre></td></tr></table></figure></p>
+<p>正常如下返回数据即可：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&#123;&quot;repositories&quot;:[&quot;kolla/centos-source-aodh-api&quot;,&quot;kolla/centos-source-aodh-base&quot;,&quot;kolla/centos-source-aodh-evaluator&quot;,&quot;kolla/centos-source-aodh-expirer&quot;,………]&#125;</span><br></pre></td></tr></table></figure></p>
+<p>五、Ceph标签、设置Hostname以及授信于monitor<br>5.1为计算主机的空白硬盘打ceph标签<br>在三台计算主机（computer01、computer02、computer03）均执行。</p>
+<p>物理机服务器上可能存在第二块或是第三四五六块等等硬盘（未格式化，未挂载，没有使用的空白硬盘）均执行相同操作。接下来，打上Ceph标签。</p>
+<p>首先输入以下命令，查看有哪些硬盘：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># fdisk -l</span><br></pre></td></tr></table></figure></p>
+<p>如上看到了“/dev/sdb”此块硬盘，现在为此块硬盘打上ceph标签。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># parted /dev/sdb -s -- mklabel gpt mkpart KOLLA_CEPH_OSD_BOOTSTRAP 1 -1</span><br></pre></td></tr></table></figure></p>
+<p>再查看结果：</p>
+<p>如上图所示，可见“/dev/sdb”硬盘被打上“KOLLA_CEPH_OSD_BOOTSTRAP”的name标签。后续安装的时候，ceph容器安装会自动寻找这个标签进行操作。</p>
+<p>若还存在别的硬盘也作为ceph存储，一样打上标签即可：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># parted /dev/sdc -s -- mklabel gpt mkpart KOLLA_CEPH_OSD_BOOTSTRAP 1 -1</span><br><span class="line"># parted /dev/sdd -s -- mklabel gpt mkpart KOLLA_CEPH_OSD_BOOTSTRAP 1 -1</span><br></pre></td></tr></table></figure></p>
+<p>5.2为ceph_rgw创建池<br>Ceph_RGW需要一个健康的集群才能成功部署。在初次启动时，RGW将创建几个池。第一个池应处于运行状态以继续第二个池，依此类推。因此，在进行一体化部署的情况下，必须在部署之前更改池的默认副本数。按照需求，本示例部署选用三个池副本。</p>
+<p>本次部署针对monitor机器和所有的computer机器（computer01、computer02、computer03）修改文件 /etc/kolla/config/ceph.conf并添加内容：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># mkdir -pv /etc/kolla/config/ &amp;&amp; vim /etc/kolla/config/ceph.conf</span><br></pre></td></tr></table></figure></p>
+<p>修改内容如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[global]</span><br><span class="line">osd pool default size = 3</span><br><span class="line">osd pool default min size = 3</span><br></pre></td></tr></table></figure></p>
+<p>5.3 配置Hostname<br>七台机器按照每台对应的角色执行如下命令修改hostname：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># hostnamectl set-hostname monitor</span><br><span class="line"></span><br><span class="line"># hostnamectl set-hostname controller01</span><br><span class="line"></span><br><span class="line"># hostnamectl set-hostname controller02</span><br><span class="line"></span><br><span class="line"># hostnamectl set-hostname controller03</span><br><span class="line"></span><br><span class="line"># hostnamectl set-hostname computer01</span><br><span class="line"></span><br><span class="line"># hostnamectl set-hostname computer02</span><br><span class="line"></span><br><span class="line"># hostnamectl set-hostname computer03</span><br></pre></td></tr></table></figure></p>
+<p>七台机器都修改“/etc/hosts”文件，然后reboot生效，如下图所示：</p>
+<p>这里选取bond0的IP地址。七台机器均执行命令如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># cat &gt;&gt; /etc/hosts &lt;&lt;EOF</span><br><span class="line">20.46.10.22 monitor</span><br><span class="line">20.46.10.23 controller01</span><br><span class="line">20.46.10.24 controller02</span><br><span class="line">20.46.10.25 controller03</span><br><span class="line">20.46.10.26 computer01</span><br><span class="line">20.46.10.27 computer02</span><br><span class="line">20.46.10.28 computer03</span><br><span class="line">EOF</span><br></pre></td></tr></table></figure></p>
+<p>5.4授信monitor节点<br>七台机器，七个节点都执行以下操作：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># ssh-keygen</span><br></pre></td></tr></table></figure></p>
+<p>然后将公钥分发给七台机器：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># ssh-copy-id -i ~/.ssh/id_rsa.pub root@monitor</span><br><span class="line"></span><br><span class="line"># ssh-copy-id -i ~/.ssh/id_rsa.pub root@controller01</span><br><span class="line"></span><br><span class="line"># ssh-copy-id -i ~/.ssh/id_rsa.pub root@controller02</span><br><span class="line"></span><br><span class="line"># ssh-copy-id -i ~/.ssh/id_rsa.pub root@controller03</span><br><span class="line"></span><br><span class="line"># ssh-copy-id -i ~/.ssh/id_rsa.pub root@computer01</span><br><span class="line"></span><br><span class="line"># ssh-copy-id -i ~/.ssh/id_rsa.pub root@computer02</span><br><span class="line"></span><br><span class="line"># ssh-copy-id -i ~/.ssh/id_rsa.pub root@computer03</span><br></pre></td></tr></table></figure></p>
+<p>这样每个节点的authorized_keys都有monitor的公钥，授信成功。</p>
+<p>最后在monitor上分别如下操作，均成功ssh成功即可。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"># ssh monitor</span><br><span class="line"></span><br><span class="line"># ssh controller01</span><br><span class="line"></span><br><span class="line"># ssh controller02</span><br><span class="line"></span><br><span class="line"># ssh controller03</span><br><span class="line"></span><br><span class="line"># ssh computer01</span><br><span class="line"></span><br><span class="line"># ssh computer02</span><br><span class="line"></span><br><span class="line"># ssh computer03</span><br></pre></td></tr></table></figure></p>
+<p>六、ansible和kolla-ansible的安装以及配置<br>以下步骤是在monitor上操作，这台是deployment机器。<br>本文不需要对kolla-ansible项目进行开发，使用pip方式安装，更为稳定。</p>
+<p>6.1 ansible的其配置<br>ansible已经在上面安装好了，现在只需要配置即可。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"># vim /etc/ansible/ansible.cfg</span><br><span class="line">[defaults]</span><br><span class="line">host_key_checking=False</span><br><span class="line">pipelining=True</span><br><span class="line">forks=100</span><br><span class="line">timeout=800</span><br><span class="line">deprecation_warnings=False</span><br></pre></td></tr></table></figure></p>
+<p>注：<br>1)host_key_checking设置为false，在ansible远程主机时就不要主机的key校验；<br>2)timeout设置800秒，防止后面运行剧本时候会爆超时12秒错误。</p>
+<p>6.2安装kolla-ansible及其配置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># pip install kolla kolla-ansible</span><br></pre></td></tr></table></figure></p>
+<p>配置kolla-ansible：<br>1）拷贝globals.yml 和passwords.yml 到 /etc/kolla 目录：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># cp -r /usr/share/kolla-ansible/etc_examples/kolla /etc/</span><br></pre></td></tr></table></figure></p>
+<p>2）拷贝kolla-ansible的主机清单文件（all-in-one和multinode）：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># mkdir -pv /opt/kolla/config</span><br><span class="line"># cd /opt/kolla/config</span><br><span class="line"># cp -rv /usr/share/kolla-ansible/ansible/inventory/* .</span><br></pre></td></tr></table></figure></p>
+<p>6.3配置Nova（可选）<br>特别声明，VMware虚拟机上安装需要进行此步骤，直接在物理机服务器上安装，则跳过此步骤。</p>
+<p>虚拟机操作，使用qemu，不是kvm，进行如下修改：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># mkdir -pv /etc/kolla/config/nova</span><br><span class="line"># vi /etc/kolla/config/nova/nova-compute.conf</span><br></pre></td></tr></table></figure></p>
+<p>添加以下内容：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[libvirt]</span><br><span class="line">virt_type=qemu</span><br><span class="line">cpu_mode = none</span><br></pre></td></tr></table></figure></p>
+<p>6.4生成随机密码文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># kolla-genpwd</span><br></pre></td></tr></table></figure></p>
+<p>修改刚才生成的随机密码，admin的web页面的登陆密码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># vim /etc/kolla/passwords.yml</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">keystone_admin_password: admin</span><br></pre></td></tr></table></figure>
+<p>6.5修改物理网卡的neutron配置（为vlan模式配置）<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># vim /usr/share/kolla-ansible/ansible/roles/neutron/templates/ml2_conf.ini.j2</span><br></pre></td></tr></table></figure></p>
+<p>在大约41行修改成如下：</p>
+<p>6.6修改全局配置<br>全局配置文件globals.yml包含了如下修改项：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># vim /etc/kolla/globals.yml</span><br></pre></td></tr></table></figure></p>
+<p>按照以下内容进行修改：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">kolla_base_distro: &quot;centos&quot;</span><br><span class="line">kolla_install_type: &quot;source&quot;</span><br><span class="line">openstack_release: &quot;queens&quot;</span><br><span class="line"></span><br><span class="line">docker_registry: &quot;20.46.87.183:4000&quot;</span><br><span class="line">docker_namespace: &quot;kolla&quot;</span><br><span class="line"></span><br><span class="line">kolla_internal_vip_address: &quot;20.46.10.21&quot;</span><br><span class="line"></span><br><span class="line">network_interface: &quot;bond0&quot;</span><br><span class="line">neutron_external_interface: &quot;bond1&quot;</span><br><span class="line"></span><br><span class="line">neutron_plugin_agent: &quot;openvswitch&quot;</span><br><span class="line"></span><br><span class="line">enable_ceph: &quot;yes&quot;</span><br><span class="line">enable_ceph_rgw: &quot;yes&quot;</span><br><span class="line">enable_haproxy: &quot;yes&quot;</span><br><span class="line">enable_neutron_dvr: &quot;yes&quot;</span><br><span class="line">enable_neutron_agent_ha: &quot;yes&quot;</span><br><span class="line"></span><br><span class="line">ceph_pool_pg_num: 128</span><br><span class="line">ceph_pool_pgp_num: 128</span><br></pre></td></tr></table></figure></p>
+<p>以上各项解释：</p>
+<p>1、docker_registry: “192.168.136.137:4000”，此处为配置的source的离线私有docker仓库的IP以及端口号。</p>
+<p>2、docker_namespace: “kolla”，这个是仓库镜像的统一命名空间即是前缀，我给的镜像的前缀就是“kolla/”开头的。</p>
+<p>3、kolla_internal_vip_address: “17.17.62.2” ，这个是openstack的页面登陆地址，走的是“bond0”网卡。</p>
+<p>4、network_interface: “bond0”，这个是openstack内部的api服务都会绑定到这个网卡接口上，除此之外，vxlan和隧道和存储网络也默认走这个网络接口。</p>
+<p>5、neutron_external_interface: “bond1”，openstack的外部管理网络的网卡接口。</p>
+<p>6、enable_ceph: “yes”和enable_ceph_rgw: “yes”，选择为yes，就可默认安装ceph。</p>
+<p>7、enable_haproxy: “yes”，openstack的外部管理网络地址没有使用过，需要启用高可用proxy，确定可以使用。</p>
+<p>8、ceph_pool_pg_num: 128和ceph_pool_pgp_num: 128，参照如下：小于5个OSD时可把pg_num设置为128</p>
+<p>OSD数量在5到10个之间的，可以把pg_num设置为512<br>OSD数量在10到50个时候，可以把pg_num设置为4096<br>OSD大于50时，理解权衡方法，借助pgcalc工具计算pg_num取值<br>9、neutron_plugin_agent: “openvswitch”和enable_neutron_dvr: “yes”，这个配置可以使创建虚机的时候，直接选择外部网络，而不需要绑定内部地址。enable_neutron_agent_ha启用，会为该虚机外部网络创建俩个dhcp分配IP，符合高可用模式。</p>
+<p>特别说明：<br>此处的docker仓库配置的是自己的source源私有仓库。假如在线使用hub.docker.com的在线仓库，请参照如下配置。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">docker_registry: &quot;&quot;</span><br><span class="line">docker_namespace: &quot;kolla&quot;</span><br><span class="line">openstack_release: &quot;pike&quot;</span><br></pre></td></tr></table></figure></p>
+<p>这里主要就是“docker_registry”配置为空即可。其他的如上不变。</p>
+<p>参照：“<a href="http://tarballs.openstack.org/kolla/images/README.txt”（截图如下）" target="_blank" rel="noopener">http://tarballs.openstack.org/kolla/images/README.txt”（截图如下）</a></p>
+<p>6.6配置主机清单<br>由于本文是多节点安装，则需要修改multinode文件，即可做到修改剧本执行的主机清单文件。control角色配置三台，即可做到高可用（HA）。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># vim /opt/kolla/multinode</span><br></pre></td></tr></table></figure></p>
+<p>如下图所示：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">[control]</span><br><span class="line">controller01</span><br><span class="line">controller02</span><br><span class="line">controller03</span><br><span class="line"></span><br><span class="line">[network]</span><br><span class="line">controller01</span><br><span class="line">controller02</span><br><span class="line">controller03</span><br><span class="line"></span><br><span class="line">[inner-compute]</span><br><span class="line"></span><br><span class="line">[external-compute]</span><br><span class="line">computer01</span><br><span class="line">computer02</span><br><span class="line">computer03</span><br><span class="line"></span><br><span class="line">[compute:children]</span><br><span class="line">inner-compute</span><br><span class="line">external-compute</span><br><span class="line"></span><br><span class="line">[storage]</span><br><span class="line">controller01</span><br><span class="line">controller02</span><br><span class="line">controller03</span><br><span class="line">computer01</span><br><span class="line">computer02</span><br><span class="line">computer03</span><br><span class="line"></span><br><span class="line">[monitoring]</span><br><span class="line">monitor</span><br><span class="line"></span><br><span class="line">[deployment]</span><br><span class="line">monitor</span><br></pre></td></tr></table></figure></p>
+<p>七、部署Openstack<br>部署操作均在montior节点执行，如下：</p>
+<p>7.1预安装<br>kolla针对Bootstrap服务的依赖安装：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># kolla-ansible -i ./multinode bootstrap-servers</span><br></pre></td></tr></table></figure></p>
+<p>过程省略；<br>结果如下，则运行正确：</p>
+<p>7.2检查<br>安装之前还需要预检查一下主机环境以及配置文件是否正确。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"># ansible -i multinode all -m ping</span><br><span class="line"># kolla-ansible -i ./multinode prechecks</span><br></pre></td></tr></table></figure></p>
+<p>过程省略；<br>结果如下，则运行正确：</p>
+<p>7.3拉取镜像<br>相较于官方文档，在deploy部署之前增加此步骤，可以大大缩短部署openstack的时间（此步骤时间较长，预计2小时左右）：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"># kolla-ansible -i ./multinode pull</span><br><span class="line">``` </span><br><span class="line">过程省略；</span><br><span class="line">结果如下，则运行正确：</span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">7.5部署</span><br><span class="line">开始部署openstack（此步骤预计半小时之内）：</span><br></pre></td></tr></table></figure></p>
+<h1 id="kolla-ansible-i-multinode-deploy"><a href="#kolla-ansible-i-multinode-deploy" class="headerlink" title="kolla-ansible -i ./multinode deploy"></a>kolla-ansible -i ./multinode deploy</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">过程省略；</span><br><span class="line">结果如下，则运行正确：</span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"></span><br><span class="line">7.6部署之后</span><br><span class="line">部署完成之后，还需要这步操作，生成环境变量和脚本：</span><br></pre></td></tr></table></figure>
+<h1 id="kolla-ansible-i-multinode-post-deploy"><a href="#kolla-ansible-i-multinode-post-deploy" class="headerlink" title="kolla-ansible -i ./multinode post-deploy"></a>kolla-ansible -i ./multinode post-deploy</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">```</span><br><span class="line"># cat /etc/kolla/admin-openrc.sh</span><br></pre></td></tr></table></figure>
+<p>如下所示：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">export OS_PROJECT_DOMAIN_NAME=Default</span><br><span class="line">export OS_USER_DOMAIN_NAME=Default</span><br><span class="line">export OS_PROJECT_NAME=admin</span><br><span class="line">export OS_TENANT_NAME=admin</span><br><span class="line">export OS_USERNAME=admin</span><br><span class="line">export OS_PASSWORD=admin</span><br><span class="line">export OS_AUTH_URL=http://192.168.136.210:35357/v3</span><br><span class="line">export OS_INTERFACE=internal</span><br><span class="line">export OS_IDENTITY_API_VERSION=3</span><br><span class="line">export OS_REGION_NAME=RegionOne</span><br></pre></td></tr></table></figure></p>
+<p>至此multinodes部署完成，浏览器输入外网访问地址：http：//192.168.136.210，即可访问Openstack的登陆页面，用户名和密码都是之前设置的admin。界面如下图所示：</p>
+<p>7.8销毁openstack<br>假如不需要这个openstack环境了，可以执行如下命令进行销毁该环境：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"># kolla-ansible destroy -i ./multinode  --yes-i-really-really-mean-i</span><br></pre></td></tr></table></figure></p>
+<p>该销毁指令，会停止并删除各台机器上运行的docker容器，但是对yum和python安装的文件以及pull的docker的images镜像文件不做变更。</p>
+<p>八、安装openstack客户端<br>安装openstack客户端，方便控制台操控。</p>
+<p>pip安装可能存在源码冲突，这里使用yum在线安装。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"># yum install centos-release-openstack-pike</span><br><span class="line"># yum install python-openstackclient python-neutronclient</span><br><span class="line"># which openstack</span><br></pre></td></tr></table></figure></p>
+<p>即可查看安装的openstack的控制台客户端。</p>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</article>
+
+
+
+    <!-- Footer -->
+<footer>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <p class="copyright text-muted">
+          Theme By <a target="_blank" href="https://github.com/levblanc">Levblanc.</a>
+          Inspired By <a target="_blank" href="https://github.com/klugjo/hexo-theme-clean-blog">Clean Blog.</a>
+        </p><p class="copyright text-muted">
+          Powered By <a target="_blank" href="https://hexo.io/">Hexo.</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+    <!-- After Footer Scripts -->
+<script src="/js/highlight.pack.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function(event) {
+    var codeBlocks = Array.prototype.slice.call(document.getElementsByTagName('pre'))
+    codeBlocks.forEach(function(block, index) {
+      hljs.highlightBlock(block);
+    });
+  });
+</script>
+
+  </body>
+</html>
+
