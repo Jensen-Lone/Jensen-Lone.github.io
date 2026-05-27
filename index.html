@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jensen Music | Lone 音乐库</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 头部 -->
+        <header>
+            <h1>Jensen <span class="highlight">Music</span></h1>
+            <p class="subtitle">Lone 私人音乐库</p>
+        </header>
+
+        <!-- 搜索栏 -->
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="searchInput" placeholder="搜索歌曲名称、歌手或曲风...">
+        </div>
+
+        <!-- 曲风分类 -->
+        <div class="genres" id="genres"></div>
+
+        <!-- 播放器 -->
+        <div class="player">
+            <div class="cover">
+                <img id="coverImg" src="assets/cover.jpg" alt="封面">
+            </div>
+            <div class="info">
+                <h3 id="currentTitle">未选择歌曲</h3>
+                <p id="currentArtist">Jensen-Lone</p>
+            </div>
+            <audio id="audioPlayer" controls></audio>
+        </div>
+
+        <!-- 歌单 -->
+        <div class="playlist-header">
+            <h2>全部歌曲 <span id="songCount">0</span></h2>
+        </div>
+        <ul class="playlist" id="playlist"></ul>
+    </div>
+
+    <!-- 水印 -->
+    <div class="watermark">版权 Jensen-Lone 所有</div>
+    <div class="watermark-hidden">© Jensen-Lone All Rights Reserved</div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

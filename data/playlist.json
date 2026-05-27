@@ -1,0 +1,21 @@
+{
+  "songs": [
+    {
+      "id": 1,
+      "title": "三點半陽光",
+      "artist": "Jensen",
+      "genre": "电子",
+      "src": "music/三點半陽光.mp3",
+      "cover": "assets/cover.jpg"
+    },
+    {
+      "id": 2,
+      "title": "山与海",
+      "artist": "Jensen Lone",
+      "genre": "流行",
+      "src": "music/山与海.mp3",
+      "cover": "assets/cover.jpg"
+    }
+    // 你后续添加的歌曲在此添加
+  ]
+}
