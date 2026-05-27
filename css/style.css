@@ -17,7 +17,7 @@ body{
     overflow:hidden;
 }
 
-/* ×Ô¶¨Òå±³¾° */
+/* è‡ªå®šä¹‰èƒŒæ™¯ */
 
 .bg-overlay{
 
@@ -43,7 +43,7 @@ body{
     z-index:-2;
 }
 
-/* ±±¼«¹â¶¯Ì¬²ã */
+/* åŒ—æå…‰åŠ¨æ€å±‚ */
 
 .bg-overlay::after{
 
@@ -87,7 +87,7 @@ body{
     }
 }
 
-/* Ë®Ó¡ */
+/* æ°´å° */
 
 .watermark-hidden{
 
@@ -114,7 +114,7 @@ body{
     transform:rotate(-25deg);
 }
 
-/* Ò³Ãæ */
+/* é¡µé¢ */
 
 .layout{
 
@@ -123,7 +123,7 @@ body{
     height:100vh;
 }
 
-/* ×ó²à */
+/* å·¦ä¾§ */
 
 .sidebar{
 
@@ -150,7 +150,7 @@ body{
 
 .sidebar::after{
 
-    content:"°æÈ¨ Jensen-Lone ËùÓĞ";
+    content:"ç‰ˆæƒ Jensen-Lone æ‰€æœ‰";
 
     display:block;
 
@@ -181,7 +181,7 @@ body{
     outline:none;
 }
 
-/* ·ÖÀà */
+/* åˆ†ç±» */
 
 .genre-header{
 
@@ -221,7 +221,7 @@ body{
         rgba(255,255,255,0.08);
 }
 
-/* Ö÷ÇøÓò */
+/* ä¸»åŒºåŸŸ */
 
 .main-content{
 
@@ -232,7 +232,7 @@ body{
     padding:25px 25px 130px;
 }
 
-/* ·âÃæ */
+/* å°é¢ */
 
 .song-grid{
 
@@ -298,7 +298,7 @@ body{
     color:#ccc;
 }
 
-/* ²¥·ÅÆ÷ */
+/* æ’­æ”¾å™¨ */
 
 .bottom-player{
 
@@ -344,7 +344,7 @@ body{
     bottom:18px;
 }
 
-/* ×ó²à */
+/* å·¦ä¾§ */
 
 .player-left{
 
@@ -368,7 +368,7 @@ body{
     object-fit:cover;
 }
 
-/* ÖĞ¼ä */
+/* ä¸­é—´ */
 
 .player-center{
 
@@ -420,7 +420,7 @@ body{
     flex:1;
 }
 
-/* ÕæÆµÆ× */
+/* çœŸé¢‘è°± */
 
 #visualizer{
 
@@ -433,7 +433,7 @@ body{
     display:none;
 }
 
-/* ÊÖ»úÊÊÅä */
+/* æ‰‹æœºé€‚é… */
 
 @media (max-width:768px){
 

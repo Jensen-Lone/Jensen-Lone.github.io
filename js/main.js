@@ -1,62 +1,118 @@
+// ======================
+// 全局变量
+// ======================
+
 let songs = [];
 
 let currentIndex = 0;
 
+let audioContext = null;
+
+let analyser = null;
+
+let source = null;
+
+let dataArray = null;
+
+let bufferLength = null;
+
+let visualizerRunning = false;
+
+
+// audio 元素
 const audio =
     document.getElementById("audioPlayer");
 
 
-// Web Audio API
+// canvas
+const canvas =
+    document.getElementById("visualizer");
 
-const audioContext =
-    new (
-        window.AudioContext
-        ||
-        window.webkitAudioContext
-    )();
+const ctx =
+    canvas.getContext("2d");
 
-const analyser =
-    audioContext.createAnalyser();
+canvas.width = 650;
 
-const source =
-    audioContext.createMediaElementSource(audio);
-
-source.connect(analyser);
-
-analyser.connect(audioContext.destination);
-
-analyser.fftSize = 256;
-
-const bufferLength =
-    analyser.frequencyBinCount;
-
-const dataArray =
-    new Uint8Array(bufferLength);
+canvas.height = 38;
 
 
+// ======================
+// 初始化 AudioContext
+// 必须用户点击后初始化
+// ======================
+
+function initAudioContext(){
+
+    // 已初始化则跳过
+    if(audioContext) return;
+
+    audioContext =
+        new (
+            window.AudioContext
+            ||
+            window.webkitAudioContext
+        )();
+
+    analyser =
+        audioContext.createAnalyser();
+
+    source =
+        audioContext
+        .createMediaElementSource(audio);
+
+    source.connect(analyser);
+
+    analyser.connect(
+        audioContext.destination
+    );
+
+    analyser.fftSize = 256;
+
+    bufferLength =
+        analyser.frequencyBinCount;
+
+    dataArray =
+        new Uint8Array(bufferLength);
+}
+
+
+// ======================
 // 加载歌曲
+// ======================
 
 async function loadSongs(){
 
-    const res =
-        await fetch("./data/playlist.json");
+    try{
 
-    const data =
-        await res.json();
+        const res =
+            await fetch("./data/playlist.json");
 
-    songs = data.songs;
+        const data =
+            await res.json();
 
-    renderGenres();
+        songs = data.songs;
 
-    renderSongs(songs);
+        renderGenres();
 
-    bindSearch();
+        renderSongs(songs);
+
+        bindSearch();
+
+    }catch(err){
+
+        console.error(
+            "歌单加载失败",
+            err
+        );
+    }
 }
 
 loadSongs();
 
 
-// 分类
+// ======================
+// 渲染分类
+// ======================
 
 function renderGenres(){
 
@@ -72,8 +128,7 @@ function renderGenres(){
         genres[song.genre].push(song);
     });
 
-    const container =
-        document.getElementById("genreList");
+    genreList.innerHTML = "";
 
     let first = true;
 
@@ -81,6 +136,9 @@ function renderGenres(){
 
         const div =
             document.createElement("div");
+
+        div.className =
+            "genre-item";
 
         div.innerHTML = `
 
@@ -110,7 +168,7 @@ function renderGenres(){
             </div>
         `;
 
-        container.appendChild(div);
+        genreList.appendChild(div);
 
         first = false;
     }
@@ -133,17 +191,22 @@ function renderGenres(){
 }
 
 
+// ======================
 // 渲染歌曲
+// ======================
 
 function renderSongs(list){
 
     songContainer.innerHTML =
         list.map(song=>`
 
-        <div class="song-card"
+        <div
+            class="song-card"
             onclick="playSong(${song.id})">
 
-            <img src="${song.cover}">
+            <img
+                loading="lazy"
+                src="${song.cover}">
 
             <div class="song-info">
 
@@ -159,66 +222,103 @@ function renderSongs(list){
 }
 
 
-// 播放
+// ======================
+// 播放歌曲
+// ======================
 
 async function playSong(id){
 
-    currentIndex =
-        songs.findIndex(s=>s.id===id);
+    try{
 
-    const song =
-        songs[currentIndex];
+        // 初始化音频上下文
+        initAudioContext();
 
-    audio.src = song.src;
+        currentIndex =
+            songs.findIndex(
+                s=>s.id===id
+            );
 
-    await audio.play();
+        const song =
+            songs[currentIndex];
 
-    document
-    .getElementById("bottomPlayer")
-    .classList.add("show");
+        // 设置音频
+        audio.src = song.src;
 
-    playerCover.src =
-        song.cover;
+        // 更新 UI
+        playerCover.src =
+            song.cover;
 
-    playerTitle.textContent =
-        song.title;
+        playerTitle.textContent =
+            song.title;
 
-    playerArtist.textContent =
-        song.artist;
+        playerArtist.textContent =
+            song.artist;
 
-    playBtn.innerHTML =
-        `<i class="fas fa-pause"></i>`;
+        bottomPlayer
+            .classList
+            .add("show");
 
-    startVisualizer();
+        // 播放
+        await audio.play();
+
+        // 更新按钮
+        playBtn.innerHTML =
+            `<i class="fas fa-pause"></i>`;
+
+        // 开启频谱
+        startVisualizer();
+
+    }catch(err){
+
+        console.error(
+            "播放失败",
+            err
+        );
+
+        alert(
+            "音频播放失败，请检查 MP3 路径"
+        );
+    }
 }
 
 
+// ======================
 // 播放暂停
+// ======================
 
-playBtn.onclick = ()=>{
+playBtn.onclick = async ()=>{
 
     if(audio.paused){
 
-        audio.play();
+        try{
 
-        startVisualizer();
+            await audio.play();
 
-        playBtn.innerHTML =
-            `<i class="fas fa-pause"></i>`;
+            playBtn.innerHTML =
+                `<i class="fas fa-pause"></i>`;
+
+            startVisualizer();
+
+        }catch(err){
+
+            console.error(err);
+        }
 
     }else{
 
         audio.pause();
 
-        stopVisualizer();
-
         playBtn.innerHTML =
             `<i class="fas fa-play"></i>`;
+
+        stopVisualizer();
     }
 };
 
 
+// ======================
 // 上一首
+// ======================
 
 prevBtn.onclick = ()=>{
 
@@ -236,7 +336,9 @@ prevBtn.onclick = ()=>{
 };
 
 
+// ======================
 // 下一首
+// ======================
 
 nextBtn.onclick = ()=>{
 
@@ -253,7 +355,9 @@ nextBtn.onclick = ()=>{
 };
 
 
+// ======================
 // 自动下一首
+// ======================
 
 audio.onended = ()=>{
 
@@ -261,43 +365,57 @@ audio.onended = ()=>{
 };
 
 
-// 时间
+// ======================
+// 时间更新
+// ======================
 
 audio.addEventListener(
     "timeupdate",
     ()=>{
 
         const progress =
-            audio.currentTime
-            / audio.duration
-            * 100;
+            (
+                audio.currentTime
+                /
+                audio.duration
+            ) * 100;
 
         progressBar.value =
             progress || 0;
 
         currentTime.textContent =
-            formatTime(audio.currentTime);
+            formatTime(
+                audio.currentTime
+            );
 
         duration.textContent =
-            formatTime(audio.duration || 0);
+            formatTime(
+                audio.duration || 0
+            );
     }
 );
 
 
+// ======================
 // 拖动进度
+// ======================
 
 progressBar.addEventListener(
     "input",
     e=>{
 
         audio.currentTime =
-            (e.target.value / 100)
-            * audio.duration;
+            (
+                e.target.value
+                / 100
+            ) * audio.duration;
     }
 );
 
 
+// ======================
 // 时间格式
+// ======================
 
 function formatTime(time){
 
@@ -317,11 +435,14 @@ function formatTime(time){
 }
 
 
+// ======================
 // 搜索
+// ======================
 
 function bindSearch(){
 
-    searchInput.addEventListener(
+    searchInput
+    .addEventListener(
         "input",
         e=>{
 
@@ -349,43 +470,43 @@ function bindSearch(){
 }
 
 
-/* 真频谱 */
-
-const canvas =
-    document.getElementById("visualizer");
-
-const ctx =
-    canvas.getContext("2d");
-
-canvas.width = 650;
-
-canvas.height = 38;
-
-let visualizerRunning = false;
+// ======================
+// 真频谱
+// ======================
 
 function startVisualizer(){
 
+    if(visualizerRunning) return;
+
     visualizerRunning = true;
 
-    canvas.style.display = "block";
+    visualizer.style.display =
+        "block";
 
     drawVisualizer();
 }
+
 
 function stopVisualizer(){
 
     visualizerRunning = false;
 
-    canvas.style.display = "none";
+    visualizer.style.display =
+        "none";
 }
+
 
 function drawVisualizer(){
 
     if(!visualizerRunning) return;
 
-    requestAnimationFrame(drawVisualizer);
+    requestAnimationFrame(
+        drawVisualizer
+    );
 
-    analyser.getByteFrequencyData(dataArray);
+    analyser.getByteFrequencyData(
+        dataArray
+    );
 
     ctx.clearRect(
         0,
@@ -395,14 +516,19 @@ function drawVisualizer(){
     );
 
     const barWidth =
-        (canvas.width / bufferLength) * 1.5;
+        (canvas.width / bufferLength)
+        * 1.3;
 
     let x = 0;
 
-    for(let i=0;i<bufferLength;i++){
+    for(
+        let i = 0;
+        i < bufferLength;
+        i++
+    ){
 
         const barHeight =
-            dataArray[i] / 5;
+            dataArray[i] / 3;
 
         const gradient =
             ctx.createLinearGradient(
