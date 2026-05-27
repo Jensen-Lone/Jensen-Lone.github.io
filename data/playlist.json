@@ -6,8 +6,7 @@
       "artist": "Jensen Lone",
       "genre": "Cantonpop",
       "src": "./music/Sunshine at half past three.mp3",
-      "cover": "./assets/Sunshine at half past three.jpg",
-	  "lyric": "./lyrics/Sunshine at half past three.lrc"
+      "cover": "./assets/Sunshine at half past three.jpg"
     },
     {
       "id": 2,
@@ -15,8 +14,7 @@
       "artist": "Jensen Lone",
       "genre": "Cantonpop",
       "src": "./music/Lying in the spring breeze with you.mp3",
-      "cover": "./assets/Lying in the spring breeze with you.jpg",
-	  "lyric": "./lyrics/Lying in the spring breeze with you.lrc"
+      "cover": "./assets/Lying in the spring breeze with you.jpg"
     }
   ]
 }

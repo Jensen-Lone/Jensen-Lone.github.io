@@ -2,111 +2,120 @@
 <html lang="zh-CN">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
 
     <title>Jensen Music</title>
 
-    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet"
+        href="./css/style.css">
 
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
 </head>
 
 <body>
 
-    <div class="app">
+    <!-- 北极光背景 -->
+    <div class="aurora-bg"></div>
 
-        <!-- 顶部 -->
-        <header>
+    <div class="layout">
+
+        <!-- 左侧栏 -->
+        <aside class="sidebar">
+
             <h1>Jensen Music</h1>
-            <p>豆瓣风 · 私人音乐库</p>
-        </header>
 
-        <!-- 搜索 -->
-        <div class="search-box">
-            <input type="text" id="searchInput" placeholder="搜索歌曲 / 歌手">
-        </div>
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="搜索音乐">
+
+            <div id="genreList"></div>
+
+        </aside>
 
         <!-- 主区域 -->
-        <div class="main-layout">
+        <main class="main-content">
 
-            <!-- 左侧播放器 -->
-            <div class="player-panel">
+            <div id="songContainer"
+                class="song-grid">
+            </div>
 
-                <!-- 封面 -->
-                <div class="cover-box">
-                    <img id="coverImg" src="./assets/cover.jpg">
-                </div>
+        </main>
 
-                <!-- 波形 -->
-                <canvas id="waveCanvas"></canvas>
+    </div>
 
-                <!-- 歌曲信息 -->
-                <div class="song-meta">
-                    <h2 id="currentTitle">未播放</h2>
-                    <p id="currentArtist">Jensen Lone</p>
-                </div>
+    <!-- 底部播放器 -->
+    <div class="bottom-player"
+        id="bottomPlayer">
 
-                <!-- 控制栏 -->
-                <div class="controls">
+        <div class="player-left">
 
-                    <button id="prevBtn">
-                        <i class="fas fa-backward"></i>
-                    </button>
+            <img id="playerCover">
 
-                    <button id="playBtn">
-                        <i class="fas fa-play"></i>
-                    </button>
+            <div>
 
-                    <button id="nextBtn">
-                        <i class="fas fa-forward"></i>
-                    </button>
+                <h3 id="playerTitle">
+                    未播放
+                </h3>
 
-                    <button id="randomBtn">
-                        <i class="fas fa-random"></i>
-                    </button>
-
-                    <button id="loopBtn">
-                        <i class="fas fa-repeat"></i>
-                    </button>
-
-                </div>
-
-                <!-- 进度 -->
-                <div class="progress-wrap">
-
-                    <span id="currentTime">00:00</span>
-
-                    <input type="range"
-                        id="progressBar"
-                        value="0"
-                        min="0"
-                        max="100">
-
-                    <span id="duration">00:00</span>
-
-                </div>
-
-                <audio id="audioPlayer"></audio>
-
-                <!-- 歌词 -->
-                <div class="lyrics-container">
-                    <div id="lyrics"></div>
-                </div>
+                <p id="playerArtist">
+                    Jensen Music
+                </p>
 
             </div>
 
-            <!-- 右侧歌单 -->
-            <div class="playlist-panel">
+        </div>
 
-                <div id="playlistGroup"></div>
+        <div class="player-center">
+
+            <div class="controls">
+
+                <button id="prevBtn">
+                    <i class="fas fa-backward"></i>
+                </button>
+
+                <button id="playBtn">
+                    <i class="fas fa-play"></i>
+                </button>
+
+                <button id="nextBtn">
+                    <i class="fas fa-forward"></i>
+                </button>
 
             </div>
+
+            <div class="progress-wrap">
+
+                <span id="currentTime">
+                    00:00
+                </span>
+
+                <input type="range"
+                    id="progressBar"
+                    value="0"
+                    min="0"
+                    max="100">
+
+                <span id="duration">
+                    00:00
+                </span>
+
+            </div>
+
+            <!-- 波形 -->
+            <canvas id="waveCanvas"></canvas>
 
         </div>
 
     </div>
+
+    <audio id="audioPlayer"></audio>
 
     <script src="./js/main.js"></script>
 
