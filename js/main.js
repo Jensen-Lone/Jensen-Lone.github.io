@@ -1,69 +1,69 @@
 // ================================
-// È«¾Ö±äÁ¿
+// å…¨å±€å˜é‡
 // ================================
 
-// ´æ´¢ËùÓĞ¸èÇú
+// å­˜å‚¨æ‰€æœ‰æ­Œæ›²
 let allSongs = [];
 
-// µ±Ç°Ñ¡ÖĞµÄÇú·ç
-let currentGenre = 'È«²¿';
+// å½“å‰é€‰ä¸­çš„æ›²é£
+let currentGenre = 'å…¨éƒ¨';
 
 
 // ================================
-// ¼ÓÔØ¸èµ¥ JSON
+// åŠ è½½æ­Œå• JSON
 // ================================
 async function loadPlaylist() {
 
     try {
 
-        // »ñÈ¡ JSON ÎÄ¼ş
+        // è·å– JSON æ–‡ä»¶
         const res = await fetch('./data/playlist.json');
 
-        // ¼ì²éÎÄ¼şÊÇ·ñ¼ÓÔØ³É¹¦
+        // æ£€æŸ¥æ–‡ä»¶æ˜¯å¦åŠ è½½æˆåŠŸ
         if (!res.ok) {
-            throw new Error(`¸èµ¥¼ÓÔØÊ§°Ü: ${res.status}`);
+            throw new Error(`æ­Œå•åŠ è½½å¤±è´¥: ${res.status}`);
         }
 
-        // ½âÎö JSON
+        // è§£æ JSON
         const data = await res.json();
 
-        // ±£´æ¸èÇúÊı¾İ
+        // ä¿å­˜æ­Œæ›²æ•°æ®
         allSongs = data.songs || [];
 
-        // äÖÈ¾Çú·ç±êÇ©
+        // æ¸²æŸ“æ›²é£æ ‡ç­¾
         renderGenres();
 
-        // äÖÈ¾¸èµ¥
+        // æ¸²æŸ“æ­Œå•
         renderPlaylist(allSongs);
 
     } catch (err) {
 
-        console.error('¼ÓÔØ¸èµ¥Ê§°Ü:', err);
+        console.error('åŠ è½½æ­Œå•å¤±è´¥:', err);
 
         alert(
-            '¸èµ¥¼ÓÔØÊ§°Ü£¬Çë¼ì²é£º\n' +
-            '1. playlist.json ÊÇ·ñºÏ·¨\n' +
-            '2. MP3 ÎÄ¼şÂ·¾¶ÊÇ·ñÕıÈ·\n' +
-            '3. GitHub Pages ÊÇ·ñ²¿Êğ³É¹¦'
+            'æ­Œå•åŠ è½½å¤±è´¥ï¼Œè¯·æ£€æŸ¥ï¼š\n' +
+            '1. playlist.json æ˜¯å¦åˆæ³•\n' +
+            '2. MP3 æ–‡ä»¶è·¯å¾„æ˜¯å¦æ­£ç¡®\n' +
+            '3. GitHub Pages æ˜¯å¦éƒ¨ç½²æˆåŠŸ'
         );
     }
 }
 
 
 // ================================
-// äÖÈ¾Çú·ç·ÖÀà
+// æ¸²æŸ“æ›²é£åˆ†ç±»
 // ================================
 function renderGenres() {
 
-    // È¥ÖØÉú³ÉÇú·çÁĞ±í
+    // å»é‡ç”Ÿæˆæ›²é£åˆ—è¡¨
     const genresSet = new Set(allSongs.map(song => song.genre));
 
-    // Ìí¼Ó¡°È«²¿¡±
-    const genres = ['È«²¿', ...genresSet];
+    // æ·»åŠ â€œå…¨éƒ¨â€
+    const genres = ['å…¨éƒ¨', ...genresSet];
 
     const container = document.getElementById('genres');
 
-    // Éú³É HTML
+    // ç”Ÿæˆ HTML
     container.innerHTML = genres.map(genre => `
         <div 
             class="genre-tag ${genre === currentGenre ? 'active' : ''}" 
@@ -73,21 +73,21 @@ function renderGenres() {
         </div>
     `).join('');
 
-    // µã»÷ÇĞ»»Çú·ç
+    // ç‚¹å‡»åˆ‡æ¢æ›²é£
     container.onclick = (e) => {
 
         if (e.target.classList.contains('genre-tag')) {
 
-            // ¸üĞÂµ±Ç°Çú·ç
+            // æ›´æ–°å½“å‰æ›²é£
             currentGenre = e.target.dataset.genre;
 
-            // ¸üĞÂ°´Å¥ÑùÊ½
+            // æ›´æ–°æŒ‰é’®æ ·å¼
             document.querySelectorAll('.genre-tag')
                 .forEach(el => el.classList.remove('active'));
 
             e.target.classList.add('active');
 
-            // ÖØĞÂ¹ıÂËäÖÈ¾
+            // é‡æ–°è¿‡æ»¤æ¸²æŸ“
             filterAndRender();
         }
     };
@@ -95,20 +95,20 @@ function renderGenres() {
 
 
 // ================================
-// ËÑË÷ + Çú·ç¹ıÂË
+// æœç´¢ + æ›²é£è¿‡æ»¤
 // ================================
 function filterAndRender() {
 
     let filtered = [...allSongs];
 
-    // »ñÈ¡ËÑË÷ÄÚÈİ
+    // è·å–æœç´¢å†…å®¹
     const searchText = document
         .getElementById('searchInput')
         .value
         .toLowerCase()
         .trim();
 
-    // ËÑË÷¹ıÂË
+    // æœç´¢è¿‡æ»¤
     if (searchText) {
 
         filtered = filtered.filter(song => {
@@ -122,45 +122,45 @@ function filterAndRender() {
         });
     }
 
-    // Çú·ç¹ıÂË
-    if (currentGenre !== 'È«²¿') {
+    // æ›²é£è¿‡æ»¤
+    if (currentGenre !== 'å…¨éƒ¨') {
 
         filtered = filtered.filter(song =>
             song.genre === currentGenre
         );
     }
 
-    // äÖÈ¾
+    // æ¸²æŸ“
     renderPlaylist(filtered);
 }
 
 
 // ================================
-// äÖÈ¾¸èµ¥
+// æ¸²æŸ“æ­Œå•
 // ================================
 function renderPlaylist(songs) {
 
     const ul = document.getElementById('playlist');
 
-    // Çå¿ÕÁĞ±í
+    // æ¸…ç©ºåˆ—è¡¨
     ul.innerHTML = '';
 
-    // ¸üĞÂ¸èÇúÊıÁ¿
+    // æ›´æ–°æ­Œæ›²æ•°é‡
     document.getElementById('songCount').textContent = songs.length;
 
-    // ¿ÕÁĞ±íÌáÊ¾
+    // ç©ºåˆ—è¡¨æç¤º
     if (songs.length === 0) {
 
         ul.innerHTML = `
             <li style="justify-content:center;color:#aaa;">
-                Ã»ÓĞÕÒµ½¸èÇú
+                æ²¡æœ‰æ‰¾åˆ°æ­Œæ›²
             </li>
         `;
 
         return;
     }
 
-    // ±éÀú¸èÇú
+    // éå†æ­Œæ›²
     songs.forEach(song => {
 
         const li = document.createElement('li');
@@ -176,7 +176,7 @@ function renderPlaylist(songs) {
             </div>
         `;
 
-        // µã»÷²¥·Å
+        // ç‚¹å‡»æ’­æ”¾
         li.addEventListener('click', () => {
             playSong(song);
         });
@@ -187,7 +187,7 @@ function renderPlaylist(songs) {
 
 
 // ================================
-// ²¥·Å¸èÇú
+// æ’­æ”¾æ­Œæ›²
 // ================================
 async function playSong(song) {
 
@@ -199,7 +199,7 @@ async function playSong(song) {
 
     const artist = document.getElementById('currentArtist');
 
-    // ¸üĞÂ²¥·ÅÆ÷ĞÅÏ¢
+    // æ›´æ–°æ’­æ”¾å™¨ä¿¡æ¯
     audio.src = song.src;
 
     cover.src = song.cover || './assets/cover.jpg';
@@ -210,28 +210,28 @@ async function playSong(song) {
 
     try {
 
-        // ¼ÓÔØÒôÆµ
+        // åŠ è½½éŸ³é¢‘
         audio.load();
 
-        // ²¥·Å
+        // æ’­æ”¾
         await audio.play();
 
     } catch (err) {
 
-        console.error('²¥·ÅÊ§°Ü:', err);
+        console.error('æ’­æ”¾å¤±è´¥:', err);
 
         alert(
-            'ÒôÆµ²¥·ÅÊ§°Ü£¬Çë¼ì²é£º\n' +
-            '1. MP3 ÎÄ¼şÊÇ·ñ´æÔÚ\n' +
-            '2. ÎÄ¼şÂ·¾¶ÊÇ·ñÕıÈ·\n' +
-            '3. ä¯ÀÀÆ÷ÊÇ·ñ½ûÖ¹×Ô¶¯²¥·Å'
+            'éŸ³é¢‘æ’­æ”¾å¤±è´¥ï¼Œè¯·æ£€æŸ¥ï¼š\n' +
+            '1. MP3 æ–‡ä»¶æ˜¯å¦å­˜åœ¨\n' +
+            '2. æ–‡ä»¶è·¯å¾„æ˜¯å¦æ­£ç¡®\n' +
+            '3. æµè§ˆå™¨æ˜¯å¦ç¦æ­¢è‡ªåŠ¨æ’­æ”¾'
         );
     }
 }
 
 
 // ================================
-// ËÑË÷¿òÊµÊ±¹ıÂË
+// æœç´¢æ¡†å®æ—¶è¿‡æ»¤
 // ================================
 document
     .getElementById('searchInput')
@@ -239,6 +239,6 @@ document
 
 
 // ================================
-// Ò³Ãæ¼ÓÔØÍê³Éºó³õÊ¼»¯
+// é¡µé¢åŠ è½½å®Œæˆååˆå§‹åŒ–
 // ================================
 window.addEventListener('DOMContentLoaded', loadPlaylist);

@@ -2,7 +2,7 @@
   "songs": [
     {
       "id": 1,
-      "title": "Sunshine at half past three",
+      "title": "三點半陽光",
       "artist": "Jensen Lone",
       "genre": "Cantonpop",
       "src": "./music/Sunshine at half past three.mp3",
@@ -10,7 +10,7 @@
     },
     {
       "id": 2,
-      "title": "Lying in the spring breeze with you",
+      "title": "和你躺進春風裡",
       "artist": "Jensen Lone",
       "genre": "Cantonpop",
       "src": "./music/Lying in the spring breeze with you.mp3",
