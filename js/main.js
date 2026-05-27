@@ -35,6 +35,14 @@ canvas.width = 650;
 
 canvas.height = 38;
 
+// Logo 刷新页面
+
+document
+.getElementById("logoBtn")
+.onclick = ()=>{
+
+    location.reload();
+};
 
 // ======================
 // 初始化 AudioContext

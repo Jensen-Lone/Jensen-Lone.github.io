@@ -5,7 +5,7 @@
       "title": "三點半陽光",
       "artist": "Jensen Lone",
       "genre": "Cantonpop",
-      "src": "./music/Sunshine at half past three.mp3",
+      "src": "./music/Sunshine at half past three.m4a",
       "cover": "./assets/Sunshine at half past three.jpg"
     },
     {
@@ -13,7 +13,7 @@
       "title": "和你躺進春風裡",
       "artist": "Jensen Lone",
       "genre": "Cantonpop",
-      "src": "./music/Lying in the spring breeze with you.mp3",
+      "src": "./music/Lying in the spring breeze with you.m4a",
       "cover": "./assets/Lying in the spring breeze with you.jpg"
     }
   ]
