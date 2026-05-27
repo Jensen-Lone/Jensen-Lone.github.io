@@ -569,3 +569,31 @@ function drawVisualizer(){
         x += barWidth + 1;
     }
 }
+
+
+// ======================
+// 注册 PWA
+// ======================
+
+if(
+    "serviceWorker"
+    in navigator
+){
+
+    window.addEventListener(
+        "load",
+        ()=>{
+
+            navigator
+            .serviceWorker
+            .register("./sw.js")
+
+            .then(()=>{
+
+                console.log(
+                    "PWA 已启动"
+                );
+            });
+        }
+    );
+}
