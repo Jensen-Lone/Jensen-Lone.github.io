@@ -1,52 +1,115 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jensen Lone | 音乐库</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <title>Jensen Music</title>
+
+    <link rel="stylesheet" href="./css/style.css">
+
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 </head>
+
 <body>
-    <div class="container">
-        <!-- 头部 -->
+
+    <div class="app">
+
+        <!-- 顶部 -->
         <header>
-            <h1>Jensen Lone<span class="highlight"> Music</span></h1>
-            <p class="subtitle">私人音乐库</p>
+            <h1>Jensen Music</h1>
+            <p>豆瓣风 · 私人音乐库</p>
         </header>
 
-        <!-- 搜索栏 -->
+        <!-- 搜索 -->
         <div class="search-box">
-            <i class="fas fa-search"></i>
-            <input type="text" id="searchInput" placeholder="搜索歌曲名称、歌手或曲风...">
+            <input type="text" id="searchInput" placeholder="搜索歌曲 / 歌手">
         </div>
 
-        <!-- 曲风分类 -->
-        <div class="genres" id="genres"></div>
+        <!-- 主区域 -->
+        <div class="main-layout">
 
-        <!-- 播放器 -->
-        <div class="player">
-            <div class="cover">
-                <img id="coverImg" src="assets/cover.jpg" alt="封面">
+            <!-- 左侧播放器 -->
+            <div class="player-panel">
+
+                <!-- 封面 -->
+                <div class="cover-box">
+                    <img id="coverImg" src="./assets/cover.jpg">
+                </div>
+
+                <!-- 波形 -->
+                <canvas id="waveCanvas"></canvas>
+
+                <!-- 歌曲信息 -->
+                <div class="song-meta">
+                    <h2 id="currentTitle">未播放</h2>
+                    <p id="currentArtist">Jensen Lone</p>
+                </div>
+
+                <!-- 控制栏 -->
+                <div class="controls">
+
+                    <button id="prevBtn">
+                        <i class="fas fa-backward"></i>
+                    </button>
+
+                    <button id="playBtn">
+                        <i class="fas fa-play"></i>
+                    </button>
+
+                    <button id="nextBtn">
+                        <i class="fas fa-forward"></i>
+                    </button>
+
+                    <button id="randomBtn">
+                        <i class="fas fa-random"></i>
+                    </button>
+
+                    <button id="loopBtn">
+                        <i class="fas fa-repeat"></i>
+                    </button>
+
+                </div>
+
+                <!-- 进度 -->
+                <div class="progress-wrap">
+
+                    <span id="currentTime">00:00</span>
+
+                    <input type="range"
+                        id="progressBar"
+                        value="0"
+                        min="0"
+                        max="100">
+
+                    <span id="duration">00:00</span>
+
+                </div>
+
+                <audio id="audioPlayer"></audio>
+
+                <!-- 歌词 -->
+                <div class="lyrics-container">
+                    <div id="lyrics"></div>
+                </div>
+
             </div>
-            <div class="info">
-                <h3 id="currentTitle">未选择歌曲</h3>
-                <p id="currentArtist">Jensen-Lone</p>
+
+            <!-- 右侧歌单 -->
+            <div class="playlist-panel">
+
+                <div id="playlistGroup"></div>
+
             </div>
-            <audio id="audioPlayer" controls></audio>
+
         </div>
 
-        <!-- 歌单 -->
-        <div class="playlist-header">
-            <h2>全部歌曲 <span id="songCount">0</span></h2>
-        </div>
-        <ul class="playlist" id="playlist"></ul>
     </div>
 
-    <!-- 水印 -->
-    <div class="watermark">版权 Jensen-Lone 所有</div>
-    <div class="watermark-hidden">© Jensen-Lone All Rights Reserved</div>
+    <script src="./js/main.js"></script>
 
-    <script src="js/main.js"></script>
 </body>
+
 </html>
