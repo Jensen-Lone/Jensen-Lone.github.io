@@ -2,13 +2,40 @@ let songs = [];
 
 let currentIndex = 0;
 
-let audio =
+const audio =
     document.getElementById("audioPlayer");
 
-let isPlaying = false;
+
+// Web Audio API
+
+const audioContext =
+    new (
+        window.AudioContext
+        ||
+        window.webkitAudioContext
+    )();
+
+const analyser =
+    audioContext.createAnalyser();
+
+const source =
+    audioContext.createMediaElementSource(audio);
+
+source.connect(analyser);
+
+analyser.connect(audioContext.destination);
+
+analyser.fftSize = 256;
+
+const bufferLength =
+    analyser.frequencyBinCount;
+
+const dataArray =
+    new Uint8Array(bufferLength);
 
 
 // 加载歌曲
+
 async function loadSongs(){
 
     const res =
@@ -29,7 +56,8 @@ async function loadSongs(){
 loadSongs();
 
 
-// 渲染左侧分类
+// 分类
+
 function renderGenres(){
 
     const genres = {};
@@ -47,8 +75,6 @@ function renderGenres(){
     const container =
         document.getElementById("genreList");
 
-    container.innerHTML = "";
-
     let first = true;
 
     for(const genre in genres){
@@ -56,9 +82,8 @@ function renderGenres(){
         const div =
             document.createElement("div");
 
-        div.className = "genre-item";
-
         div.innerHTML = `
+
             <div class="genre-header">
                 ${genre}
             </div>
@@ -72,7 +97,8 @@ function renderGenres(){
                 ${genres[genre]
                     .map(song=>`
 
-                    <div class="genre-song"
+                    <div
+                        class="genre-song"
                         onclick="playSong(${song.id})">
 
                         ${song.title}
@@ -107,13 +133,11 @@ function renderGenres(){
 }
 
 
-// 渲染封面
+// 渲染歌曲
+
 function renderSongs(list){
 
-    const container =
-        document.getElementById("songContainer");
-
-    container.innerHTML =
+    songContainer.innerHTML =
         list.map(song=>`
 
         <div class="song-card"
@@ -135,8 +159,9 @@ function renderSongs(list){
 }
 
 
-// 播放歌曲
-function playSong(id){
+// 播放
+
+async function playSong(id){
 
     currentIndex =
         songs.findIndex(s=>s.id===id);
@@ -146,60 +171,55 @@ function playSong(id){
 
     audio.src = song.src;
 
-    audio.play();
-
-    isPlaying = true;
+    await audio.play();
 
     document
     .getElementById("bottomPlayer")
     .classList.add("show");
 
-    document
-    .getElementById("playerCover")
-    .src = song.cover;
+    playerCover.src =
+        song.cover;
 
-    document
-    .getElementById("playerTitle")
-    .textContent = song.title;
+    playerTitle.textContent =
+        song.title;
 
-    document
-    .getElementById("playerArtist")
-    .textContent = song.artist;
+    playerArtist.textContent =
+        song.artist;
 
-    document
-    .getElementById("playBtn")
-    .innerHTML =
+    playBtn.innerHTML =
         `<i class="fas fa-pause"></i>`;
 
-    startWave();
+    startVisualizer();
 }
 
 
 // 播放暂停
+
 playBtn.onclick = ()=>{
 
     if(audio.paused){
 
         audio.play();
 
+        startVisualizer();
+
         playBtn.innerHTML =
             `<i class="fas fa-pause"></i>`;
-
-        startWave();
 
     }else{
 
         audio.pause();
 
+        stopVisualizer();
+
         playBtn.innerHTML =
             `<i class="fas fa-play"></i>`;
-
-        stopWave();
     }
 };
 
 
 // 上一首
+
 prevBtn.onclick = ()=>{
 
     currentIndex--;
@@ -217,6 +237,7 @@ prevBtn.onclick = ()=>{
 
 
 // 下一首
+
 nextBtn.onclick = ()=>{
 
     currentIndex++;
@@ -233,13 +254,15 @@ nextBtn.onclick = ()=>{
 
 
 // 自动下一首
+
 audio.onended = ()=>{
 
     nextBtn.onclick();
 };
 
 
-// 进度
+// 时间
+
 audio.addEventListener(
     "timeupdate",
     ()=>{
@@ -253,19 +276,16 @@ audio.addEventListener(
             progress || 0;
 
         currentTime.textContent =
-            formatTime(
-                audio.currentTime
-            );
+            formatTime(audio.currentTime);
 
         duration.textContent =
-            formatTime(
-                audio.duration || 0
-            );
+            formatTime(audio.duration || 0);
     }
 );
 
 
-// 拖动
+// 拖动进度
+
 progressBar.addEventListener(
     "input",
     e=>{
@@ -278,6 +298,7 @@ progressBar.addEventListener(
 
 
 // 时间格式
+
 function formatTime(time){
 
     const min =
@@ -297,6 +318,7 @@ function formatTime(time){
 
 
 // 搜索
+
 function bindSearch(){
 
     searchInput.addEventListener(
@@ -327,39 +349,43 @@ function bindSearch(){
 }
 
 
-/* 波形动画 */
+/* 真频谱 */
 
 const canvas =
-    document.getElementById("waveCanvas");
+    document.getElementById("visualizer");
 
 const ctx =
     canvas.getContext("2d");
 
-canvas.width = 700;
+canvas.width = 650;
 
-canvas.height = 40;
+canvas.height = 38;
 
-let waveRunning = false;
+let visualizerRunning = false;
 
-function startWave(){
+function startVisualizer(){
+
+    visualizerRunning = true;
 
     canvas.style.display = "block";
 
-    waveRunning = true;
-
-    animateWave();
+    drawVisualizer();
 }
 
-function stopWave(){
+function stopVisualizer(){
 
-    waveRunning = false;
+    visualizerRunning = false;
 
     canvas.style.display = "none";
 }
 
-function animateWave(){
+function drawVisualizer(){
 
-    if(!waveRunning) return;
+    if(!visualizerRunning) return;
+
+    requestAnimationFrame(drawVisualizer);
+
+    analyser.getByteFrequencyData(dataArray);
 
     ctx.clearRect(
         0,
@@ -368,23 +394,44 @@ function animateWave(){
         canvas.height
     );
 
-    for(let i=0;i<80;i++){
+    const barWidth =
+        (canvas.width / bufferLength) * 1.5;
 
-        const h =
-            Math.random() * 35;
+    let x = 0;
+
+    for(let i=0;i<bufferLength;i++){
+
+        const barHeight =
+            dataArray[i] / 5;
+
+        const gradient =
+            ctx.createLinearGradient(
+                0,
+                0,
+                0,
+                canvas.height
+            );
+
+        gradient.addColorStop(
+            0,
+            "#7fffd4"
+        );
+
+        gradient.addColorStop(
+            1,
+            "#00bfff"
+        );
 
         ctx.fillStyle =
-            "rgba(120,255,220,0.7)";
+            gradient;
 
         ctx.fillRect(
-            i * 10,
-            canvas.height - h,
-            5,
-            h
+            x,
+            canvas.height - barHeight,
+            barWidth,
+            barHeight
         );
-    }
 
-    requestAnimationFrame(
-        animateWave
-    );
+        x += barWidth + 1;
+    }
 }

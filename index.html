@@ -20,19 +20,24 @@
 
 <body>
 
-    <!-- 北极光背景 -->
-    <div class="aurora-bg"></div>
+    <!-- 背景 -->
+    <div class="bg-overlay"></div>
+
+    <!-- 隐藏水印 -->
+    <div class="watermark-hidden">
+        版权所有 Jensen-Lone
+    </div>
 
     <div class="layout">
 
-        <!-- 左侧栏 -->
+        <!-- 左侧 -->
         <aside class="sidebar">
 
             <h1>Jensen Music</h1>
 
             <input
-                type="text"
                 id="searchInput"
+                type="text"
                 placeholder="搜索音乐">
 
             <div id="genreList"></div>
@@ -42,7 +47,8 @@
         <!-- 主区域 -->
         <main class="main-content">
 
-            <div id="songContainer"
+            <div
+                id="songContainer"
                 class="song-grid">
             </div>
 
@@ -51,7 +57,8 @@
     </div>
 
     <!-- 底部播放器 -->
-    <div class="bottom-player"
+    <div
+        class="bottom-player"
         id="bottomPlayer">
 
         <div class="player-left">
@@ -65,7 +72,7 @@
                 </h3>
 
                 <p id="playerArtist">
-                    Jensen Music
+                    Jensen-Lone
                 </p>
 
             </div>
@@ -96,7 +103,8 @@
                     00:00
                 </span>
 
-                <input type="range"
+                <input
+                    type="range"
                     id="progressBar"
                     value="0"
                     min="0"
@@ -108,8 +116,8 @@
 
             </div>
 
-            <!-- 波形 -->
-            <canvas id="waveCanvas"></canvas>
+            <!-- 真频谱 -->
+            <canvas id="visualizer"></canvas>
 
         </div>
 
