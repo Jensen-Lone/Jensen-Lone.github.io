@@ -1,7 +1,7 @@
 // 缓存名称
 
 const CACHE_NAME =
-    "jensen-music-v1";
+    "jensen-music-v2";
 
 
 // 需要缓存的资源
@@ -54,6 +54,44 @@ self.addEventListener(
 self.addEventListener(
     "fetch",
     event=>{
+
+        event.respondWith(
+
+            caches.match(event.request)
+
+            .then(response=>{
+
+                return (
+                    response
+                    ||
+                    fetch(event.request)
+                );
+            })
+        );
+    }
+);
+
+
+
+self.addEventListener(
+    "fetch",
+    event=>{
+
+        // playlist 不缓存
+
+        if(
+            event.request.url
+            .includes("playlist.json")
+        ){
+
+            event.respondWith(
+                fetch(event.request)
+            );
+
+            return;
+        }
+
+        // 其它资源缓存
 
         event.respondWith(
 
