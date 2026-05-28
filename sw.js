@@ -1,7 +1,7 @@
 // 缓存名称
 
 const CACHE_NAME =
-    "jensen-music-v2";
+    "jensen-music-v7";
 
 
 // 需要缓存的资源
@@ -15,8 +15,6 @@ const urlsToCache = [
     "./css/style.css",
 
     "./js/main.js",
-
-    "./data/playlist.json",
 
     "./manifest.json",
 
