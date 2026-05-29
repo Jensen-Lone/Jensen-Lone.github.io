@@ -1,166 +1,191 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-
 <head>
 
+    <!-- 字符编码 -->
     <meta charset="UTF-8">
 
+    <!-- 手机适配 -->
     <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
+          content="width=device-width, initial-scale=1.0">
 
     <title>Jensen Music</title>
 
+    <!-- 主样式 -->
+    <link rel="stylesheet" href="./css/style.css">
+
+    <!-- Font Awesome 图标库 -->
     <link rel="stylesheet"
-        href="./css/style.css">
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 
-    <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-		
-		
-	<!-- PWA -->
+    <!-- PWA -->
+    <link rel="manifest" href="./manifest.json">
 
-	<link
-		rel="manifest"
-		href="./manifest.json">
+    <meta name="theme-color" content="#07131d">
 
-	<meta
-		name="theme-color"
-		content="#07131d">
+    <!-- iPhone PWA -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
 
-	<!-- iPhone -->
+    <meta name="apple-mobile-web-app-status-bar-style"
+          content="black-translucent">
 
-	<meta
-		name="apple-mobile-web-app-capable"
-		content="yes">
+    <meta name="apple-mobile-web-app-title"
+          content="Jensen MUSIC">
 
-	<meta
-		name="apple-mobile-web-app-status-bar-style"
-		content="black-translucent">
-
-	<meta
-		name="apple-mobile-web-app-title"
-		content="Jensen Music">
-
-	<link
-		rel="apple-touch-icon"
-		href="./icons/icon-192.png">	
+    <link rel="apple-touch-icon"
+          href="./icons/icon-192.png">
 
 </head>
 
 <body>
 
-    <!-- 背景 -->
-    <div class="bg-overlay"></div>
+<!-- 背景层 -->
+<div class="bg-overlay"></div>
 
-    <!-- 隐藏水印 -->
-    <div class="watermark-hidden">
-        All rights reserved Jensen-Lone
-    </div>
+<!-- 水印 -->
+<div class="watermark-hidden">
+    Jensen-Lone
+</div>
 
-    <div class="layout">
+<div class="layout">
 
-        <!-- 左侧 -->
-        <aside class="sidebar">
+    <!-- 左侧菜单 -->
+    <aside class="sidebar">
 
-            <h1 id="logoBtn">
-				Jensen Music
-			</h1>
+        <!-- Logo -->
+        <h1 id="logoBtn">
+            Jensen MUSIC
+        </h1>
+
+        <!-- 搜索框 -->
+        <div class="search-box">
+            <i class="fas fa-search"></i>
 
             <input
-                id="searchInput"
-                type="text"
-                placeholder="search music">
-
-            <div id="genreList"></div>
-
-        </aside>
-
-        <!-- 主区域 -->
-        <main class="main-content">
-
-            <div
-                id="songContainer"
-                class="song-grid">
-            </div>
-
-        </main>
-
-    </div>
-
-    <!-- 底部播放器 -->
-    <div
-        class="bottom-player"
-        id="bottomPlayer">
-
-        <div class="player-left">
-
-            <img id="playerCover">
-
-            <div>
-
-                <h3 id="playerTitle">
-                    Not played
-                </h3>
-
-                <p id="playerArtist">
-                    Jensen-Lone
-                </p>
-
-            </div>
-
+                    id="searchInput"
+                    type="text"
+                    placeholder="Search MUSIC">
         </div>
 
-        <div class="player-center">
+        <!-- 分类列表 -->
+        <div id="genreList"></div>
 
-            <div class="controls">
+    </aside>
 
-                <button id="prevBtn">
-                    <i class="fas fa-backward"></i>
-                </button>
 
-                <button id="playBtn">
-                    <i class="fas fa-play"></i>
-                </button>
+    <!-- 主区域 -->
+    <main class="main-content">
 
-                <button id="nextBtn">
-                    <i class="fas fa-forward"></i>
-                </button>
+        <!-- 分类歌曲容器 -->
+        <div id="categoryContainer"></div>
 
-            </div>
+    </main>
 
-            <div class="progress-wrap">
+</div>
 
-                <span id="currentTime">
-                    00:00
-                </span>
 
-                <input
-                    type="range"
-                    id="progressBar"
-                    value="0"
-                    min="0"
-                    max="100">
+<!-- 底部播放器 -->
+<div class="bottom-player"
+     id="bottomPlayer">
 
-                <span id="duration">
-                    00:00
-                </span>
 
-            </div>
+    <!-- 左侧 -->
+    <div class="player-left">
 
-            <!-- 真频谱 -->
-            <canvas id="visualizer"></canvas>
+        <img id="playerCover">
 
+        <div>
+            <h3 id="playerTitle">
+                Not Played
+            </h3>
+
+            <p id="playerArtist">
+                Jensen-Lone
+            </p>
         </div>
 
     </div>
 
-    <audio 
-		id="audioPlayer"
-		preload="metadata">
-	</audio>
 
-    <script src="./js/main.js"></script>
+    <!-- 中间 -->
+    <div class="player-center">
+
+        <!-- 控制按钮 -->
+        <div class="controls">
+
+            <button id="shuffleBtn">
+                <i class="fas fa-random"></i>
+            </button>
+
+            <button id="prevBtn">
+                <i class="fas fa-backward"></i>
+            </button>
+
+            <button id="playBtn">
+                <i class="fas fa-play"></i>
+            </button>
+
+            <button id="nextBtn">
+                <i class="fas fa-forward"></i>
+            </button>
+
+            <button id="repeatBtn">
+                <i class="fas fa-repeat"></i>
+            </button>
+
+        </div>
+
+
+        <!-- 进度条 -->
+        <div class="progress-wrap desktop-only">
+
+            <span id="currentTime">00:00</span>
+
+            <input type="range"
+                   id="progressBar"
+                   value="0"
+                   min="0"
+                   max="100">
+
+            <span id="duration">00:00</span>
+
+        </div>
+
+
+        <!-- 频谱 -->
+        <canvas id="visualizer"></canvas>
+
+    </div>
+
+
+    <!-- 右侧 -->
+    <div class="player-right desktop-only">
+
+        <!-- 音量 -->
+        <button id="muteBtn">
+            <i class="fas fa-volume-up"></i>
+        </button>
+
+        <input type="range"
+               id="volumeBar"
+               min="0"
+               max="1"
+               step="0.01"
+               value="1">
+
+    </div>
+
+</div>
+
+
+<!-- 音频 -->
+<audio id="audioPlayer"
+       preload="metadata">
+</audio>
+
+
+<!-- JS -->
+<script src="./js/main.js"></script>
 
 </body>
-
 </html>
