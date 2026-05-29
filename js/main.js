@@ -11,13 +11,13 @@ let isRepeat = true;
 
 
 // 音频分析器
-let audioContext = null;
-let analyser = null;
-let source = null;
-let dataArray = null;
-let bufferLength = null;
+//let audioContext = null;
+//let analyser = null;
+//let source = null;
+//let dataArray = null;
+//let bufferLength = null;
 
-let visualizerRunning = false;
+//let visualizerRunning = false;
 
 
 // =========================
@@ -74,19 +74,19 @@ const playerArtist =
 const bottomPlayer =
     document.getElementById("bottomPlayer");
 
-const visualizer =
-    document.getElementById("visualizer");
+//const visualizer =
+//    document.getElementById("visualizer");
 
 const audio =
     document.getElementById("audioPlayer");
 
 
 // canvas
-const canvas = visualizer;
-const ctx = canvas.getContext("2d");
+//const canvas = visualizer;
+//const ctx = canvas.getContext("2d");
 
-canvas.width = 650;
-canvas.height = 40;
+//canvas.width = 650;
+//canvas.height = 40;
 
 
 // =========================
@@ -101,6 +101,7 @@ document.getElementById("logoBtn")
 // =========================
 // 初始化 AudioContext
 // =========================
+/*
 function initAudioContext(){
 
     if(audioContext) return;
@@ -133,7 +134,7 @@ function initAudioContext(){
 
     dataArray = new Uint8Array(bufferLength);
 }
-
+*/
 
 // =========================
 // 加载歌曲
@@ -381,7 +382,7 @@ async function playSong(id){
             `<i class="fas fa-pause"></i>`;
 
 
-        startVisualizer();
+        //startVisualizer();
 
     }catch(err){
 
@@ -404,7 +405,7 @@ playBtn.onclick = async ()=>{
         playBtn.innerHTML =
             `<i class="fas fa-pause"></i>`;
 
-        startVisualizer();
+        //startVisualizer();
 
     }else{
 
@@ -413,7 +414,7 @@ playBtn.onclick = async ()=>{
         playBtn.innerHTML =
             `<i class="fas fa-play"></i>`;
 
-        stopVisualizer();
+        //stopVisualizer();
     }
 };
 
@@ -651,6 +652,7 @@ function renderSearchResult(list){
 // 频谱动画
 // 波峰跳跃风格
 // =========================
+/*
 function startVisualizer(){
 
     if(visualizerRunning) return;
@@ -661,16 +663,16 @@ function startVisualizer(){
 
     drawVisualizer();
 }
-
-
+*/
+/*
 function stopVisualizer(){
 
     visualizerRunning = false;
 
     visualizer.style.display = "none";
 }
-
-
+*/
+/*
 function drawVisualizer(){
 
     if(!visualizerRunning) return;
@@ -723,7 +725,7 @@ function drawVisualizer(){
         x += 10;
     }
 }
-
+*/
 
 // =========================
 // 注册 PWA

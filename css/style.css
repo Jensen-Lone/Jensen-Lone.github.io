@@ -128,7 +128,9 @@ body{
 
 .sidebar h1{
     font-size:24px;
+
     margin-bottom:25px;
+
     color:#d9fff4;
 
     cursor:pointer;
@@ -271,8 +273,8 @@ body{
 
 /* 卡片 */
 .song-card{
-
-    position:relative;
+	
+	position:relative;
 
     background:rgba(255,255,255,0.05);
 
@@ -283,6 +285,10 @@ body{
     cursor:pointer;
 
     transition:0.3s;
+
+    display:flex;
+
+    flex-direction:column;
 }
 
 
@@ -294,12 +300,14 @@ body{
 
 
 .song-card img{
-
-    width:100%;
+	
+	width:100%;
 
     aspect-ratio:1/1;
 
     object-fit:cover;
+
+    display:block;
 }
 
 
@@ -307,10 +315,18 @@ body{
 .card-overlay{
 
     position:absolute;
-    inset:0;
+
+    top:0;
+    left:0;
+
+    width:100%;
+
+    aspect-ratio:1/1;
 
     display:flex;
+
     align-items:center;
+
     justify-content:center;
 
     background:rgba(0,0,0,0.35);
@@ -318,6 +334,8 @@ body{
     opacity:0;
 
     transition:0.3s;
+
+    z-index:5;
 }
 
 
@@ -346,19 +364,37 @@ body{
 
 
 .song-info{
-    padding:12px;
+    padding:8px 10px;
+
+    min-height:52px;
 }
 
 
 .song-info h3{
-    font-size:13px;
-    margin-bottom:5px;
+    font-size:12px;
+
+    margin-bottom:3px;
+
+    line-height:1.2;
+
+    white-space:nowrap;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
 }
 
 
 .song-info p{
-    font-size:11px;
-    color:#ccc;
+    font-size:10px;
+
+    color:#aaa;
+
+    white-space:nowrap;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
 }
 
 
@@ -499,7 +535,7 @@ body{
 }
 
 
-/* 频谱 */
+/* 频谱 
 #visualizer{
 
     width:100%;
@@ -510,7 +546,7 @@ body{
 
     display:none;
 }
-
+*/
 
 /* =========================
    手机端
@@ -550,18 +586,21 @@ body{
 
 
     .bottom-player{
+		
+		width:96%;
 
-        width:96%;
+		height:72px;
 
-        height:auto;
+		padding:10px 14px;
 
-        padding:12px 14px;
+		border-radius:22px;
 
-        border-radius:22px;
+		flex-direction:row;
 
-        flex-direction:row;
+		align-items:center;
 
-        justify-content:space-between;
+		justify-content:space-between;
+		
     }
 
 
@@ -572,9 +611,13 @@ body{
 
 
     .player-left img{
+		
+		width:48px;
 
-        width:52px;
-        height:52px;
+		height:48px;
+
+		border-radius:14px;
+		
     }
 
 
@@ -598,9 +641,30 @@ body{
         width:40px;
         height:40px;
     }
+	
+	.sidebar h1{
 
+        text-align:center;
 
+        width:100%;
+    }
+	
+	.search-box{
+        display:none;
+    }
+	
+	.player-left div{
+        display:none;
+    }
+	
+	#genreList{
+        display:none;
+    }
+
+	/* 手机频谱不展示
     #visualizer{
         display:none !important;
     }
+	/
+	
 }
