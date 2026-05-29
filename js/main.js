@@ -352,7 +352,7 @@ async function playSong(id){
 
     try{
 
-        initAudioContext();
+        //initAudioContext();
 
 
         currentIndex =

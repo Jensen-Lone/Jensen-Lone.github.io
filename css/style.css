@@ -238,19 +238,23 @@ body{
 
 /* 分类模块 */
 .category-block{
-    margin-bottom:30px;
+    margin-bottom:22px;
 }
 
 
 .category-title{
 
     display:flex;
+
     align-items:center;
+
     justify-content:space-between;
 
-    margin-bottom:18px;
+    margin-bottom:14px;
 
     cursor:pointer;
+
+    padding:0 2px;
 }
 
 
@@ -563,19 +567,22 @@ body{
     }
 
 
-    .sidebar{
+    .sidebar{			
 
         width:100%;
 
         border-right:none;
 
         border-bottom:
-                1px solid rgba(255,255,255,0.03);
+        1px solid rgba(255,255,255,0.03);
+
+        padding:14px 16px 10px;
+	
     }
 
 
     .main-content{
-        padding:16px 16px 120px;
+         padding:10px 16px 120px;
     }
 
 
@@ -644,9 +651,15 @@ body{
 	
 	.sidebar h1{
 
-        text-align:center;
+		text-align:center;
 
-        width:100%;
+		width:100%;
+
+		margin-bottom:10px;
+
+		font-size:22px;
+
+		line-height:1.1;
     }
 	
 	.search-box{
@@ -657,6 +670,25 @@ body{
         display:none;
     }
 	
+	.category-block{
+		margin-bottom:22px;
+	}
+	
+	.category-title{
+
+		display:flex;
+
+		align-items:center;
+
+		justify-content:space-between;
+
+		margin-bottom:14px;
+
+		cursor:pointer;
+
+		padding:0 2px;
+	}
+	
 	#genreList{
         display:none;
     }
@@ -665,6 +697,6 @@ body{
     #visualizer{
         display:none !important;
     }
-	/
+	*/
 	
 }
