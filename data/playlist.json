@@ -135,6 +135,38 @@
       "genre": "Cantonpop",
       "src": "./music/i-wish-you-a-bright-future.m4a",
       "cover": "./assets/i-wish-you-a-bright-future.jpg"
+    },
+    {
+      "id": 18,
+      "title": "半笑勾到老",
+      "artist": "Jensen Lone",
+      "genre": "古风",
+      "src": "./music/a-half-smile-that-lasts-until-old-age.m4a",
+      "cover": "./assets/a-half-smile-that-lasts-until-old-age.jpg"
+    },
+    {
+      "id": 19,
+      "title": "江湖没有答案",
+      "artist": "Jensen Lone",
+      "genre": "古风",
+      "src": "./music/there-is-no-answer-in-the-martial-arts-world.m4a",
+      "cover": "./assets/there-is-no-answer-in-the-martial-arts-world.jpg"
+    },
+    {
+      "id": 20,
+      "title": "王二小当兵",
+      "artist": "Jensen Lone",
+      "genre": "古风",
+      "src": "./music/wang-erxiao-joined-the-army.m4a",
+      "cover": "./assets/wang-erxiao-joined-the-army.jpg"
+    },
+    {
+      "id": 21,
+      "title": "长街酒",
+      "artist": "Jensen Lone",
+      "genre": "古风",
+      "src": "./music/changjie-liquor.m4a",
+      "cover": "./assets/changjie-liquor.jpg"
     }
   ]
 }
