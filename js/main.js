@@ -19,14 +19,59 @@ let bufferLength = null;
 let visualizerRunning = false;
 
 
+// ======================
+// DOM 元素
+// ======================
+const songContainer =
+document.getElementById("songContainer");
+
+const genreList =
+document.getElementById("genreList");
+
+const searchInput =
+document.getElementById("searchInput");
+
+const playBtn =
+document.getElementById("playBtn");
+
+const prevBtn =
+document.getElementById("prevBtn");
+
+const nextBtn =
+document.getElementById("nextBtn");
+
+const progressBar =
+document.getElementById("progressBar");
+
+const currentTime =
+document.getElementById("currentTime");
+
+const duration =
+document.getElementById("duration");
+
+const playerCover =
+document.getElementById("playerCover");
+
+const playerTitle =
+document.getElementById("playerTitle");
+
+const playerArtist =
+document.getElementById("playerArtist");
+
+const bottomPlayer =
+document.getElementById("bottomPlayer");
+
+const visualizer =
+document.getElementById("visualizer");
+
+
 // audio 元素
 const audio =
     document.getElementById("audioPlayer");
 
 
 // canvas
-const canvas =
-    document.getElementById("visualizer");
+const canvas = visualizer;
 
 const ctx =
     canvas.getContext("2d");
@@ -93,7 +138,7 @@ async function loadSongs(){
     try{
 
         const res =
-            await fetch("./data/playlist.json");
+            await fetch("./data/playlist.json?v=" + Date.now(), { cache: "no-store" });
 
         const data =
             await res.json();
@@ -382,11 +427,7 @@ audio.addEventListener(
     ()=>{
 
         const progress =
-            (
-                audio.currentTime
-                /
-                audio.duration
-            ) * 100;
+            audio.duration ? (audio.currentTime / audio.duration) * 100 : 0;
 
         progressBar.value =
             progress || 0;

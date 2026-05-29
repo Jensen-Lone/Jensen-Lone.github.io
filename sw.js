@@ -1,108 +1,68 @@
-// 缓存名称
-
-const CACHE_NAME =
-    "jensen-music-v7";
-
-
-// 需要缓存的资源
+const CACHE_NAME = "jensen-music-v10";
 
 const urlsToCache = [
-
-    "./",
-
-    "./index.html",
-
-    "./css/style.css",
-
-    "./js/main.js",
-
-    "./manifest.json",
-
-    "./assets/backgrounds/aurora.jpg",
-
-    "./icons/icon-192.png",
-
-    "./icons/icon-512.png"
+  "./",
+  "./index.html",
+  "./css/style.css",
+  "./js/main.js",
+  "./manifest.json",
+  "./assets/backgrounds/aurora.jpg",
+  "./icons/icon-192.png",
+  "./icons/icon-512.png"
 ];
 
-
 // 安装
+self.addEventListener("install", event => {
+  self.skipWaiting();
 
-self.addEventListener(
-    "install",
-    event=>{
+  event.waitUntil(
+    caches.open(CACHE_NAME)
+      .then(cache => cache.addAll(urlsToCache))
+  );
+});
 
-        event.waitUntil(
+// 激活
+self.addEventListener("activate", event => {
+  event.waitUntil(
+    caches.keys().then(keys => {
+      return Promise.all(
+        keys.map(key => {
+          if (key !== CACHE_NAME) {
+            return caches.delete(key);
+          }
+        })
+      );
+    })
+  );
 
-            caches.open(CACHE_NAME)
+  self.clients.claim();
+});
 
-            .then(cache=>{
+// 请求
+self.addEventListener("fetch", event => {
 
-                return cache.addAll(
-                    urlsToCache
-                );
-            })
-        );
-    }
-);
+  // playlist 永远实时获取
+  if (
+    event.request.url.includes("playlist.json")
+  ) {
 
+    event.respondWith(
+      fetch(event.request, {
+        cache: "no-store"
+      })
+    );
 
-// 请求拦截
+    return;
+  }
 
-self.addEventListener(
-    "fetch",
-    event=>{
+  // 其它资源缓存优先
+  event.respondWith(
+    caches.match(event.request)
+      .then(response => {
 
-        event.respondWith(
+        return response || fetch(event.request);
 
-            caches.match(event.request)
+      })
+  );
 
-            .then(response=>{
-
-                return (
-                    response
-                    ||
-                    fetch(event.request)
-                );
-            })
-        );
-    }
-);
-
-
-
-self.addEventListener(
-    "fetch",
-    event=>{
-
-        // playlist 不缓存
-
-        if(
-            event.request.url
-            .includes("playlist.json")
-        ){
-
-            event.respondWith(
-                fetch(event.request)
-            );
-
-            return;
-        }
-
-        // 其它资源缓存
-
-        event.respondWith(
-
-            caches.match(event.request)
-
-            .then(response=>{
-
-                return (
-                    response
-                    ||
-                    fetch(event.request)
-                );
-            })
-        );
-    }
-);
+});
