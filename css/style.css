@@ -612,8 +612,60 @@ body{
 
 
     .player-left{
-        width:auto;
         flex:1;
+		min-width:0;
+    }
+	
+	.player-song-info{
+
+        display:flex;
+
+        flex-direction:column;
+
+        justify-content:center;
+
+        overflow:hidden;
+
+        min-width:0;
+
+        flex:1;
+    }
+	
+	.player-song-title{
+
+        font-size:13px;
+
+        font-weight:600;
+
+        white-space:nowrap;
+
+        overflow:hidden;
+
+        text-overflow:ellipsis;
+    }
+	
+	.player-song-artist{
+
+        font-size:11px;
+
+        color:#999;
+
+        white-space:nowrap;
+
+        overflow:hidden;
+
+        text-overflow:ellipsis;
+    }
+	
+	.player-controls{
+
+        display:flex;
+
+        align-items:center;
+
+        gap:12px;
+
+        flex-shrink:0;
     }
 
 
@@ -693,6 +745,13 @@ body{
         display:none;
     }
 
+	#prevBtn,
+    #shuffleBtn,
+    #repeatBtn,
+    .volume-container{
+        display:none !important;
+    }
+	
 	/* 手机频谱不展示
     #visualizer{
         display:none !important;
