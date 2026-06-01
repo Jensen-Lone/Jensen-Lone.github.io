@@ -1,4 +1,4 @@
-const CACHE_NAME = "jensen-music-v20";
+const CACHE_NAME = "jensen-music-v21";
 
 
 const urlsToCache = [

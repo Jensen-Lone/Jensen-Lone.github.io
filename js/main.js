@@ -81,6 +81,25 @@ const audio =
     document.getElementById("audioPlayer");
 
 
+const lyricsPage =
+	document.getElementById("lyricsPage");
+
+const lyricsCover =
+	document.getElementById("lyricsCover");
+
+const lyricsTitle =
+	document.getElementById("lyricsTitle");
+
+const lyricsArtist =
+	document.getElementById("lyricsArtist");
+
+const lyricsText =
+	document.getElementById("lyricsText");
+
+const closeLyrics =
+	document.getElementById("closeLyrics");
+	
+	
 // canvas
 //const canvas = visualizer;
 //const ctx = canvas.getContext("2d");
@@ -96,6 +115,36 @@ document.getElementById("logoBtn")
 .onclick = ()=>{
     location.reload();
 };
+
+// =========================
+// 打开歌词页面
+// =========================
+document
+.querySelector(".player-left")
+.addEventListener("click",()=>{
+
+    if(!audio.src) return;
+
+    lyricsPage.classList.add("show");
+
+});
+
+
+// =========================
+// 关闭歌词页面
+// =========================
+closeLyrics.onclick = ()=>{
+
+    lyricsPage.classList.remove("show");
+
+};
+
+
+
+// =========================
+// Logo 点击刷新
+// =========================
+
 
 
 // =========================
@@ -169,6 +218,37 @@ async function loadSongs(){
 }
 
 loadSongs();
+
+// =========================
+// 加载歌词函数
+// =========================
+async function loadLyrics(path){
+
+    try{
+
+        const res =
+        await fetch(path);
+
+        const text =
+        await res.text();
+
+        const lines =
+        text.split("\n");
+
+        lyricsText.innerHTML =
+        lines.map(line=>
+
+        `<p>${line}</p>`
+
+        ).join("");
+
+    }catch(err){
+
+        lyricsText.innerHTML =
+        "<p>暂无歌词</p>";
+    }
+}
+
 
 
 // =========================
@@ -370,7 +450,14 @@ async function playSong(id){
         playerTitle.textContent = song.title;
 
         playerArtist.textContent = song.artist;
+		
+		lyricsCover.src = song.cover;
 
+		lyricsTitle.textContent = song.title;
+
+		lyricsArtist.textContent = song.artist;
+
+		loadLyrics(song.lyric);
 
         bottomPlayer.classList.add("show");
 
