@@ -544,7 +544,6 @@ body{
 ========================= */
 
 .lyrics-page{
-
     position:fixed;
     inset:0;
 
@@ -553,12 +552,16 @@ body{
     display:none;
 
     background:
-    linear-gradient(
-        rgba(5,10,20,.96),
-        rgba(10,15,25,.98)
-    );
+    rgba(5,10,20,.45);
 
-    backdrop-filter:blur(35px);
+    backdrop-filter:
+    blur(25px);
+
+    overflow:hidden;
+}
+
+.lyrics-page.show{
+    display:block;
 }
 
 .lyrics-page.show{
@@ -568,7 +571,7 @@ body{
 /*顶部返回*/
 .lyrics-header{
 
-    height:70px;
+    height:20px;
 
     display:flex;
     align-items:center;
@@ -593,16 +596,25 @@ body{
     rgba(255,255,255,.08);
 }
 
-/*主区域*/
+/* =========================
+   歌词主体区域
+========================= */
 .lyrics-content{
 
-    height:calc(100vh - 70px);
+    height:
+    calc(100vh - 70px);
 
     display:flex;
-	
-	align-items:flex-start;
 
-    padding-top:2vh;
+    gap:40px;
+
+    padding:
+
+    2vh
+    40px
+    30px;
+
+    overflow:hidden;
 }
 
 /*=========================
@@ -610,7 +622,9 @@ body{
 =========================*/
 .lyrics-left{
 
-    width:32%;
+    width:280px;
+
+    flex-shrink:0;
 
     display:flex;
 
@@ -619,8 +633,6 @@ body{
     align-items:center;
 
     justify-content:flex-start;
-
-    padding-top:2vh;
 }
 
 /* =========================
@@ -628,17 +640,17 @@ body{
 ========================= */
 #lyricsCover{
 
-    width:260px;
+    width:240px;
 
-    height:260px;
+    height:240px;
 
     border-radius:24px;
 
     object-fit:cover;
 
     box-shadow:
-    0 15px 40px
-    rgba(0,0,0,.45);
+    0 10px 40px
+    rgba(0,0,0,.35);
 }
 
 /* ===========
@@ -674,31 +686,27 @@ body{
 
     flex:1;
 
+    height:100%;
+
     overflow-y:auto;
-
-    margin:
-
-    0
-    50px
-    40px
-    0;
 
     padding:
 
     30px
-    45px
-    60px;
+    40px
+    80px;
 
-    border-radius:30px;
+    border-radius:28px;
 
     background:
-    rgba(255,255,255,.06);
+    rgba(255,255,255,.08);
 
-    backdrop-filter:blur(25px);
+    backdrop-filter:
+    blur(15px);
 
     border:
     1px solid
-    rgba(255,255,255,.08);
+    rgba(255,255,255,.10);
 }
 
 /*歌词样式*/
@@ -721,6 +729,21 @@ body{
     margin-bottom:8px;
 }
 
+/*==========
+滚动条美化
+==========*/
+.lyrics-right::-webkit-scrollbar{
+
+    width:8px;
+}
+
+.lyrics-right::-webkit-scrollbar-thumb{
+
+    background:
+    rgba(255,255,255,.2);
+
+    border-radius:20px;
+}
 
 /* 频谱 
 #visualizer{
@@ -939,40 +962,44 @@ body{
 	
 	.lyrics-content{
 
-		flex-direction:column;
+        display:flex;
+
+        flex-direction:column;
+
+        gap:12px;
+
+        padding:
+
+        0
+        10px
+        90px;
+
+        height:
+        calc(100vh - 70px);
 	}
 
 	.lyrics-left{
 
-	
 		width:100%;
-
-		display:flex;
 
 		flex-direction:row;
 
 		align-items:center;
 
-		justify-content:center;
+		justify-content:flex-start;
 
-		gap:14px;
+		gap:12px;
 
-		padding:
-
-		0
-		18px
-		12px;
-
-		min-height:18vh;
+		padding-top:5px;
 	}
 
 	#lyricsCover{
 	
-		width:88px;
+		width:80px;
 
-		height:88px;
+		height:80px;
 
-		border-radius:18px;
+		border-radius:16px;
 
 		flex-shrink:0;
 	}
@@ -981,49 +1008,46 @@ body{
 
 		font-size:18px;
 
-		margin-top:0;
+		margin:0;
 
 		text-align:left;
 	}
 
 	#lyricsArtist{
 
+		margin-top:4px;
+
 		font-size:12px;
 
-		margin-top:4px;
+		text-align:left;
 	}
 
 	.lyrics-right{
 
-	    flex:1;
+		flex:1;
 
-		margin:
+		width:100%;
 
-		0
-		12px
-		90px;
+		overflow-y:auto;
 
 		padding:
 
-		18px
 		20px
-		40px;
+		18px
+		60px;
 
-		border-radius:24px;
+		border-radius:22px;
 
 		background:
-		rgba(255,255,255,.06);
+		rgba(255,255,255,.08);
 
-		backdrop-filter:blur(20px);
+		backdrop-filter:
+		blur(15px);
 	}
 	
 	.lyrics-info{
 
-		display:flex;
-
-		flex-direction:column;
-
-		justify-content:center;
+		flex:1;
 
 		min-width:0;
 	}
@@ -1034,7 +1058,7 @@ body{
 
 		line-height:1.9;
 
-		margin-bottom:6px;
+		margin-bottom:8px;
 	}
 	
 	/* 手机频谱不展示
