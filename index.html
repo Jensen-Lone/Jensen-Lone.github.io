@@ -185,9 +185,15 @@
 
     <div class="lyrics-header">
 
-        <button id="closeLyrics">
-            <i class="fas fa-arrow-left"></i>
-        </button>
+		<button id="closeLyrics">
+
+			<i class="fas fa-arrow-left"></i>
+
+		</button>
+
+		<span id="lyricsGenre">
+
+		</span>
 
     </div>
 
@@ -215,7 +221,40 @@
 
         </div>
 
-    </div>
+    </div><!-- lyrics-content -->
+	
+	<div class="mobile-lyrics-player">
+
+		<input
+			id="mobileLyricProgress"
+			type="range"
+			min="0"
+			max="100"
+			value="0">
+
+		<div class="mobile-player-buttons">
+
+			<button id="shareBtn">
+
+				<i class="fas fa-share-alt"></i>
+
+			</button>
+
+			<button id="lyricPlayBtn">
+
+				<i class="fas fa-play"></i>
+
+			</button>
+
+			<button id="lyricNextBtn">
+
+				<i class="fas fa-forward"></i>
+
+			</button>
+
+		</div>
+
+	</div>
 
 </div>
 

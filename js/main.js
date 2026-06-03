@@ -829,3 +829,30 @@ if("serviceWorker" in navigator){
             });
     });
 }
+
+
+const lyricPlayBtn =
+document.getElementById(
+"lyricPlayBtn"
+);
+
+lyricPlayBtn.onclick=()=>{
+
+    if(audio.paused){
+
+        audio.play();
+
+        lyricPlayBtn.innerHTML=
+        `<i class="fas fa-pause"></i>`;
+
+    }else{
+
+        audio.pause();
+
+        lyricPlayBtn.innerHTML=
+        `<i class="fas fa-play"></i>`;
+    }
+};
+
+lyricsGenre.textContent =
+song.genre || "";
