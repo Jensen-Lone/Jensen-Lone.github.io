@@ -251,6 +251,51 @@
       "src": "./music/raindrops-in-the-alley.m4a",
       "cover": "./assets/raindrops-in-the-alley.jpg",
       "lyric": "./data/lyrics/raindrops-in-the-alley.txt"
+    },
+    {
+      "id": 29,
+      "title": "恩怨是非",
+      "artist": "Jensen Lone",
+      "genre": "古风",
+      "src": "./music/grudges-and-right-and-wrong.m4a",
+      "cover": "./assets/grudges-and-right-and-wrong.jpg",
+      "lyric": "./data/lyrics/grudges-and-right-and-wrong.txt"
+    },
+    {
+      "id": 30,
+      "title": "永不乐",
+      "artist": "Jensen Lone",
+      "genre": "古风",
+      "src": "./music/never-happy.m4a",
+      "cover": "./assets/never-happy.jpg",
+      "lyric": "./data/lyrics/never-happy.txt"
+    },
+    {
+      "id": 31,
+      "title": "天命战神",
+      "artist": "Jensen Lone",
+      "genre": "古风",
+      "src": "./music/god-of-destiny.m4a",
+      "cover": "./assets/god-of-destiny.jpg",
+      "lyric": "./data/lyrics/god-of-destiny.txt"
+    },
+    {
+      "id": 32,
+      "title": "天若不允",
+      "artist": "Jensen Lone",
+      "genre": "古风",
+      "src": "./music/if-god-doesnot-allow-it.m4a",
+      "cover": "./assets/if-god-doesnot-allow-it.jpg",
+      "lyric": "./data/lyrics/if-god-doesnot-allow-it.txt"
+    },
+    {
+      "id": 33,
+      "title": "一骑当千",
+      "artist": "Jensen Lone",
+      "genre": "古风",
+      "src": "./music/one-ride-is-worth-a-thousand.m4a",
+      "cover": "./assets/one-ride-is-worth-a-thousand.jpg",
+      "lyric": "./data/lyrics/one-ride-is-worth-a-thousand.txt"
     }
   ]
 }
