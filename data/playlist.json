@@ -188,6 +188,51 @@
       "src": "./music/changjie-liquor.m4a",
       "cover": "./assets/changjie-liquor.jpg",
       "lyric": "./data/lyrics/changjie-liquor.txt"
+    },
+    {
+      "id": 22,
+      "title": "サマー・メモリー",
+      "artist": "Jensen Lone",
+      "genre": "J-Pop",
+      "src": "./music/summer-memory.m4a",
+      "cover": "./assets/summer-memory.jpg",
+      "lyric": "./data/lyrics/summer-memory.txt"
+    },
+    {
+      "id": 23,
+      "title": "Stay Close",
+      "artist": "Jensen Lone",
+      "genre": "English",
+      "src": "./music/stay-close.m4a",
+      "cover": "./assets/stay-close.jpg",
+      "lyric": "./data/lyrics/stay-close.txt"
+    },
+    {
+      "id": 24,
+      "title": "Still Singing Tonight",
+      "artist": "Jensen Lone",
+      "genre": "J-Pop",
+      "src": "./music/still-singing-tonight.m4a",
+      "cover": "./assets/still-singing-tonight.jpg",
+      "lyric": "./data/lyrics/still-singing-tonight.txt"
+    },
+    {
+      "id": 25,
+      "title": "刀剑梦",
+      "artist": "Jensen Lone",
+      "genre": "古风",
+      "src": "./music/sword-dream.m4a",
+      "cover": "./assets/sword-dream.jpg",
+      "lyric": "./data/lyrics/sword-dream.txt"
+    },
+    {
+      "id": 26,
+      "title": "光のあとで",
+      "artist": "Jensen Lone",
+      "genre": "J-Pop",
+      "src": "./music/after-the-light.m4a",
+      "cover": "./assets/after-the-light.jpg",
+      "lyric": "./data/lyrics/after-the-light.txt"
     }
   ]
 }
