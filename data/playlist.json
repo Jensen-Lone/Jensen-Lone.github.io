@@ -233,6 +233,24 @@
       "src": "./music/after-the-light.m4a",
       "cover": "./assets/after-the-light.jpg",
       "lyric": "./data/lyrics/after-the-light.txt"
+    },
+    {
+      "id": 27,
+      "title": "勿朝堂",
+      "artist": "Jensen Lone",
+      "genre": "古风",
+      "src": "./music/do-not-go-to-court.m4a",
+      "cover": "./assets/do-not-go-to-court.jpg",
+      "lyric": "./data/lyrics/do-not-go-to-court.txt"
+    },
+    {
+      "id": 28,
+      "title": "小巷雨滴",
+      "artist": "Jensen Lone",
+      "genre": "古风",
+      "src": "./music/raindrops-in-the-alley.m4a",
+      "cover": "./assets/raindrops-in-the-alley.jpg",
+      "lyric": "./data/lyrics/raindrops-in-the-alley.txt"
     }
   ]
 }
