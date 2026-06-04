@@ -3,7 +3,7 @@
 // =========================
 let songs = [];
 
-let currentIndex = 0;
+let currentIndex = -1;
 
 let isShuffle = false;
 
@@ -102,13 +102,21 @@ const lyricsText =
 const closeLyrics =
 	document.getElementById("closeLyrics");
 	
-	
-// canvas
-//const canvas = visualizer;
-//const ctx = canvas.getContext("2d");
+// =========================
+// 手机歌词页组件
+// =========================
+const mobileLyricProgress =
+	document.getElementById("mobileLyricProgress");
 
-//canvas.width = 650;
-//canvas.height = 40;
+const shareBtn =
+	document.getElementById("shareBtn");
+
+const lyricPlayBtn =
+	document.getElementById("lyricPlayBtn");
+
+const lyricNextBtn =
+	document.getElementById("lyricNextBtn");
+	
 
 
 // =========================
@@ -470,12 +478,8 @@ async function playSong(id){
 
         await audio.play();
 
+        updatePlayButtons();
 
-        playBtn.innerHTML =
-            `<i class="fas fa-pause"></i>`;
-
-
-        //startVisualizer();
 
     }catch(err){
 
@@ -495,20 +499,12 @@ playBtn.onclick = async ()=>{
 
         await audio.play();
 
-        playBtn.innerHTML =
-            `<i class="fas fa-pause"></i>`;
-
-        //startVisualizer();
-
     }else{
 
         audio.pause();
-
-        playBtn.innerHTML =
-            `<i class="fas fa-play"></i>`;
-
-        //stopVisualizer();
     }
+
+    updatePlayButtons();
 };
 
 
@@ -625,6 +621,18 @@ muteBtn.onclick = ()=>{
         `<i class="fas fa-volume-up"></i>`;
 };
 
+// =========================
+// 监听播放状态
+// =========================
+audio.addEventListener(
+"play",
+updatePlayButtons
+);
+
+audio.addEventListener(
+"pause",
+updatePlayButtons
+);
 
 // =========================
 // 时间更新
@@ -640,6 +648,8 @@ audio.addEventListener("timeupdate",()=>{
 
 
     progressBar.value = progress;
+	
+	mobileLyricProgress.value = progress;
 
 
     currentTime.textContent =
@@ -661,6 +671,25 @@ progressBar.addEventListener("input",e=>{
         *
         audio.duration;
 });
+
+
+// =========================
+// 同步播放按钮状态
+// =========================
+
+function updatePlayButtons(){
+
+    const icon =
+    audio.paused
+    ?
+    `<i class="fas fa-play"></i>`
+    :
+    `<i class="fas fa-pause"></i>`;
+
+    playBtn.innerHTML = icon;
+
+    lyricPlayBtn.innerHTML = icon;
+}
 
 
 // =========================
@@ -836,29 +865,70 @@ if("serviceWorker" in navigator){
     });
 }
 
+// =========================
+// 手机歌词页拖动进度
+// =========================
+mobileLyricProgress
+.addEventListener(
+"input",
+e=>{
 
-const lyricPlayBtn =
-document.getElementById(
-"lyricPlayBtn"
-);
+    if(!audio.duration)
+        return;
 
-lyricPlayBtn.onclick=()=>{
+    audio.currentTime =
+    (
+        e.target.value
+        /
+        100
+    )
+    *
+    audio.duration;
+});
+
+// =========================
+// 手机歌词页播放按钮
+// =========================
+
+lyricPlayBtn.onclick =
+async ()=>{
 
     if(audio.paused){
 
-        audio.play();
-
-        lyricPlayBtn.innerHTML=
-        `<i class="fas fa-pause"></i>`;
+        await audio.play();
 
     }else{
 
         audio.pause();
-
-        lyricPlayBtn.innerHTML=
-        `<i class="fas fa-play"></i>`;
     }
+
+    updatePlayButtons();
 };
 
-lyricsGenre.textContent =
-song.genre || "";
+// =========================
+// 手机歌词页下一首
+// =========================
+
+lyricNextBtn.onclick = ()=>{
+
+    nextBtn.onclick();
+};
+
+
+// =========================
+// 分享按钮
+// =========================
+shareBtn.onclick = ()=>{
+
+    if(currentIndex < 0)
+        return;
+
+    const song =
+    songs[currentIndex];
+
+    alert(
+        "歌曲播放地址：\n\n"
+        +
+        song.src
+    );
+};
