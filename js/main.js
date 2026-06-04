@@ -92,6 +92,9 @@ const lyricsTitle =
 
 const lyricsArtist =
 	document.getElementById("lyricsArtist");
+	
+const lyricsGenre =
+	document.getElementById("lyricsGenre");
 
 const lyricsText =
 	document.getElementById("lyricsText");
@@ -456,6 +459,9 @@ async function playSong(id){
 		lyricsTitle.textContent = song.title;
 
 		lyricsArtist.textContent = song.artist;
+		
+		// 新增：显示歌曲分类
+		lyricsGenre.textContent = song.genre || "";
 
 		loadLyrics(song.lyric);
 
