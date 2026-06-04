@@ -296,6 +296,33 @@
       "src": "./music/one-ride-is-worth-a-thousand.m4a",
       "cover": "./assets/one-ride-is-worth-a-thousand.jpg",
       "lyric": "./data/lyrics/one-ride-is-worth-a-thousand.txt"
+    },
+    {
+      "id": 34,
+      "title": "回忆是一种罪",
+      "artist": "Jensen Lone",
+      "genre": "国语",
+      "src": "./music/memories-are-a-sin.m4a",
+      "cover": "./assets/memories-are-a-sin.jpg",
+      "lyric": "./data/lyrics/memories-are-a-sin.txt"
+    },
+    {
+      "id": 35,
+      "title": "再见，夏季",
+      "artist": "Jensen Lone",
+      "genre": "国语",
+      "src": "./music/goodbye-summer.m4a",
+      "cover": "./assets/goodbye-summer.jpg",
+      "lyric": "./data/lyrics/goodbye-summer.txt"
+    },
+    {
+      "id": 36,
+      "title": "今夜も歌ってる",
+      "artist": "Jensen Lone",
+      "genre": "J-Pop",
+      "src": "./music/im-singing-tonight-too.m4a",
+      "cover": "./assets/im-singing-tonight-too.jpg",
+      "lyric": "./data/lyrics/im-singing-tonight-too.txt"
     }
   ]
 }
