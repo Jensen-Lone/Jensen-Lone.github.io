@@ -582,7 +582,7 @@ body{
     position:absolute;
 
     top:0;
-    left:258px;
+    left:230px;
 
     right:0;
 
@@ -590,10 +590,10 @@ body{
 
     display:none;
 
-    z-index:30;
+    z-index:9999;
 
     background:
-    rgba(10,20,30,.35);
+	rgba(10,20,30,.85);
 
     backdrop-filter:
     blur(20px);
