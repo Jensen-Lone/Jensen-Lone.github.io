@@ -107,6 +107,12 @@ const closeLyrics =
 // =========================
 const mobileLyricProgress =
 	document.getElementById("mobileLyricProgress");
+	
+const mobileCurrentTime = 
+	document.getElementById("mobileCurrentTime");
+
+const mobileDuration =
+	document.getElementById("mobileDuration");
 
 const shareBtn =
 	document.getElementById("shareBtn");
@@ -640,24 +646,45 @@ updatePlayButtons
 audio.addEventListener("timeupdate",()=>{
 
     const progress =
+    audio.duration
+    ?
+    (
+        audio.currentTime
+        /
         audio.duration
-        ?
-        (audio.currentTime / audio.duration) * 100
-        :
-        0;
+    ) * 100
+    :
+    0;
 
+    progressBar.value =
+    progress;
 
-    progressBar.value = progress;
-	
-	mobileLyricProgress.value = progress;
+    mobileLyricProgress.value =
+    progress;
 
+    const current =
+    formatTime(
+        audio.currentTime
+    );
 
+    const total =
+    formatTime(
+        audio.duration || 0
+    );
+
+    // 桌面播放器
     currentTime.textContent =
-        formatTime(audio.currentTime);
-
+    current;
 
     duration.textContent =
-        formatTime(audio.duration || 0);
+    total;
+
+    // 手机歌词页
+    mobileCurrentTime.textContent =
+    current;
+
+    mobileDuration.textContent =
+    total;
 });
 
 
@@ -707,6 +734,41 @@ function formatTime(time){
     return `${String(min).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
 }
 
+
+// =========================
+// 分享弹窗
+// =========================
+
+function showShareDialog(url){
+
+    const result =
+    confirm(
+        "歌曲在线播放地址：\n\n"
+        +
+        url
+        +
+        "\n\n点击【确定】复制链接"
+    );
+
+    if(result){
+
+        navigator.clipboard
+        .writeText(url)
+        .then(()=>{
+
+            alert(
+                "链接已复制到剪贴板"
+            );
+
+        })
+        .catch(()=>{
+
+            alert(
+                "复制失败，请手动复制"
+            );
+        });
+    }
+}
 
 // =========================
 // 搜索
@@ -926,9 +988,18 @@ shareBtn.onclick = ()=>{
     const song =
     songs[currentIndex];
 
-    alert(
-        "歌曲播放地址：\n\n"
-        +
-        song.src
-    );
+    // 提取文件名
+    const fileName =
+    song.src
+        .split("/")
+        .pop();
+
+    // 拼接CDN地址
+    const onlineUrl =
+    "https://cdn.jsdelivr.net/gh/Jensen-Lone/jensen-lone.github.io@main/music/"
+    +
+    fileName;
+
+    showShareDialog(onlineUrl);
 };
+

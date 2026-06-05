@@ -1153,6 +1153,36 @@ body{
         backdrop-filter:blur(12px);
     }
 
+	/* =========================
+		手机歌词页时间
+	========================= */
+	.mobile-time-wrap{
+
+		display:flex;
+
+		justify-content:space-between;
+
+		align-items:center;
+
+		margin-bottom:8px;
+
+		font-size:12px;
+
+		color:#c7d3df;
+	}
+	
+	/*时间数字更整齐*/
+	#mobileCurrentTime,
+	#mobileDuration{
+
+		min-width:42px;
+
+		text-align:center;
+
+		font-variant-numeric:
+		tabular-nums;
+	}
+	
     /* 底部播放器 */
     .mobile-lyrics-player{
 
