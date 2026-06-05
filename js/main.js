@@ -10,16 +10,6 @@ let isShuffle = false;
 let isRepeat = true;
 
 
-// 音频分析器
-//let audioContext = null;
-//let analyser = null;
-//let source = null;
-//let dataArray = null;
-//let bufferLength = null;
-
-//let visualizerRunning = false;
-
-
 // =========================
 // DOM
 // =========================
@@ -73,9 +63,6 @@ const playerArtist =
 
 const bottomPlayer =
     document.getElementById("bottomPlayer");
-
-//const visualizer =
-//    document.getElementById("visualizer");
 
 const audio =
     document.getElementById("audioPlayer");
@@ -157,51 +144,6 @@ closeLyrics.onclick = ()=>{
 };
 
 
-
-// =========================
-// Logo 点击刷新
-// =========================
-
-
-
-// =========================
-// 初始化 AudioContext
-// =========================
-/*
-function initAudioContext(){
-
-    if(audioContext) return;
-
-    audioContext =
-        new(
-            window.AudioContext
-            ||
-            window.webkitAudioContext
-        )();
-
-
-    analyser =
-        audioContext.createAnalyser();
-
-
-    source =
-        audioContext
-            .createMediaElementSource(audio);
-
-
-    source.connect(analyser);
-
-    analyser.connect(audioContext.destination);
-
-
-    analyser.fftSize = 128;
-
-    bufferLength = analyser.frequencyBinCount;
-
-    dataArray = new Uint8Array(bufferLength);
-}
-*/
-
 // =========================
 // 加载歌曲
 // =========================
@@ -265,7 +207,6 @@ async function loadLyrics(path){
         "<p>暂无歌词</p>";
     }
 }
-
 
 
 // =========================
@@ -630,20 +571,36 @@ muteBtn.onclick = ()=>{
 // =========================
 // 监听播放状态
 // =========================
-audio.addEventListener(
-"play",
-updatePlayButtons
-);
+audio.addEventListener("play",updatePlayButtons);
+
+audio.addEventListener("pause",updatePlayButtons);
+
+
+// =========================
+// 歌曲刚加载时显示正确时间
+// =========================
 
 audio.addEventListener(
-"pause",
-updatePlayButtons
-);
+"loadedmetadata",
+()=>{
+
+    mobileCurrentTime.textContent =
+    "00:00";
+
+    mobileDuration.textContent =
+    "-"
+    +
+    formatTime(
+        audio.duration
+    );
+});
 
 // =========================
 // 时间更新
 // =========================
-audio.addEventListener("timeupdate",()=>{
+audio.addEventListener(
+"timeupdate",
+()=>{
 
     const progress =
     audio.duration
@@ -662,17 +619,30 @@ audio.addEventListener("timeupdate",()=>{
     mobileLyricProgress.value =
     progress;
 
+    // 当前时间
     const current =
     formatTime(
         audio.currentTime
     );
 
+    // 总时长
     const total =
     formatTime(
         audio.duration || 0
     );
 
-    // 桌面播放器
+    // 剩余时间
+    const remain =
+    formatTime(
+        Math.max(
+            0,
+            (audio.duration || 0)
+            -
+            audio.currentTime
+        )
+    );
+
+    // 主播放器
     currentTime.textContent =
     current;
 
@@ -684,7 +654,7 @@ audio.addEventListener("timeupdate",()=>{
     current;
 
     mobileDuration.textContent =
-    total;
+    "-" + remain;
 });
 
 
@@ -724,14 +694,39 @@ function updatePlayButtons(){
 // =========================
 function formatTime(time){
 
+    if(!time || isNaN(time))
+        return "00:00";
+
+    const hour =
+    Math.floor(time / 3600);
+
     const min =
-        Math.floor(time / 60);
+    Math.floor(
+        (time % 3600)
+        / 60
+    );
 
     const sec =
-        Math.floor(time % 60);
+    Math.floor(time % 60);
 
+    if(hour > 0){
 
-    return `${String(min).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+        return `${hour}:${
+            min.toString()
+            .padStart(2,'0')
+        }:${
+            sec.toString()
+            .padStart(2,'0')
+        }`;
+    }
+
+    return `${
+        min.toString()
+        .padStart(2,'0')
+    }:${
+        sec.toString()
+        .padStart(2,'0')
+    }`;
 }
 
 
@@ -830,86 +825,6 @@ function renderSearchResult(list){
 
     `;
 }
-
-
-// =========================
-// 频谱动画
-// 波峰跳跃风格
-// =========================
-/*
-function startVisualizer(){
-
-    if(visualizerRunning) return;
-
-    visualizerRunning = true;
-
-    visualizer.style.display = "block";
-
-    drawVisualizer();
-}
-*/
-/*
-function stopVisualizer(){
-
-    visualizerRunning = false;
-
-    visualizer.style.display = "none";
-}
-*/
-/*
-function drawVisualizer(){
-
-    if(!visualizerRunning) return;
-
-
-    requestAnimationFrame(drawVisualizer);
-
-
-    analyser.getByteFrequencyData(dataArray);
-
-
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-
-
-    const barWidth = 6;
-
-    let x = 0;
-
-
-    for(let i=0;i<bufferLength;i++){
-
-        const barHeight = dataArray[i] / 4;
-
-
-        const gradient =
-            ctx.createLinearGradient(0,0,0,canvas.height);
-
-
-        gradient.addColorStop(0,"#7fffd4");
-
-        gradient.addColorStop(1,"#00bfff");
-
-
-        ctx.fillStyle = gradient;
-
-
-        ctx.beginPath();
-
-        ctx.roundRect(
-            x,
-            canvas.height - barHeight,
-            barWidth,
-            barHeight,
-            20
-        );
-
-        ctx.fill();
-
-
-        x += 10;
-    }
-}
-*/
 
 // =========================
 // 注册 PWA
