@@ -616,34 +616,80 @@ body{
     display:block;
 }
 
-/*顶部返回*/
+/*歌词顶部栏*/
 .lyrics-header{
 
-    height:40px;
+    height:70px;
 
     display:flex;
 
     align-items:center;
 
-    padding-left:50px;
+    gap:18px;
+
+    padding:
+        15px
+        35px
+        0
+        35px;
 }
 
+/*返回按钮*/
 #closeLyrics{
 
-    width:40px;
-    height:40px;
+    width:42px;
+
+    height:42px;
 
     border:none;
 
     border-radius:50%;
 
     background:
-    rgba(255,255,255,.08);
+    rgba(255,255,255,.06);
 
     color:white;
 
     cursor:pointer;
+
+    transition:.25s;
 }
+
+/*鼠标悬停*/
+#closeLyrics:hover{
+
+    background:
+    rgba(255,255,255,.12);
+}
+
+/* =========================
+歌曲分类
+========================= */
+#lyricsGenre{
+
+    font-size:14px;
+
+    font-weight:500;
+
+    color:#9fc3d9;
+
+    letter-spacing:1px;
+
+    padding:
+        6px
+        12px;
+
+    border-radius:999px;
+
+    background:
+    rgba(255,255,255,.05);
+
+    border:
+    1px solid
+    rgba(255,255,255,.06);
+}
+
+
 
 /* =====================================
 歌词主体区域
@@ -733,15 +779,16 @@ body{
 
     overflow-y:auto;
 
-    padding:25px 40px 75px;
+    padding:25px 40px 80px;
 
     border-radius:24px;
 
-    background:rgba(255,255,255,.03);
+    background:rgba(255,255,255,.015);
 
-    border:1px solid rgba(255,255,255,.04);
+    border:1px solid rgba(255,255,255,.03);
+	
+	backdrop-filter:none;
 
-    backdrop-filter:blur(12px);
 }
 
 /*歌词样式*/
