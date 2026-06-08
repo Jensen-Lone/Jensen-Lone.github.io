@@ -591,7 +591,7 @@ body{
     right:0;
 
     /* 给播放器留出空间 */
-    bottom:140px;
+    bottom:120px;
 
     display:none;
 
@@ -600,9 +600,9 @@ body{
     /* 与主页统一 */
     background:rgba(7,19,29,.45);
 
-    backdrop-filter:blur(25px);
+    backdrop-filter:blur(35px);
 
-    -webkit-backdrop-filter:blur(25px);
+    -webkit-backdrop-filter:blur(35px);
 
     overflow:hidden;
 }
