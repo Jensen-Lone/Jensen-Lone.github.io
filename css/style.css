@@ -591,7 +591,7 @@ body{
     right:0;
 
     /* 给播放器留出空间 */
-    bottom:120px;
+    bottom:20px;
 
     display:none;
 
