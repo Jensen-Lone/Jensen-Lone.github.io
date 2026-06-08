@@ -619,13 +619,13 @@ body{
 /*顶部返回*/
 .lyrics-header{
 
-    height:60px;
+    height:40px;
 
     display:flex;
 
     align-items:center;
 
-    padding-left:20px;
+    padding-left:50px;
 }
 
 #closeLyrics{
@@ -785,18 +785,6 @@ body{
     display:none;
 }
 
-/* 频谱 
-#visualizer{
-
-    width:100%;
-
-    height:40px;
-
-    margin-top:10px;
-
-    display:none;
-}
-*/
 
 /* =========================
    手机端
