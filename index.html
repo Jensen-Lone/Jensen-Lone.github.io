@@ -78,43 +78,6 @@
 
         <!-- 分类歌曲容器 -->
         <div id="categoryContainer"></div>
-		
-		<!-- 歌词页面 -->
-		<div class="lyrics-page"
-			 id="lyricsPage">
-
-			<!-- 返回按钮 -->
-			<button id="closeLyrics"
-					class="lyrics-back-btn">
-
-				<i class="fas fa-arrow-left"></i>
-
-			</button>
-
-			<!-- 歌曲信息 -->
-			<div class="lyrics-header">
-
-				<img id="lyricsCover">
-
-				<h2 id="lyricsTitle">
-					Not Played
-				</h2>
-
-				<p id="lyricsArtist">
-					Jensen-Lone
-				</p>
-
-				<span id="lyricsGenre"></span>
-
-			</div>
-
-			<!-- 歌词内容 -->
-			<div id="lyricsText"
-				 class="lyrics-content">
-			</div>
-
-		</div>
-		
 
     </main>
 
@@ -215,8 +178,99 @@
 
 </div>
 
+<!-- =========================
+     歌词详情页
+========================= -->
+<div id="lyricsPage" class="lyrics-page">
 
+    <div class="lyrics-header">
 
+		<button id="closeLyrics">
+
+			<i class="fas fa-arrow-left"></i>
+
+		</button>
+
+		<span id="lyricsGenre">
+
+		</span>
+
+    </div>
+
+    <div class="lyrics-content">
+
+        <div class="lyrics-left">
+
+			<img id="lyricsCover">
+
+			<div class="lyrics-info">
+
+				<h2 id="lyricsTitle"></h2>
+
+				<p id="lyricsArtist"></p>
+
+			</div>
+
+        </div>
+
+        <div class="lyrics-right">
+
+            <div id="lyricsText">
+
+            </div>
+
+        </div>
+
+    </div><!-- lyrics-content -->
+	
+	<div class="mobile-lyrics-player">
+
+	    <!-- 时间 -->
+		<div class="mobile-time-wrap">
+
+			<span id="mobileCurrentTime">
+				00:00
+			</span>
+
+			<span id="mobileDuration">
+				00:00
+			</span>
+
+		</div>
+	
+		<!-- 进度条 -->
+		<input
+			id="mobileLyricProgress"
+			type="range"
+			min="0"
+			max="100"
+			value="0">
+
+		<div class="mobile-player-buttons">
+
+			<button id="shareBtn">
+
+				<i class="fas fa-share-alt"></i>
+
+			</button>
+
+			<button id="lyricPlayBtn">
+
+				<i class="fas fa-play"></i>
+
+			</button>
+
+			<button id="lyricNextBtn">
+
+				<i class="fas fa-forward"></i>
+
+			</button>
+
+		</div>
+
+	</div>
+
+</div>
 
 
 <!-- 音频 -->

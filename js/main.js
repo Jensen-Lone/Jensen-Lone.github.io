@@ -123,35 +123,25 @@ document.getElementById("logoBtn")
 // =========================
 // 打开歌词页面
 // =========================
-const playerLeft =
-document.querySelector(".player-left");
+document
+.querySelector(".player-left")
+.addEventListener("click",()=>{
 
-if(playerLeft && lyricsPage){
+    if(!audio.src) return;
 
-    playerLeft.addEventListener(
-        "click",
-        ()=>{
+    lyricsPage.classList.add("show");
 
-            if(!audio.src) return;
-
-            lyricsPage.classList.add("show");
-
-        }
-    );
-
-}
+});
 
 
 // =========================
 // 关闭歌词页面
 // =========================
-if(closeLyrics){
-	closeLyrics.onclick = ()=>{
+closeLyrics.onclick = ()=>{
 
-		lyricsPage.classList.remove("show");
+    lyricsPage.classList.remove("show");
 
-	};
-}
+};
 
 
 // =========================

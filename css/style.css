@@ -229,8 +229,6 @@ body{
 .main-content{
 
     flex:1;
-	
-	position:relative;
 
     overflow-y:auto;
 
@@ -584,8 +582,7 @@ body{
     position:absolute;
 
     top:0;
-
-    left:0;
+    left:258px;
 
     right:0;
 
@@ -593,14 +590,13 @@ body{
 
     display:none;
 
-    z-index:9999;
+    z-index:30;
 
     background:
-    rgba(10,20,30,.85);
+    rgba(10,20,30,.35);
 
     backdrop-filter:
-    blur(25px);
-
+    blur(20px);
 }
 
 .lyrics-page.show{/* =========================
@@ -864,10 +860,7 @@ body{
 
 
     .main-content{
-		
-		position:relative;
-		
-        padding:10px 16px 120px;
+         padding:10px 16px 120px;
     }
 
 
