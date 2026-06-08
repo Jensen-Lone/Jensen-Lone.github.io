@@ -34,6 +34,8 @@
 
     <link rel="apple-touch-icon"
           href="./icons/icon-192.png">
+	
+	<link rel="icon" href="./icons/icon-192.png">
 
 </head>
 
@@ -78,103 +80,104 @@
 
         <!-- 分类歌曲容器 -->
         <div id="categoryContainer"></div>
-		
-		<!-- =========================
-			歌词详情页
-		========================= -->
-		<div id="lyricsPage" class="lyrics-page">
 
-			<div class="lyrics-header">
+    </main>
+	
+	<!-- =========================
+		歌词详情页（独立层）
+		彻底脱离 main-content
+		避免出现中间缝隙
+	========================= -->
+	<div id="lyricsPage" class="lyrics-page">
 
-				<button id="closeLyrics">
+		<div class="lyrics-header">
 
-					<i class="fas fa-arrow-left"></i>
+			<button id="closeLyrics">
 
-				</button>
+				<i class="fas fa-arrow-left"></i>
 
-				<span id="lyricsGenre">
+			</button>
 
-				</span>
+			<span id="lyricsGenre">
+
+			</span>
+
+		</div>
+
+		<div class="lyrics-content">
+
+			<div class="lyrics-left">
+
+				<img id="lyricsCover">
+
+				<div class="lyrics-info">
+
+					<h2 id="lyricsTitle"></h2>
+
+					<p id="lyricsArtist"></p>
+
+				</div>
 
 			</div>
 
-			<div class="lyrics-content">
+			<div class="lyrics-right">
 
-				<div class="lyrics-left">
-
-					<img id="lyricsCover">
-
-					<div class="lyrics-info">
-
-						<h2 id="lyricsTitle"></h2>
-
-						<p id="lyricsArtist"></p>
-
-					</div>
+				<div id="lyricsText">
 
 				</div>
 
-				<div class="lyrics-right">
+			</div>
 
-					<div id="lyricsText">
+		</div><!-- lyrics-content -->
+		
+		<div class="mobile-lyrics-player">
 
-					</div>
+			<!-- 时间 -->
+			<div class="mobile-time-wrap">
 
-				</div>
+				<span id="mobileCurrentTime">
+					00:00
+				</span>
 
-			</div><!-- lyrics-content -->
-			
-			<div class="mobile-lyrics-player">
+				<span id="mobileDuration">
+					00:00
+				</span>
 
-				<!-- 时间 -->
-				<div class="mobile-time-wrap">
+			</div>
+		
+			<!-- 进度条 -->
+			<input
+				id="mobileLyricProgress"
+				type="range"
+				min="0"
+				max="100"
+				value="0">
 
-					<span id="mobileCurrentTime">
-						00:00
-					</span>
+			<div class="mobile-player-buttons">
 
-					<span id="mobileDuration">
-						00:00
-					</span>
+				<button id="shareBtn">
 
-				</div>
-			
-				<!-- 进度条 -->
-				<input
-					id="mobileLyricProgress"
-					type="range"
-					min="0"
-					max="100"
-					value="0">
+					<i class="fas fa-share-alt"></i>
 
-				<div class="mobile-player-buttons">
+				</button>
 
-					<button id="shareBtn">
+				<button id="lyricPlayBtn">
 
-						<i class="fas fa-share-alt"></i>
+					<i class="fas fa-play"></i>
 
-					</button>
+				</button>
 
-					<button id="lyricPlayBtn">
+				<button id="lyricNextBtn">
 
-						<i class="fas fa-play"></i>
+					<i class="fas fa-forward"></i>
 
-					</button>
-
-					<button id="lyricNextBtn">
-
-						<i class="fas fa-forward"></i>
-
-					</button>
-
-				</div>
+				</button>
 
 			</div>
 
 		</div>
 
-
-    </main>
+	</div>
 
 </div>
 

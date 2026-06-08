@@ -573,65 +573,45 @@ body{
     width:180px;
 }
 
-/* =========================
-   歌词模式页面
-========================= */
+
+/* =====================================
+歌词详情页（电脑端最终版）
+彻底覆盖右侧区域
+不会露出任何缝隙
+===================================== */
 
 .lyrics-page{
 
-    position:absolute;
-
-    top:0;
-    left:258px;
-
-    right:0;
-
-    bottom:90px;
-
-    display:none;
-
-    z-index:30;
-
-    background:
-    rgba(10,20,30,.35);
-
-    backdrop-filter:
-    blur(20px);
-}
-
-.lyrics-page.show{/* =========================
-   歌词详情页（电脑端）
-========================= */
-
-.lyrics-page{
-
-    /* 固定定位 */
+    /* 固定在浏览器窗口 */
     position:fixed;
 
-    /* 从顶部开始 */
+    /* 顶部 */
     top:0;
 
-    /* 避开左侧菜单 */
+    /* 左侧菜单宽度 */
     left:230px;
 
-    /* 覆盖到右边 */
+    /* 右侧贴边 */
     right:0;
 
-    /* 一直到页面底部 */
+    /* 底部贴边 */
     bottom:0;
 
     /* 默认隐藏 */
     display:none;
 
-    /* 高层级 */
-    z-index:9998;
+    /* 保证位于所有内容之上 */
+    z-index:99999;
 
-    /* 半透明背景 */
-    background:rgba(10,20,30,.82);
+    /* 深色毛玻璃背景 */
+    background:rgba(10,20,30,.94);
 
-    /* 毛玻璃效果 */
-    backdrop-filter:blur(28px);
+    backdrop-filter:blur(30px);
+
+    /* 防止出现子元素溢出 */
+    overflow:hidden;
 }
+
 
 /* 打开歌词页 */
 .lyrics-page.show{
@@ -670,21 +650,22 @@ body{
     cursor:pointer;
 }
 
-/* =========================
-   歌词主体区域
-========================= */
+/* =====================================
+歌词主体区域
+===================================== */
+
 .lyrics-content{
 
-    height:100%;
+    /* 扣除顶部返回栏 */
+    height:calc(100% - 60px);
 
     display:flex;
 
-    padding:
-
-    20px
-    40px;
+    padding:20px 40px;
 
     gap:50px;
+
+    overflow:hidden;
 }
 
 /*=========================
