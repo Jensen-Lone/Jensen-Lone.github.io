@@ -418,7 +418,7 @@ body{
     width:94%;
     max-width:1250px;
 
-    height:115px;
+    height:110px;
 
     padding:18px 25px;
 
@@ -441,7 +441,7 @@ body{
 
 
 .bottom-player.show{
-    bottom:10px;
+    bottom:1px;
 }
 
 
@@ -591,7 +591,7 @@ body{
     right:0;
 
     /* 给播放器留出空间 */
-    bottom:125px;
+    bottom:122px;
 
     display:none;
 
