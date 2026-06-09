@@ -323,6 +323,24 @@
       "src": "./music/im-singing-tonight-too.m4a",
       "cover": "./assets/im-singing-tonight-too.jpg",
       "lyric": "./data/lyrics/im-singing-tonight-too.txt"
+    },
+    {
+      "id": 37,
+      "title": "浮生梦",
+      "artist": "Jensen Lone",
+      "genre": "古风",
+      "src": "./music/floating-life-dream.m4a",
+      "cover": "./assets/floating-life-dream.jpg",
+      "lyric": "./data/lyrics/floating-life-dream.txt"
+    },
+    {
+      "id": 38,
+      "title": "魔法のパラソル (Mahō no Parasol)",
+      "artist": "Jensen Lone",
+      "genre": "J-Pop",
+      "src": "./music/magic-parasol.m4a",
+      "cover": "./assets/magic-parasol.jpg",
+      "lyric": "./data/lyrics/magic-parasol.txt"
     }
   ]
 }
