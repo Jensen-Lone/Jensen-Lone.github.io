@@ -341,6 +341,15 @@
       "src": "./music/magic-parasol.m4a",
       "cover": "./assets/magic-parasol.jpg",
       "lyric": "./data/lyrics/magic-parasol.txt"
+    },
+    {
+      "id": 39,
+      "title": "红尘渡",
+      "artist": "Jensen Lone",
+      "genre": "古风",
+      "src": "./music/crossing-the-red-dust.m4a",
+      "cover": "./assets/crossing-the-red-dust.jpg",
+      "lyric": "./data/lyrics/crossing-the-red-dust.txt"
     }
   ]
 }
