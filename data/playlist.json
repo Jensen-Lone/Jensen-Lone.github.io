@@ -254,7 +254,7 @@
     },
     {
       "id": 29,
-      "title": "恩怨是非",
+      "title": "恩怨糾纏",
       "artist": "Jensen Lone",
       "genre": "古风",
       "src": "./music/grudges-and-right-and-wrong.m4a",
@@ -350,6 +350,24 @@
       "src": "./music/crossing-the-red-dust.m4a",
       "cover": "./assets/crossing-the-red-dust.jpg",
       "lyric": "./data/lyrics/crossing-the-red-dust.txt"
+    },
+    {
+      "id": 40,
+      "title": "慢慢飲杯茶",
+      "artist": "Jensen Lone",
+      "genre": "Cantonpop",
+      "src": "./music/sip-your-tea-slowly.m4a",
+      "cover": "./assets/sip-your-tea-slowly.jpg",
+      "lyric": "./data/lyrics/sip-your-tea-slowly.txt"
+    },
+    {
+      "id": 41,
+      "title": "刷關不停",
+      "artist": "Jensen Lone",
+      "genre": "Cantonpop",
+      "src": "./music/keep-playing-levels.m4a",
+      "cover": "./assets/keep-playing-levels.jpg",
+      "lyric": "./data/lyrics/keep-playing-levels.txt"
     }
   ]
 }
