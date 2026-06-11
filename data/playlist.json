@@ -368,6 +368,15 @@
       "src": "./music/keep-playing-levels.m4a",
       "cover": "./assets/keep-playing-levels.jpg",
       "lyric": "./data/lyrics/keep-playing-levels.txt"
+    },
+    {
+      "id": 42,
+      "title": "あの日の終電",
+      "artist": "Jensen Lone",
+      "genre": "J-Pop",
+      "src": "./music/last-train-that-day.m4a",
+      "cover": "./assets/last-train-that-day.jpg",
+      "lyric": "./data/lyrics/last-train-that-day.txt"
     }
   ]
 }
