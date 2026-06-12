@@ -377,6 +377,15 @@
       "src": "./music/last-train-that-day.m4a",
       "cover": "./assets/last-train-that-day.jpg",
       "lyric": "./data/lyrics/last-train-that-day.txt"
+    },
+    {
+      "id": 43,
+      "title": "付长风",
+      "artist": "Jensen Lone",
+      "genre": "古风",
+      "src": "./music/all-given-to-the-wind.m4a",
+      "cover": "./assets/all-given-to-the-wind.jpg",
+      "lyric": "./data/lyrics/all-given-to-the-wind.txt"
     }
   ]
 }
