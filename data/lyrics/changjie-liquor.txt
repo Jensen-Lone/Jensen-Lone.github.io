@@ -1,9 +1,3 @@
-[Intro]
-[SFX: distant desert wind]
-[SFX: eagle screech echoing across the mountains]
-[SFX: horse hoofs slowly approaching]
-
-[Verse 1]
 一壶烈酒入喉
 长街无人回首
 风吹旧伤还隐隐作痛
@@ -12,7 +6,6 @@
 换来满身伤口
 谁又真正看透这春秋
 
-[Pre-Chorus]
 恩恩怨怨难休
 终成乌有
 哭哭笑笑
@@ -20,7 +13,6 @@
 岁月几番回眸
 都散在人后
 
-[Chorus]
 纷纷乱乱
 江湖江山
 英雄白头
@@ -36,11 +28,6 @@
 半世漂流
 都醉在长街酒
 
-[Instrumental]
-[Emotional erhu solo]
-[Electric guitar sustains with distant thunder]
-
-[Verse 2]
 孤灯映着残楼
 夜雨打湿衣袖
 多少旧梦仍困在心头
@@ -49,7 +36,6 @@
 踏遍乱世春秋
 却换不回当年的温柔
 
-[Pre-Chorus]
 悲悲喜喜难收
 命似蜉蝣
 真真假假
@@ -57,7 +43,6 @@
 往事一声叹息
 都埋进烈酒
 
-[Chorus]
 纷纷乱乱
 江湖江山
 英雄白头
@@ -72,10 +57,6 @@
 谁胜谁败谁愁
 半世漂流
 都醉在长街酒
-
-[Bridge]
-[SFX: strong desert wind]
-[SFX: horse neighing in the distance]
 
 谁在黄昏以后
 独自走过荒丘
@@ -85,7 +66,6 @@
 到最后
 不过一笑而过
 
-[Final Chorus]
 纷纷扰扰
 江湖如梦
 往事难留
@@ -100,8 +80,3 @@
 谁负谁爱谁愁
 一壶浊酒
 饮尽这长街秋
-
-[Outro]
-[SFX: horse hoofs gradually fading away]
-[SFX: carefree wandering swordsman laughing loudly]
-[SFX: laughter fading into distant wind]

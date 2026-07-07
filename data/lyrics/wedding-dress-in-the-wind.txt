@@ -1,6 +1,3 @@
-[Intro - The electric guitar slowly sweeps the strings, creating an air echo - 15 seconds ]
-
-[Verse 1]
 夜雨落 街燈偏照歪
 你著婚紗 靜立喺路牌
 白紗隨風 飄進我心內
@@ -11,11 +8,9 @@
 呢一生 注定孤身漂泊
 唔應該 拉你落苦海
 
-[Pre-Chorus]
 你卻輕聲講一句
 命運幾冷 我都跟你去
 
-[Chorus]
 唔怕風沙 捲起愛火燒天際
 陪住你 飛車衝破呢世界
 哪怕結局 要將一切摧毀
@@ -26,7 +21,6 @@
 若然明日 注定分散兩地
 今刻都要 同你跨過生死
 
-[Verse 2]
 引擎聲 劃破寂靜街
 公路無邊 夜色似深海
 你抱緊我 唔願放開
@@ -37,11 +31,9 @@
 呢一刻 像永恆存在
 卻知終點 早已安排
 
-[Pre-Chorus]
 我低聲講句對唔住
 但你話愛 不需要退路
 
-[Chorus]
 唔怕風沙 捲起愛火燒天際
 陪住你 飛車衝破呢世界
 哪怕結局 要將一切摧毀
@@ -52,15 +44,11 @@
 若然明日 注定分散兩地
 今刻都要 同你跨過生死
 
-[Guitar Solo - The electric guitar blared a long, high note, triggering an emotional outburst  - 20 seconds ]
-
-[Bridge]
 當清晨 偷走這段傳奇
 我已悄悄 退入人海邊際
 留下風聲 替我講別離
 留下回憶 陪你過餘世
 
-[Final Chorus]
 曾話風沙 捲不走這生約誓
 但現實 偏要撕碎一切
 你在遠方 喊我聲音破碎
@@ -71,6 +59,5 @@
 若然再見 只可夢中相聚
 願你安好 我負盡這一生罪
 
-[Outro - The wooden guitar swept lightly, and the echo gradually dissipated]
 街角只得你一人佇立
 白紗染淚 風中低泣

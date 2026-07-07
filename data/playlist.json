@@ -386,6 +386,15 @@
       "src": "./music/all-given-to-the-wind.m4a",
       "cover": "./assets/all-given-to-the-wind.jpg",
       "lyric": "./data/lyrics/all-given-to-the-wind.txt"
+    },
+    {
+      "id": 44,
+      "title": "紅台無終",
+      "artist": "Jensen Lone",
+      "genre": "Cantonpop",
+      "src": "./music/red-terrace -without-end.m4a",
+      "cover": "./assets/red-terrace -without-end.jpg",
+      "lyric": "./data/lyrics/red-terrace -without-end.txt"
     }
   ]
 }
