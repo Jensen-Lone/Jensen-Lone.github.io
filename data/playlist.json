@@ -395,6 +395,51 @@
       "src": "./music/red-terrace -without-end.m4a",
       "cover": "./assets/red-terrace -without-end.jpg",
       "lyric": "./data/lyrics/red-terrace -without-end.txt"
+    },
+    {
+      "id": 45,
+      "title": "去吧海浪吧",
+      "artist": "Jensen Lone",
+      "genre": "Cantonpop",
+      "src": "./music/go-waves.m4a",
+      "cover": "./assets/go-waves.jpg",
+      "lyric": "./data/lyrics/go-waves.txt"
+    },
+    {
+      "id": 46,
+      "title": "十七度夏天",
+      "artist": "Jensen Lone",
+      "genre": "Cantonpop",
+      "src": "./music/seventeen-of-summer.m4a",
+      "cover": "./assets/seventeen-of-summer.jpg",
+      "lyric": "./data/lyrics/seventeen-of-summer.txt"
+    },
+    {
+      "id": 47,
+      "title": "心跳漏咗半拍",
+      "artist": "Jensen Lone",
+      "genre": "Cantonpop",
+      "src": "./music/heartbeat-miss-half-a-beat.m4a",
+      "cover": "./assets/heartbeat-miss-half-a-beat.jpg",
+      "lyric": "./data/lyrics/heartbeat-miss-half-a-beat.txt"
+    },
+    {
+      "id": 48,
+      "title": "君を責めるなら僕も責めて",
+      "artist": "Jensen Lone",
+      "genre": "J-Pop",
+      "src": "./music/blame-me-blame-you-too.m4a",
+      "cover": "./assets/blame-me-blame-you-too.jpg",
+      "lyric": "./data/lyrics/blame-me-blame-you-too.txt"
+    },
+    {
+      "id": 49,
+      "title": "雨が止む前に",
+      "artist": "Jensen Lone",
+      "genre": "J-Pop",
+      "src": "./music/before-rain-stops.m4a",
+      "cover": "./assets/before-rain-stops.jpg",
+      "lyric": "./data/lyrics/before-rain-stops.txt"
     }
   ]
 }
