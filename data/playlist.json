@@ -440,6 +440,15 @@
       "src": "./music/before-rain-stops.m4a",
       "cover": "./assets/before-rain-stops.jpg",
       "lyric": "./data/lyrics/before-rain-stops.txt"
+    },
+    {
+      "id": 50,
+      "title": "大漠狂歌",
+      "artist": "Jensen Lone",
+      "genre": "古风",
+      "src": "./music/desert-song.m4a",
+      "cover": "./assets/desert-song.jpg",
+      "lyric": "./data/lyrics/desert-song.txt"
     }
   ]
 }
