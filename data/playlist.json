@@ -449,6 +449,24 @@
       "src": "./music/desert-song.m4a",
       "cover": "./assets/desert-song.jpg",
       "lyric": "./data/lyrics/desert-song.txt"
+    },
+    {
+      "id": 51,
+      "title": "我是风四娘",
+      "artist": "Jensen Lone",
+      "genre": "古风",
+      "src": "./music/feng-siniang.m4a",
+      "cover": "./assets/feng-siniang.jpg",
+      "lyric": "./data/lyrics/feng-siniang.txt"
+    },
+    {
+      "id": 52,
+      "title": "Les Nymphéas sous la Lune",
+      "artist": "Jensen Lone",
+      "genre": "French",
+      "src": "./music/moonlight-lily.m4a",
+      "cover": "./assets/moonlight-lily.jpg",
+      "lyric": "./data/lyrics/moonlight-lily.txt"
     }
   ]
 }
