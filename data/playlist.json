@@ -467,6 +467,24 @@
       "src": "./music/moonlight-lily.m4a",
       "cover": "./assets/moonlight-lily.jpg",
       "lyric": "./data/lyrics/moonlight-lily.txt"
+    },
+    {
+      "id": 53,
+      "title": "替你补好的夏天",
+      "artist": "Jensen Lone",
+      "genre": "国语",
+      "src": "./music/mended-summer-for-you.m4a",
+      "cover": "./assets/mended-summer-for-you.jpg",
+      "lyric": "./data/lyrics/mended-summer-for-you.txt"
+    },
+    {
+      "id": 54,
+      "title": "烟笼寒水",
+      "artist": "Jensen Lone",
+      "genre": "古风",
+      "src": "./music/fmist-veils-chilly-waters.m4a",
+      "cover": "./assets/mist-veils-chilly-waters.jpg",
+      "lyric": "./data/lyrics/mist-veils-chilly-waters.txt"
     }
   ]
 }
