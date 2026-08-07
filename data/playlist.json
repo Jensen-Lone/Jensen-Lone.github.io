@@ -485,6 +485,15 @@
       "src": "./music/mist-veils-chilly-waters.m4a",
       "cover": "./assets/mist-veils-chilly-waters.jpg",
       "lyric": "./data/lyrics/mist-veils-chilly-waters.txt"
+    },
+    {
+      "id": 55,
+      "title": "The Summer You Left Behind",
+      "artist": "Jensen Lone",
+      "genre": "J-Pop",
+      "src": "./music/summer-left-behind.m4a",
+      "cover": "./assets/summer-left-behind.jpg",
+      "lyric": "./data/lyrics/summer-left-behind.txt"
     }
   ]
 }
