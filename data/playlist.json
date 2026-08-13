@@ -494,6 +494,24 @@
       "src": "./music/summer-left-behind.m4a",
       "cover": "./assets/summer-left-behind.jpg",
       "lyric": "./data/lyrics/summer-left-behind.txt"
+    },
+    {
+      "id": 56,
+      "title": "風が止んだ朝",
+      "artist": "Jensen Lone",
+      "genre": "J-Pop",
+      "src": "./music/morning-wind-died-down.m4a",
+      "cover": "./assets/morning-wind-died-down.jpg",
+      "lyric": "./data/lyrics/morning-wind-died-down.txt"
+    },
+    {
+      "id": 57,
+      "title": "八號風球吹過去",
+      "artist": "Jensen Lone",
+      "genre": "Cantonpop",
+      "src": "./music/8-gale-signal-has-passed.m4a",
+      "cover": "./assets/8-gale-signal-has-passed.jpg",
+      "lyric": "./data/lyrics/8-gale-signal-has-passed.txt"
     }
   ]
 }
