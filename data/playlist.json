@@ -512,6 +512,24 @@
       "src": "./music/8-gale-signal-has-passed.m4a",
       "cover": "./assets/8-gale-signal-has-passed.jpg",
       "lyric": "./data/lyrics/8-gale-signal-has-passed.txt"
+    },
+    {
+      "id": 58,
+      "title": "雨の神保町",
+      "artist": "Jensen Lone",
+      "genre": "J-Pop",
+      "src": "./music/rainy-jimbocho.m4a",
+      "cover": "./assets/rainy-jimbocho.jpg",
+      "lyric": "./data/lyrics/rainy-jimbocho.txt"
+    },
+    {
+      "id": 59,
+      "title": "高知を出た朝",
+      "artist": "Jensen Lone",
+      "genre": "J-Pop",
+      "src": "./music/morning-left-kochi.m4a",
+      "cover": "./assets/morning-left-kochi.jpg",
+      "lyric": "./data/lyrics/morning-left-kochi.txt"
     }
   ]
 }
