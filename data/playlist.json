@@ -524,12 +524,21 @@
     },
     {
       "id": 59,
-      "title": "高知を出た朝",
+      "title": "高知を出た朝(中年版)",
       "artist": "Jensen Lone",
       "genre": "J-Pop",
       "src": "./music/morning-left-kochi.m4a",
       "cover": "./assets/morning-left-kochi.jpg",
       "lyric": "./data/lyrics/morning-left-kochi.txt"
+    },
+    {
+      "id": 60,
+      "title": "高知を出た朝(老年版)",
+      "artist": "Jensen Lone",
+      "genre": "J-Pop",
+      "src": "./music/themorning-left-kochi.m4a",
+      "cover": "./assets/themorning-left-kochi.jpg",
+      "lyric": "./data/lyrics/themorning-left-kochi.txt"
     }
   ]
 }
