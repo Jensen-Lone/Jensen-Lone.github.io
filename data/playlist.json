@@ -539,6 +539,15 @@
       "src": "./music/themorning-left-kochi.m4a",
       "cover": "./assets/themorning-left-kochi.jpg",
       "lyric": "./data/lyrics/themorning-left-kochi.txt"
+    },
+    {
+      "id": 61,
+      "title": "You Never Got Me",
+      "artist": "Jensen Lone",
+      "genre": "J-Pop",
+      "src": "./music/never-got -me.m4a",
+      "cover": "./assets/never-got -me.jpg",
+      "lyric": "./data/lyrics/never-got -me.txt"
     }
   ]
 }
