@@ -548,6 +548,15 @@
       "src": "./music/never-got -me.m4a",
       "cover": "./assets/never-got -me.jpg",
       "lyric": "./data/lyrics/never-got -me.txt"
+    },
+    {
+      "id": 62,
+      "title": "Somewhere in the Quiet",
+      "artist": "Jensen Lone",
+      "genre": "English",
+      "src": "./music/somewhere-quiet.m4a",
+      "cover": "./assets/somewhere-quiet.jpg",
+      "lyric": "./data/lyrics/somewhere-quiet.txt"
     }
   ]
 }
